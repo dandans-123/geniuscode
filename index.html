@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Token - 全国性 AI Token 交易与调度平台</title>
+<title>TaskRouter AI - AI 任务路由与成本管理平台</title>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
@@ -13,28 +13,27 @@ a{color:inherit;text-decoration:none}
   --navy:#0f172a;--blue:#2563eb;--blue-l:#3b82f6;--gold:#d4a843;
   --g50:#f8fafc;--g100:#f1f5f9;--g200:#e2e8f0;--g300:#cbd5e1;
   --g400:#94a3b8;--g500:#64748b;--g600:#475569;--g900:#0f172a;
-  --green:#059669;--green-l:#d1fae5;--purple:#7c3aed;--purple-l:#ede9fe;
+  --green:#059669;--green-l:#d1fae5;--purple:#7c3aed;
   --pink:#db2777;--orange:#d97706;--red:#dc2626;
   --r:12px;--shadow:0 4px 24px rgba(0,0,0,.08);--shadow-lg:0 12px 48px rgba(0,0,0,.12);
 }
 .container{max-width:1200px;margin:0 auto;padding:0 24px}
-
-/* ── NAV ── */
+/* NAV */
 nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(15,23,42,.88);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,.06)}
 nav .container{display:flex;align-items:center;justify-content:space-between;height:64px}
-.nav-logo{display:flex;align-items:center;gap:10px;font-size:1.15rem;font-weight:700;color:#fff}
-.nav-logo .dot{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--blue),var(--purple));display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff}
-.nav-links{display:flex;gap:28px;list-style:none}
-.nav-links a{color:var(--g400);font-size:.875rem;font-weight:500;transition:color .2s}
+.nav-logo{display:flex;align-items:center;gap:10px;font-size:1.15rem;font-weight:700;color:#fff;cursor:pointer}
+.nav-logo .dot{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--blue),var(--purple));display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff}
+.nav-links{display:flex;gap:24px;list-style:none}
+.nav-links a{color:var(--g400);font-size:.85rem;font-weight:500;transition:color .2s;cursor:pointer}
 .nav-links a:hover,.nav-links a.active{color:#fff}
 .nav-cta{padding:8px 20px;background:var(--blue);color:#fff;border-radius:8px;font-size:.8rem;font-weight:600;border:none;cursor:pointer;transition:all .2s}
 .nav-cta:hover{background:var(--blue-l)}
-
-/* ── PAGES ── */
+/* PAGES */
 .page{display:none;min-height:100vh;padding-top:64px}
 .page.active{display:block}
+#page-chat.active{display:flex;flex-direction:column;height:100vh;padding-top:64px}
 
-/* ══════════════ PAGE: LANDING ══════════════ */
+/* ══ LANDING ══ */
 .hero{position:relative;min-height:calc(100vh - 64px);background:var(--navy);display:flex;align-items:center;overflow:hidden}
 .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 20% 40%,rgba(37,99,235,.15) 0%,transparent 70%),radial-gradient(ellipse 60% 50% at 80% 60%,rgba(124,58,237,.1) 0%,transparent 70%)}
 .hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:60px 60px}
@@ -44,49 +43,85 @@ nav .container{display:flex;align-items:center;justify-content:space-between;hei
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.5)}}
 .hero h1{font-size:3.5rem;font-weight:800;color:#fff;line-height:1.15;letter-spacing:-0.03em;max-width:860px;margin:0 auto 20px}
 .hero h1 .gr{background:linear-gradient(135deg,var(--blue-l),var(--purple),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hero p{font-size:1.15rem;color:var(--g400);max-width:580px;margin:0 auto 36px;line-height:1.7}
+.hero p.hero-desc{font-size:1.15rem;color:var(--g400);max-width:600px;margin:0 auto 36px;line-height:1.7}
 .hero-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
 .btn{display:inline-flex;align-items:center;gap:8px;padding:13px 28px;border-radius:8px;font-size:.95rem;font-weight:600;cursor:pointer;border:none;transition:all .25s}
 .btn-primary{background:var(--blue);color:#fff}
 .btn-primary:hover{background:var(--blue-l);transform:translateY(-2px);box-shadow:0 8px 24px rgba(37,99,235,.3)}
 .btn-outline-w{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.3)}
 .btn-outline-w:hover{border-color:#fff;background:rgba(255,255,255,.08)}
+.btn-gold{background:linear-gradient(135deg,var(--gold),#f0d78c);color:var(--navy);font-weight:700}
+.btn-gold:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(212,168,67,.4)}
 .hero-stats{display:flex;gap:48px;justify-content:center;margin-top:64px;padding-top:40px;border-top:1px solid rgba(255,255,255,.08)}
 .hero-stat{text-align:center}
 .hero-stat .num{font-size:2.2rem;font-weight:800;color:#fff}
 .hero-stat .num span{color:var(--gold)}
 .hero-stat .label{font-size:.8rem;color:var(--g500);margin-top:2px}
-
-/* particles */
 .particles{position:absolute;inset:0;overflow:hidden;pointer-events:none}
 .particles i{position:absolute;width:4px;height:4px;border-radius:50%;background:rgba(37,99,235,.4);animation:fl linear infinite}
-.particles i:nth-child(1){left:10%;animation-duration:18s}
-.particles i:nth-child(2){left:25%;animation-duration:22s;animation-delay:2s;width:3px;height:3px;background:rgba(124,58,237,.3)}
-.particles i:nth-child(3){left:40%;animation-duration:16s;animation-delay:4s}
-.particles i:nth-child(4){left:55%;animation-duration:20s;animation-delay:1s;width:5px;height:5px;background:rgba(212,168,67,.3)}
-.particles i:nth-child(5){left:70%;animation-duration:24s;animation-delay:3s}
-.particles i:nth-child(6){left:85%;animation-duration:17s;animation-delay:5s;background:rgba(124,58,237,.3)}
+.particles i:nth-child(1){left:10%;animation-duration:18s}.particles i:nth-child(2){left:25%;animation-duration:22s;animation-delay:2s;width:3px;height:3px;background:rgba(124,58,237,.3)}.particles i:nth-child(3){left:40%;animation-duration:16s;animation-delay:4s}.particles i:nth-child(4){left:55%;animation-duration:20s;animation-delay:1s;width:5px;height:5px;background:rgba(212,168,67,.3)}.particles i:nth-child(5){left:70%;animation-duration:24s;animation-delay:3s}.particles i:nth-child(6){left:85%;animation-duration:17s;animation-delay:5s;background:rgba(124,58,237,.3)}
 @keyframes fl{0%{transform:translateY(100vh) scale(0);opacity:0}10%{opacity:1}90%{opacity:1}100%{transform:translateY(-10vh) scale(1);opacity:0}}
-
-/* features */
-.feat-section{padding:80px 0;background:var(--g50)}
-.feat-section .stitle{font-size:2rem;font-weight:700;text-align:center;margin-bottom:12px}
-.feat-section .ssub{font-size:1rem;color:var(--g500);text-align:center;max-width:580px;margin:0 auto 48px}
+/* sections */
+.section{padding:80px 0}.section-gray{background:var(--g50)}
+.stitle{font-size:2rem;font-weight:700;text-align:center;margin-bottom:12px}
+.ssub{font-size:1rem;color:var(--g500);text-align:center;max-width:620px;margin:0 auto 48px}
 .feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.feat-card{background:#fff;border:1px solid var(--g200);border-radius:var(--r);padding:32px 24px;transition:all .3s}
+.feat-card{background:#fff;border:1px solid var(--g200);border-radius:var(--r);padding:32px 24px;transition:all .3s;position:relative;overflow:hidden}
 .feat-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:var(--blue)}
+.feat-card::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--blue),var(--purple));opacity:0;transition:opacity .3s}
+.feat-card:hover::after{opacity:1}
 .feat-card .icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:16px}
 .feat-card h3{font-size:1.1rem;font-weight:700;margin-bottom:8px}
 .feat-card p{font-size:.875rem;color:var(--g600);line-height:1.6}
+/* supply types */
+.supply-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;max-width:1000px;margin:0 auto}
+.supply-card{background:#fff;border:1px solid var(--g200);border-radius:var(--r);padding:28px 20px;text-align:center;transition:all .3s}
+.supply-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+.supply-card .s-emoji{font-size:2.2rem;margin-bottom:12px;display:block}
+.supply-card h4{font-size:1rem;font-weight:700;margin-bottom:6px}
+.supply-card p{font-size:.8rem;color:var(--g500);line-height:1.5;margin-bottom:12px}
+.supply-card .s-ex{font-size:.75rem;color:var(--g400);border-top:1px solid var(--g100);padding-top:10px;text-align:left}
+/* cap cards */
+.cap-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;max-width:900px;margin:0 auto}
+.cap-card{background:#fff;border:1px solid var(--g200);border-radius:var(--r);padding:24px;display:flex;gap:16px;align-items:flex-start;transition:all .3s}
+.cap-card:hover{box-shadow:var(--shadow);border-color:var(--blue)}
+.cap-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
+.cap-card h4{font-size:1rem;font-weight:700;margin-bottom:4px}
+.cap-card .cap-desc{font-size:.85rem;color:var(--g500);line-height:1.5;margin-bottom:8px}
+.cap-tag{display:inline-block;font-size:.7rem;font-weight:600;padding:2px 8px;border-radius:4px;margin-right:4px}
+.cap-tag-blue{background:rgba(37,99,235,.08);color:var(--blue)}
+.cap-tag-green{background:rgba(5,150,105,.08);color:var(--green)}
+.cap-tag-purple{background:rgba(124,58,237,.08);color:var(--purple)}
+/* audience tabs */
+.aud-tabs{display:flex;justify-content:center;gap:8px;margin-bottom:32px}
+.aud-tab{padding:10px 24px;border-radius:8px;font-size:.9rem;font-weight:600;cursor:pointer;border:1.5px solid var(--g200);background:#fff;color:var(--g500);transition:all .2s}
+.aud-tab:hover{border-color:var(--blue);color:var(--blue)}
+.aud-tab.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+.aud-panel{display:none;max-width:700px;margin:0 auto;text-align:center}
+.aud-panel.active{display:block}
+.aud-panel .aud-title{font-size:1.3rem;font-weight:700;margin-bottom:8px}
+.aud-panel .aud-sub{font-size:.95rem;color:var(--g500);margin-bottom:20px;line-height:1.7}
+.aud-panel .aud-quote{background:var(--g50);border-left:3px solid var(--blue);padding:16px 20px;border-radius:0 8px 8px 0;font-size:.95rem;color:var(--g600);line-height:1.7;text-align:left}
+/* cta */
+.cta-section{background:linear-gradient(135deg,var(--navy) 0%,#1e1b4b 100%);position:relative;overflow:hidden;padding:100px 0}
+.cta-section::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 50% 80% at 80% 50%,rgba(37,99,235,.2) 0%,transparent 70%)}
+.cta-content{position:relative;z-index:2;text-align:center}
+.cta-content h2{font-size:2.5rem;font-weight:800;color:#fff;margin-bottom:16px}
+.cta-content p{font-size:1.1rem;color:var(--g400);margin-bottom:40px;max-width:500px;margin-left:auto;margin-right:auto}
+.cta-actions{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+/* footer */
+footer{background:var(--navy);color:var(--g400);padding:48px 0 24px}
+.footer-inner{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+.footer-inner .nav-logo .dot{width:24px;height:24px;font-size:9px}
+.footer-inner .nav-logo{font-size:1rem}
+.footer-right{font-size:.8rem;color:var(--g500)}
 
-/* ══════════════ PAGE: RECOMMEND ══════════════ */
+/* ══ RECOMMEND PAGE ══ */
 #page-recommend{background:var(--g50)}
 .rec-container{max-width:1100px;margin:0 auto;padding:40px 24px}
 .rec-header{text-align:center;margin-bottom:40px}
 .rec-header h2{font-size:1.8rem;font-weight:700;margin-bottom:8px}
-.rec-header p{color:var(--g500);font-size:1rem}
-
-/* selector panel */
+.rec-header p{color:var(--g500)}
 .sel-panel{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:32px}
 .sel-box{background:#fff;border-radius:var(--r);padding:24px;border:1px solid var(--g200)}
 .sel-box h4{font-size:.85rem;font-weight:600;color:var(--g500);text-transform:uppercase;letter-spacing:.05em;margin-bottom:14px}
@@ -94,24 +129,17 @@ nav .container{display:flex;align-items:center;justify-content:space-between;hei
 .sel-chip{padding:8px 16px;border-radius:8px;font-size:.85rem;font-weight:500;cursor:pointer;border:1.5px solid var(--g200);background:#fff;color:var(--g600);transition:all .2s;user-select:none}
 .sel-chip:hover{border-color:var(--blue);color:var(--blue)}
 .sel-chip.active{background:var(--blue);color:#fff;border-color:var(--blue)}
-
-/* recommendation result */
-.rec-result{background:#fff;border-radius:var(--r);border:1px solid var(--g200);overflow:hidden;transition:all .3s}
-.rec-empty{padding:60px 24px;text-align:center;color:var(--g400);font-size:1rem}
-.rec-filled{display:none}
-.rec-filled.show{display:block}
-
-/* model combo header */
-.combo-header{background:linear-gradient(135deg,var(--navy),#1e1b4b);padding:24px 28px;color:#fff;display:flex;align-items:center;justify-content:space-between}
+.rec-result{background:#fff;border-radius:var(--r);border:1px solid var(--g200);overflow:hidden}
+.rec-empty{padding:60px 24px;text-align:center;color:var(--g400)}
+.rec-filled{display:none}.rec-filled.show{display:block}
+.combo-header{background:linear-gradient(135deg,var(--navy),#1e1b4b);padding:24px 28px;color:#fff;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
 .combo-header .left h3{font-size:1.2rem;font-weight:700;margin-bottom:4px}
 .combo-header .left p{font-size:.85rem;color:var(--g400)}
 .combo-score{display:flex;gap:16px}
 .combo-score .sc{text-align:center}
 .combo-score .sc .v{font-size:1.3rem;font-weight:800;color:var(--gold)}
 .combo-score .sc .l{font-size:.7rem;color:var(--g400);margin-top:2px}
-
-/* model cards row */
-.model-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;padding:24px 28px}
+.model-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;padding:24px 28px}
 .model-card{border:1px solid var(--g200);border-radius:10px;padding:18px;position:relative;transition:all .2s}
 .model-card:hover{box-shadow:var(--shadow)}
 .model-card .role-tag{position:absolute;top:12px;right:12px;font-size:.7rem;font-weight:600;padding:3px 8px;border-radius:4px}
@@ -123,60 +151,39 @@ nav .container{display:flex;align-items:center;justify-content:space-between;hei
 .model-card .mstats{display:flex;gap:12px;flex-wrap:wrap}
 .model-card .mstat{font-size:.75rem;color:var(--g500)}
 .model-card .mstat b{color:var(--g900);font-weight:600}
-
-/* reason */
 .combo-reason{padding:20px 28px;border-top:1px solid var(--g100);background:var(--g50)}
 .combo-reason h4{font-size:.85rem;font-weight:600;color:var(--g500);margin-bottom:8px}
 .combo-reason p{font-size:.9rem;color:var(--g600);line-height:1.65}
-
-/* start button */
-.combo-action{padding:20px 28px;border-top:1px solid var(--g100);display:flex;align-items:center;justify-content:space-between}
+.combo-action{padding:20px 28px;border-top:1px solid var(--g100);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
 .combo-action .price{font-size:.9rem;color:var(--g500)}
 .combo-action .price b{color:var(--g900);font-size:1.1rem}
 
-/* ══════════════ PAGE: CHAT ══════════════ */
-#page-chat{background:var(--g100);display:none}
-#page-chat.active{display:flex;flex-direction:column;height:100vh}
-.chat-layout{flex:1;display:flex;overflow:hidden;padding-top:0}
-
-/* model sidebar */
+/* ══ CHAT PAGE ══ */
+.chat-layout{flex:1;display:flex;overflow:hidden}
 .chat-sidebar{width:280px;background:#fff;border-right:1px solid var(--g200);display:flex;flex-direction:column;flex-shrink:0}
 .sb-header{padding:16px 18px;border-bottom:1px solid var(--g100);font-size:.8rem;font-weight:600;color:var(--g500);text-transform:uppercase;letter-spacing:.05em;display:flex;align-items:center;justify-content:space-between}
 .sb-header .back-btn{font-size:.8rem;color:var(--blue);cursor:pointer;font-weight:500;text-transform:none;letter-spacing:0}
 .sb-models{flex:1;overflow-y:auto;padding:12px}
-.sb-model{border:1.5px solid var(--g200);border-radius:10px;padding:14px;margin-bottom:10px;cursor:default;transition:all .2s;position:relative}
+.sb-model{border:1.5px solid var(--g200);border-radius:10px;padding:14px;margin-bottom:10px;transition:all .2s;position:relative}
 .sb-model.active-model{border-color:var(--blue);background:rgba(37,99,235,.03)}
 .sb-model .dot-live{position:absolute;top:14px;right:14px;width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
 .sb-model .dot-standby{position:absolute;top:14px;right:14px;width:8px;height:8px;border-radius:50%;background:var(--g300)}
 .sb-model .sm-name{font-size:.9rem;font-weight:700;margin-bottom:2px}
 .sb-model .sm-role{font-size:.75rem;font-weight:500;margin-bottom:8px}
-.sb-model .sm-role.r-primary{color:var(--blue)}
-.sb-model .sm-role.r-fallback{color:var(--orange)}
-.sb-model .sm-role.r-specialist{color:var(--purple)}
+.sm-role.r-primary{color:var(--blue)}.sm-role.r-fallback{color:var(--orange)}.sm-role.r-specialist{color:var(--purple)}
 .sb-model .sm-bar{display:flex;justify-content:space-between;font-size:.7rem;color:var(--g500)}
 .sb-model .sm-bar b{color:var(--g900)}
-
-/* live metrics */
 .sb-metrics{border-top:1px solid var(--g100);padding:14px 18px}
 .sb-metrics h5{font-size:.75rem;font-weight:600;color:var(--g500);margin-bottom:10px;text-transform:uppercase;letter-spacing:.04em}
 .metric-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:.8rem}
-.metric-row .ml{color:var(--g500)}
-.metric-row .mv{font-weight:700}
-.mv-green{color:var(--green)}
-.mv-blue{color:var(--blue)}
-.mv-orange{color:var(--orange)}
-
-/* chat main */
+.metric-row .ml{color:var(--g500)}.metric-row .mv{font-weight:700}
+.mv-green{color:var(--green)}.mv-blue{color:var(--blue)}.mv-orange{color:var(--orange)}
 .chat-main{flex:1;display:flex;flex-direction:column;min-width:0}
-
-/* chat top bar */
 .chat-topbar{height:52px;background:#fff;border-bottom:1px solid var(--g200);display:flex;align-items:center;padding:0 20px;gap:12px;flex-shrink:0}
 .chat-topbar .ct-title{font-size:.9rem;font-weight:600}
 .chat-topbar .ct-badge{font-size:.7rem;background:var(--green-l);color:var(--green);padding:3px 10px;border-radius:4px;font-weight:600}
 .chat-topbar .ct-route{margin-left:auto;font-size:.75rem;color:var(--g400);display:flex;align-items:center;gap:6px}
 .ct-route .route-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
-
-/* messages */
 .chat-messages{flex:1;overflow-y:auto;padding:24px 20px;display:flex;flex-direction:column;gap:16px}
 .msg{display:flex;gap:12px;max-width:85%;animation:msgIn .3s ease}
 @keyframes msgIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
@@ -184,43 +191,27 @@ nav .container{display:flex;align-items:center;justify-content:space-between;hei
 .msg-avatar{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0}
 .msg-user .msg-avatar{background:var(--blue);color:#fff}
 .msg-ai .msg-avatar{background:var(--navy);color:#fff}
-.msg-bubble{padding:12px 16px;border-radius:12px;font-size:.9rem;line-height:1.65}
+.msg-bubble{padding:12px 16px;border-radius:12px;font-size:.9rem;line-height:1.65;white-space:pre-wrap}
 .msg-user .msg-bubble{background:var(--blue);color:#fff;border-bottom-right-radius:4px}
 .msg-ai .msg-bubble{background:#fff;border:1px solid var(--g200);border-bottom-left-radius:4px}
-
-/* model tag on AI msg */
 .msg-model-tag{display:inline-flex;align-items:center;gap:4px;font-size:.7rem;color:var(--g400);margin-top:6px}
 .msg-model-tag .mmt-dot{width:5px;height:5px;border-radius:50%;background:var(--blue)}
-
-/* typing indicator */
 .typing{display:flex;gap:4px;padding:12px 16px;background:#fff;border:1px solid var(--g200);border-radius:12px;border-bottom-left-radius:4px;width:fit-content}
 .typing span{width:6px;height:6px;border-radius:50%;background:var(--g300);animation:blink 1.4s infinite}
-.typing span:nth-child(2){animation-delay:.2s}
-.typing span:nth-child(3){animation-delay:.4s}
+.typing span:nth-child(2){animation-delay:.2s}.typing span:nth-child(3){animation-delay:.4s}
 @keyframes blink{0%,100%{opacity:.3}50%{opacity:1}}
-
-/* chat input */
 .chat-input-bar{background:#fff;border-top:1px solid var(--g200);padding:16px 20px;display:flex;gap:12px;align-items:flex-end;flex-shrink:0}
 .chat-input{flex:1;border:1.5px solid var(--g200);border-radius:10px;padding:12px 16px;font-size:.9rem;font-family:inherit;resize:none;outline:none;max-height:120px;transition:border-color .2s;line-height:1.5}
 .chat-input:focus{border-color:var(--blue)}
 .chat-send{width:42px;height:42px;border-radius:10px;background:var(--blue);color:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0}
 .chat-send:hover{background:var(--blue-l)}
-.chat-send:disabled{background:var(--g300);cursor:not-allowed}
 
-/* ── Responsive ── */
-@media(max-width:768px){
-  .nav-links{display:none}
-  .hero h1{font-size:2.2rem}
-  .hero-stats{flex-direction:column;gap:20px}
-  .feat-grid{grid-template-columns:1fr}
-  .sel-panel{grid-template-columns:1fr}
-  .chat-sidebar{display:none}
-  .model-cards{grid-template-columns:1fr}
-}
-
-/* ── Fade up ── */
+/* responsive */
+@media(max-width:1024px){.feat-grid,.supply-row{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:768px){.hero h1{font-size:2.2rem}.hero-stats{flex-direction:column;gap:20px}.feat-grid,.cap-grid,.supply-row{grid-template-columns:1fr}.sel-panel{grid-template-columns:1fr}.chat-sidebar{display:none}.aud-tabs{flex-wrap:wrap}}
 .fade-up{opacity:0;transform:translateY(24px);transition:opacity .5s,transform .5s}
 .fade-up.visible{opacity:1;transform:translateY(0)}
+#toast{position:fixed;bottom:40px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--navy);color:#fff;padding:14px 28px;border-radius:10px;font-size:.9rem;font-weight:500;z-index:200;box-shadow:0 8px 32px rgba(0,0,0,.2);transition:transform .4s ease,opacity .4s;opacity:0;pointer-events:none}
 </style>
 </head>
 <body>
@@ -228,140 +219,161 @@ nav .container{display:flex;align-items:center;justify-content:space-between;hei
 <!-- NAV -->
 <nav>
   <div class="container">
-    <a class="nav-logo" onclick="showPage('landing')" style="cursor:pointer">
-      <div class="dot">AT</div>AI Token
-    </a>
+    <div class="nav-logo" onclick="showPage('landing')"><div class="dot">TR</div>TaskRouter AI</div>
     <ul class="nav-links">
-      <li><a href="#" onclick="showPage('landing')" id="nav-landing" class="active">首页</a></li>
-      <li><a href="#" onclick="showPage('recommend')" id="nav-recommend">模型推荐</a></li>
-      <li><a href="#" onclick="showPage('chat')" id="nav-chat">AI 工作台</a></li>
+      <li><a onclick="showPage('landing')" id="nav-landing" class="active">首页</a></li>
+      <li><a onclick="showPage('recommend')" id="nav-recommend">任务配置</a></li>
+      <li><a onclick="showPage('chat')" id="nav-chat">工作台</a></li>
     </ul>
-    <button class="nav-cta" onclick="showPage('recommend')">开始使用</button>
+    <button class="nav-cta" onclick="showPage('recommend')">进入控制台</button>
   </div>
 </nav>
 
 <!-- ══════════ PAGE: LANDING ══════════ -->
 <div class="page active" id="page-landing">
-  <section class="hero">
-    <div class="particles"><i></i><i></i><i></i><i></i><i></i><i></i></div>
-    <div class="hero-grid"></div>
-    <div class="container">
-      <div class="hero-badge"><span class="pulse"></span>全国性基础设施 · 深圳总部枢纽</div>
-      <h1>连接全国 AI 供给<br>服务<span class="gr">全球智能需求</span></h1>
-      <p>以 AI Token 为核心交易载体，根据行业与任务智能推荐模型组合，一键切换最优 AI 能力。</p>
-      <div class="hero-actions">
-        <button class="btn btn-primary" onclick="showPage('recommend')">
-          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
-          选择模型组合
-        </button>
-        <button class="btn btn-outline-w" onclick="showPage('chat')">体验工作台</button>
-      </div>
-      <div class="hero-stats">
-        <div class="hero-stat"><div class="num">200<span>+</span></div><div class="label">接入模型</div></div>
-        <div class="hero-stat"><div class="num">50<span>+</span></div><div class="label">算力供应商</div></div>
-        <div class="hero-stat"><div class="num">99.<span>9%</span></div><div class="label">平台可用率</div></div>
-        <div class="hero-stat"><div class="num">&lt;100<span>ms</span></div><div class="label">路由延迟</div></div>
-      </div>
-    </div>
-  </section>
 
-  <section class="feat-section">
-    <div class="container">
-      <div class="stitle">为什么不是直接调 API</div>
-      <div class="ssub">单一模型无法覆盖所有场景，AI Token 平台根据你的行业和任务，自动编排最优模型组合</div>
-      <div class="feat-grid">
-        <div class="feat-card">
-          <div class="icon" style="background:rgba(37,99,235,.1);color:var(--blue)">
-            <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16m-7 6h7"/></svg>
-          </div>
-          <h3>行业模型推荐</h3>
-          <p>金融、医疗、法律、电商、跨境等行业，预置最优模型组合方案。</p>
-        </div>
-        <div class="feat-card">
-          <div class="icon" style="background:rgba(5,150,105,.1);color:var(--green)">
-            <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6m6 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0h6m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14"/></svg>
-          </div>
-          <h3>实时路由切换</h3>
-          <p>Agent 对话中实时显示模型选择，路由状态透明可见。</p>
-        </div>
-        <div class="feat-card">
-          <div class="icon" style="background:rgba(124,58,237,.1);color:var(--purple)">
-            <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-          </div>
-          <h3>多模型协同</h3>
-          <p>主力模型 + 备用模型 + 专项模型，三角协同降本增效。</p>
-        </div>
-      </div>
+<section class="hero">
+  <div class="particles"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+  <div class="hero-grid"></div>
+  <div class="container">
+    <div class="hero-badge"><span class="pulse"></span>AI 任务路由与成本管理平台</div>
+    <h1>让每个 AI 任务<br>自动找到<span class="gr">最合适的模型</span></h1>
+    <p class="hero-desc">你只需提交 AI 任务，TaskRouter 帮你自动选择最优模型组合，降低调用成本 30-50%，并生成可追踪的用量和质量报告。</p>
+    <div class="hero-actions">
+      <button class="btn btn-primary" onclick="showPage('recommend')">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+        配置任务路由
+      </button>
+      <button class="btn btn-outline-w" onclick="showPage('chat')">体验工作台</button>
     </div>
-  </section>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="num">200<span>+</span></div><div class="label">接入模型与能力</div></div>
+      <div class="hero-stat"><div class="num">30-50<span>%</span></div><div class="label">平均降本幅度</div></div>
+      <div class="hero-stat"><div class="num">99.<span>9%</span></div><div class="label">平台可用率</div></div>
+      <div class="hero-stat"><div class="num">&lt;100<span>ms</span></div><div class="label">路由延迟</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="section section-gray" id="features">
+  <div class="container">
+    <div class="stitle fade-up">六大核心模块</div>
+    <div class="ssub fade-up">不是简单的 API 转售，而是覆盖任务路由、成本治理、质量评估和结算的完整基础设施</div>
+    <div class="feat-grid">
+      <div class="feat-card fade-up"><div class="icon" style="background:rgba(37,99,235,.1);color:var(--blue)"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div><h3>多模型网关</h3><p>统一 API 接入 200+ 模型，OpenAI 兼容格式，SDK 开箱即用，代码零改动。</p></div>
+      <div class="feat-card fade-up"><div class="icon" style="background:rgba(5,150,105,.1);color:var(--green)"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6m6 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0h6m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14"/></svg></div><h3>任务路由引擎</h3><p>根据任务类型、质量要求、成本预算和延迟目标，自动选择最优模型组合。</p></div>
+      <div class="feat-card fade-up"><div class="icon" style="background:rgba(217,119,6,.1);color:var(--orange)"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div><h3>AI 成本账本</h3><p>实时成本追踪、部门分账、预算管控、用量报表，每一笔调用清清楚楚。</p></div>
+      <div class="feat-card fade-up"><div class="icon" style="background:rgba(124,58,237,.1);color:var(--purple)"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg></div><h3>AI 质检器</h3><p>模型效果评测、幻觉率检测、行业适配评分，供应商优胜劣汰。</p></div>
+      <div class="feat-card fade-up"><div class="icon" style="background:rgba(219,39,119,.1);color:var(--pink)"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg></div><h3>Fallback 管理</h3><p>主备链路自动切换、故障秒级降级、多供应商冗余，99.9% 可用率。</p></div>
+      <div class="feat-card fade-up"><div class="icon" style="background:rgba(15,23,42,.08);color:var(--navy)"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg></div><h3>用量与结算中心</h3><p>统一计费、发票管理、供应商分成、白标分销后台。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- SUPPLY TYPES -->
+<section class="section">
+  <div class="container">
+    <div class="stitle fade-up">四类能力供应品</div>
+    <div class="ssub fade-up">不是卖开源代码，而是经过封装、计量、评测和安全控制的标准化 AI 能力服务</div>
+    <div class="supply-row fade-up">
+      <div class="supply-card"><span class="s-emoji">&#x1F9E0;</span><h4>模型推理</h4><p>大模型 API 统一调用，按 token 计量</p><div class="s-ex">Qwen / DeepSeek / Llama / GLM / Yi ...</div></div>
+      <div class="supply-card"><span class="s-emoji">&#x1F527;</span><h4>功能工具</h4><p>一次搜索、翻译、OCR、PDF 解析</p><div class="s-ex">网页抓取 / 表格处理 / 代码执行 ...</div></div>
+      <div class="supply-card"><span class="s-emoji">&#x1F916;</span><h4>任务 Agent</h4><p>一次合同审查、客服会话、线索处理</p><div class="s-ex">客服 / 法务 / 销售 / 研究 Agent ...</div></div>
+      <div class="supply-card"><span class="s-emoji">&#x1F504;</span><h4>业务工作流</h4><p>一次完整流程、一个场景解决方案</p><div class="s-ex">知识库问答 / 内容生产 / 标书解析 ...</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CAPABILITY MARKET -->
+<section class="section section-gray" id="capabilities">
+  <div class="container">
+    <div class="stitle fade-up">能力市场 - 首批上架</div>
+    <div class="ssub fade-up">每个能力包都经过许可证审查、服务封装、质量评测和安全控制</div>
+    <div class="cap-grid">
+      <div class="cap-card fade-up"><div class="cap-icon" style="background:rgba(37,99,235,.1)">&#x1F4DA;</div><div><h4>企业知识库问答</h4><div class="cap-desc">上传文档构建专属知识库，AI 精准回答并引用来源</div><span class="cap-tag cap-tag-blue">RAG</span><span class="cap-tag cap-tag-green">按次计费</span></div></div>
+      <div class="cap-card fade-up"><div class="cap-icon" style="background:rgba(124,58,237,.1)">&#x1F4C4;</div><div><h4>合同 / PDF 解析</h4><div class="cap-desc">自动提取关键条款、风险点，生成结构化摘要</div><span class="cap-tag cap-tag-purple">Agent</span><span class="cap-tag cap-tag-green">按份计费</span></div></div>
+      <div class="cap-card fade-up"><div class="cap-icon" style="background:rgba(217,119,6,.1)">&#x1F4CB;</div><div><h4>标书智能分析</h4><div class="cap-desc">提取评分标准、资质要求、时间节点</div><span class="cap-tag cap-tag-purple">Workflow</span><span class="cap-tag cap-tag-green">按份计费</span></div></div>
+      <div class="cap-card fade-up"><div class="cap-icon" style="background:rgba(5,150,105,.1)">&#x1F4AC;</div><div><h4>智能客服知识库</h4><div class="cap-desc">自动解答常见问题，复杂问题转人工</div><span class="cap-tag cap-tag-blue">Agent</span><span class="cap-tag cap-tag-green">按会话计费</span></div></div>
+      <div class="cap-card fade-up"><div class="cap-icon" style="background:rgba(219,39,119,.1)">&#x1F4DD;</div><div><h4>营销内容生成</h4><div class="cap-desc">小红书/抖音/商品文案，多风格一键生成</div><span class="cap-tag cap-tag-blue">Workflow</span><span class="cap-tag cap-tag-green">按篇计费</span></div></div>
+      <div class="cap-card fade-up"><div class="cap-icon" style="background:rgba(124,58,237,.1)">&#x1F50D;</div><div><h4>销售线索清洗</h4><div class="cap-desc">自动搜索、补全、评分线索，提升转化率</div><span class="cap-tag cap-tag-purple">Agent</span><span class="cap-tag cap-tag-green">按百条计费</span></div></div>
+      <div class="cap-card fade-up"><div class="cap-icon" style="background:rgba(217,119,6,.1)">&#x1F3A4;</div><div><h4>会议纪要生成</h4><div class="cap-desc">语音转文字 + 提取决策、行动项、责任人</div><span class="cap-tag cap-tag-blue">Workflow</span><span class="cap-tag cap-tag-green">按次计费</span></div></div>
+      <div class="cap-card fade-up"><div class="cap-icon" style="background:rgba(5,150,105,.1)">&#x1F9FE;</div><div><h4>发票报销初审</h4><div class="cap-desc">OCR + 规则校验 + AI 审核合规性</div><span class="cap-tag cap-tag-purple">Workflow</span><span class="cap-tag cap-tag-green">按张计费</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- AUDIENCE -->
+<section class="section" id="audience">
+  <div class="container">
+    <div class="stitle fade-up">为谁而建</div>
+    <div class="aud-tabs fade-up">
+      <div class="aud-tab active" onclick="switchAud(0,this)">企业客户</div>
+      <div class="aud-tab" onclick="switchAud(1,this)">AI 服务商</div>
+      <div class="aud-tab" onclick="switchAud(2,this)">投资人</div>
+      <div class="aud-tab" onclick="switchAud(3,this)">政府 / 产业方</div>
+    </div>
+    <div class="aud-panel active" id="aud-0"><div class="aud-title">企业客户</div><div class="aud-sub">AI 应用公司、跨境电商、中小企业</div><div class="aud-quote">你只需要提交 AI 任务，我们帮你自动选择最合适的模型，降低成本 30-50%，并生成可追踪的用量和质量报告。</div></div>
+    <div class="aud-panel" id="aud-1"><div class="aud-title">AI 服务商 / Agency</div><div class="aud-sub">AI SaaS、代理商、系统集成商</div><div class="aud-quote">你继续服务客户，我们在后台帮你完成 AI 任务拆解、模型调用、成本控制和交付质检。白标分销后台，你的品牌你做主。</div></div>
+    <div class="aud-panel" id="aud-2"><div class="aud-title">投资人</div><div class="aud-sub">关注 AI Infra 赛道的投资机构</div><div class="aud-quote">我们不是做简单 API 转售，而是做 AI 服务时代的任务路由、成本治理和清结算基础设施。每一笔 AI 调用都经过我们的路由和结算。</div></div>
+    <div class="aud-panel" id="aud-3"><div class="aud-title">政府 / 产业方</div><div class="aud-sub">科技主管部门、产业园区、产业基金</div><div class="aud-quote">AI 能力调度与产业服务平台 —— 连接全国算力、模型和数据供给，帮助区域企业低成本用上 AI，推动产业智能化升级。</div></div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="container"><div class="cta-content fade-up">
+    <h2>开始使用 TaskRouter AI</h2>
+    <p>加入试点计划，成为首批客户或能力供应商</p>
+    <div class="cta-actions">
+      <button class="btn btn-gold" onclick="showToast('试点申请即将开放')">申请企业试用</button>
+      <button class="btn btn-outline-w" onclick="showToast('供应商入驻即将开放')">成为能力供应商</button>
+    </div>
+  </div></div>
+</section>
+
+<footer><div class="container"><div class="footer-inner">
+  <div class="nav-logo"><div class="dot">TR</div>TaskRouter AI</div>
+  <div class="footer-right">&copy; 2026 TaskRouter AI &middot; 让每个 AI 任务，自动找到最合适的模型</div>
+</div></div></footer>
 </div>
 
 <!-- ══════════ PAGE: RECOMMEND ══════════ -->
 <div class="page" id="page-recommend">
   <div class="rec-container">
-    <div class="rec-header">
-      <h2>选择你的行业与任务</h2>
-      <p>平台将基于场景特征推荐最优模型组合方案</p>
-    </div>
-
+    <div class="rec-header"><h2>配置你的任务路由</h2><p>选择行业和任务类型，平台推荐最优模型组合方案</p></div>
     <div class="sel-panel">
-      <div class="sel-box">
-        <h4>行业领域</h4>
-        <div class="sel-chips" id="industry-chips">
-          <div class="sel-chip" data-val="finance" onclick="selectChip(this,'industry')">金融</div>
-          <div class="sel-chip" data-val="medical" onclick="selectChip(this,'industry')">医疗</div>
-          <div class="sel-chip" data-val="legal" onclick="selectChip(this,'industry')">法律</div>
-          <div class="sel-chip" data-val="ecommerce" onclick="selectChip(this,'industry')">电商</div>
-          <div class="sel-chip" data-val="crossborder" onclick="selectChip(this,'industry')">跨境出海</div>
-          <div class="sel-chip" data-val="education" onclick="selectChip(this,'industry')">教育</div>
-          <div class="sel-chip" data-val="manufacture" onclick="selectChip(this,'industry')">制造</div>
-          <div class="sel-chip" data-val="government" onclick="selectChip(this,'industry')">政务</div>
-        </div>
-      </div>
-      <div class="sel-box">
-        <h4>任务类型</h4>
-        <div class="sel-chips" id="task-chips">
-          <div class="sel-chip" data-val="chat" onclick="selectChip(this,'task')">智能客服</div>
-          <div class="sel-chip" data-val="writing" onclick="selectChip(this,'task')">内容生成</div>
-          <div class="sel-chip" data-val="code" onclick="selectChip(this,'task')">代码开发</div>
-          <div class="sel-chip" data-val="analysis" onclick="selectChip(this,'task')">数据分析</div>
-          <div class="sel-chip" data-val="translation" onclick="selectChip(this,'task')">翻译</div>
-          <div class="sel-chip" data-val="summary" onclick="selectChip(this,'task')">文档摘要</div>
-          <div class="sel-chip" data-val="rag" onclick="selectChip(this,'task')">知识问答 (RAG)</div>
-          <div class="sel-chip" data-val="agent" onclick="selectChip(this,'task')">Agent 工作流</div>
-        </div>
-      </div>
+      <div class="sel-box"><h4>行业领域</h4><div class="sel-chips" id="ind-chips">
+        <div class="sel-chip" data-v="finance" onclick="pickChip(this,'ind')">金融</div>
+        <div class="sel-chip" data-v="medical" onclick="pickChip(this,'ind')">医疗</div>
+        <div class="sel-chip" data-v="legal" onclick="pickChip(this,'ind')">法律</div>
+        <div class="sel-chip" data-v="ecommerce" onclick="pickChip(this,'ind')">电商</div>
+        <div class="sel-chip" data-v="crossborder" onclick="pickChip(this,'ind')">跨境出海</div>
+        <div class="sel-chip" data-v="education" onclick="pickChip(this,'ind')">教育</div>
+        <div class="sel-chip" data-v="manufacture" onclick="pickChip(this,'ind')">制造</div>
+        <div class="sel-chip" data-v="government" onclick="pickChip(this,'ind')">政务</div>
+      </div></div>
+      <div class="sel-box"><h4>任务类型</h4><div class="sel-chips" id="task-chips">
+        <div class="sel-chip" data-v="chat" onclick="pickChip(this,'task')">智能客服</div>
+        <div class="sel-chip" data-v="writing" onclick="pickChip(this,'task')">内容生成</div>
+        <div class="sel-chip" data-v="code" onclick="pickChip(this,'task')">代码开发</div>
+        <div class="sel-chip" data-v="analysis" onclick="pickChip(this,'task')">数据分析</div>
+        <div class="sel-chip" data-v="translation" onclick="pickChip(this,'task')">翻译</div>
+        <div class="sel-chip" data-v="summary" onclick="pickChip(this,'task')">文档摘要</div>
+        <div class="sel-chip" data-v="rag" onclick="pickChip(this,'task')">知识问答</div>
+        <div class="sel-chip" data-v="agent" onclick="pickChip(this,'task')">Agent 工作流</div>
+      </div></div>
     </div>
-
     <div class="rec-result" id="rec-result">
       <div class="rec-empty" id="rec-empty">
-        <svg width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" style="color:var(--g300);margin-bottom:12px"><path d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z"/></svg>
+        <svg width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" style="color:var(--g300);margin-bottom:12px"><path d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z"/></svg>
         <div>请选择行业和任务类型，获取推荐模型组合</div>
       </div>
       <div class="rec-filled" id="rec-filled">
-        <div class="combo-header">
-          <div class="left">
-            <h3 id="combo-title">推荐模型组合</h3>
-            <p id="combo-subtitle">为你定制的最优方案</p>
-          </div>
-          <div class="combo-score">
-            <div class="sc"><div class="v" id="sc-quality">--</div><div class="l">质量评分</div></div>
-            <div class="sc"><div class="v" id="sc-speed">--</div><div class="l">响应速度</div></div>
-            <div class="sc"><div class="v" id="sc-cost">--</div><div class="l">成本指数</div></div>
-          </div>
-        </div>
+        <div class="combo-header"><div class="left"><h3 id="combo-title"></h3><p id="combo-sub"></p></div><div class="combo-score"><div class="sc"><div class="v" id="sc-q">--</div><div class="l">质量</div></div><div class="sc"><div class="v" id="sc-s">--</div><div class="l">速度</div></div><div class="sc"><div class="v" id="sc-c">--</div><div class="l">成本</div></div></div></div>
         <div class="model-cards" id="model-cards"></div>
-        <div class="combo-reason">
-          <h4>推荐理由</h4>
-          <p id="combo-reason-text"></p>
-        </div>
-        <div class="combo-action">
-          <div class="price">预估成本: <b id="combo-price">--</b> / 万次调用</div>
-          <button class="btn btn-primary" onclick="startChat()">
-            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
-            进入工作台
-          </button>
-        </div>
+        <div class="combo-reason"><h4>推荐理由</h4><p id="combo-why"></p></div>
+        <div class="combo-action"><div class="price">预估成本: <b id="combo-price">--</b> / 万次调用</div><button class="btn btn-primary" onclick="enterChat()"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>进入工作台</button></div>
       </div>
     </div>
   </div>
@@ -370,514 +382,173 @@ nav .container{display:flex;align-items:center;justify-content:space-between;hei
 <!-- ══════════ PAGE: CHAT ══════════ -->
 <div class="page" id="page-chat">
   <div class="chat-layout">
-    <!-- Sidebar: active models -->
     <div class="chat-sidebar">
-      <div class="sb-header">
-        <span>模型组合</span>
-        <span class="back-btn" onclick="showPage('recommend')">← 切换方案</span>
-      </div>
+      <div class="sb-header"><span>当前路由方案</span><span class="back-btn" onclick="showPage('recommend')">&#8592; 切换方案</span></div>
       <div class="sb-models" id="sb-models"></div>
       <div class="sb-metrics">
         <h5>实时指标</h5>
-        <div class="metric-row"><span class="ml">本次对话 Token</span><span class="mv mv-blue" id="m-tokens">0</span></div>
-        <div class="metric-row"><span class="ml">平均延迟</span><span class="mv mv-green" id="m-latency">--</span></div>
-        <div class="metric-row"><span class="ml">路由切换</span><span class="mv mv-orange" id="m-switches">0 次</span></div>
+        <div class="metric-row"><span class="ml">本次对话 Token</span><span class="mv mv-blue" id="m-tok">0</span></div>
+        <div class="metric-row"><span class="ml">平均延迟</span><span class="mv mv-green" id="m-lat">--</span></div>
+        <div class="metric-row"><span class="ml">路由切换</span><span class="mv mv-orange" id="m-sw">0 次</span></div>
         <div class="metric-row"><span class="ml">累计成本</span><span class="mv" id="m-cost">¥0.00</span></div>
       </div>
     </div>
-
-    <!-- Chat main -->
     <div class="chat-main">
       <div class="chat-topbar">
-        <span class="ct-title" id="ct-title">AI 工作台</span>
+        <span class="ct-title" id="ct-title">TaskRouter 工作台</span>
         <span class="ct-badge">在线</span>
-        <div class="ct-route">
-          <span class="route-dot"></span>
-          <span id="ct-route-label">智能路由中</span>
-        </div>
+        <div class="ct-route"><span class="route-dot"></span><span id="ct-route">智能路由中</span></div>
       </div>
-      <div class="chat-messages" id="chat-messages">
-        <!-- welcome -->
-        <div class="msg msg-ai">
-          <div class="msg-avatar">AT</div>
-          <div>
-            <div class="msg-bubble">你好！我是 AI Token 工作台。已为你配置好模型组合，你可以直接提问。左侧面板实时显示当前使用的模型和路由状态。</div>
-            <div class="msg-model-tag"><span class="mmt-dot"></span>系统消息</div>
-          </div>
-        </div>
+      <div class="chat-messages" id="chat-msgs">
+        <div class="msg msg-ai"><div class="msg-avatar">TR</div><div><div class="msg-bubble">你好！TaskRouter 工作台已就绪。左侧面板显示当前路由方案和实时指标，你可以直接提问。</div><div class="msg-model-tag"><span class="mmt-dot"></span>系统消息</div></div></div>
       </div>
       <div class="chat-input-bar">
-        <textarea class="chat-input" id="chat-input" rows="1" placeholder="输入消息... (Enter 发送)" onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
-        <button class="chat-send" id="chat-send" onclick="sendMessage()">
-          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"/></svg>
-        </button>
+        <textarea class="chat-input" id="chat-input" rows="1" placeholder="输入消息... (Enter 发送)" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();send()}" oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,120)+'px'"></textarea>
+        <button class="chat-send" onclick="send()"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"/></svg></button>
       </div>
     </div>
   </div>
 </div>
 
+<div id="toast"></div>
+
 <script>
-// ══════════════════════════════════════════════════════
-// DATA: Model combos by industry × task
-// ══════════════════════════════════════════════════════
-const MODELS_DB = {
-  'claude-3.5-sonnet': { name:'Claude 3.5 Sonnet', provider:'Anthropic', speed:'62 tok/s', latency:'320ms', price:'¥0.04/1K tok', quality:95 },
-  'gpt-4o': { name:'GPT-4o', provider:'OpenAI', speed:'78 tok/s', latency:'280ms', price:'¥0.03/1K tok', quality:93 },
-  'gpt-4o-mini': { name:'GPT-4o Mini', provider:'OpenAI', speed:'120 tok/s', latency:'150ms', price:'¥0.002/1K tok', quality:82 },
-  'deepseek-v3': { name:'DeepSeek-V3', provider:'DeepSeek', speed:'95 tok/s', latency:'200ms', price:'¥0.008/1K tok', quality:90 },
-  'deepseek-coder': { name:'DeepSeek Coder V2', provider:'DeepSeek', speed:'88 tok/s', latency:'220ms', price:'¥0.01/1K tok', quality:91 },
-  'qwen-max': { name:'Qwen-Max', provider:'阿里云', speed:'85 tok/s', latency:'240ms', price:'¥0.012/1K tok', quality:89 },
-  'qwen-turbo': { name:'Qwen-Turbo', provider:'阿里云', speed:'130 tok/s', latency:'120ms', price:'¥0.002/1K tok', quality:80 },
-  'ernie-4': { name:'文心一言 4.0', provider:'百度', speed:'70 tok/s', latency:'350ms', price:'¥0.02/1K tok', quality:87 },
-  'glm-4': { name:'GLM-4', provider:'智谱 AI', speed:'75 tok/s', latency:'300ms', price:'¥0.015/1K tok', quality:86 },
-  'moonshot-v1': { name:'Moonshot-v1-128k', provider:'月之暗面', speed:'68 tok/s', latency:'380ms', price:'¥0.018/1K tok', quality:85 },
-  'yi-large': { name:'Yi-Large', provider:'零一万物', speed:'90 tok/s', latency:'210ms', price:'¥0.01/1K tok', quality:84 },
-  'minimax-abab6': { name:'MiniMax-abab6.5', provider:'MiniMax', speed:'100 tok/s', latency:'180ms', price:'¥0.008/1K tok', quality:83 },
+// ═══ DATA ═══
+const MDB={
+  'claude-3.5-sonnet':{name:'Claude 3.5 Sonnet',prov:'Anthropic',spd:'62 tok/s',lat:'320ms',price:'¥0.04/1K',q:95},
+  'gpt-4o':{name:'GPT-4o',prov:'OpenAI',spd:'78 tok/s',lat:'280ms',price:'¥0.03/1K',q:93},
+  'gpt-4o-mini':{name:'GPT-4o Mini',prov:'OpenAI',spd:'120 tok/s',lat:'150ms',price:'¥0.002/1K',q:82},
+  'deepseek-v3':{name:'DeepSeek-V3',prov:'DeepSeek',spd:'95 tok/s',lat:'200ms',price:'¥0.008/1K',q:90},
+  'deepseek-coder':{name:'DeepSeek Coder V2',prov:'DeepSeek',spd:'88 tok/s',lat:'220ms',price:'¥0.01/1K',q:91},
+  'qwen-max':{name:'Qwen-Max',prov:'Alibaba',spd:'85 tok/s',lat:'240ms',price:'¥0.012/1K',q:89},
+  'qwen-turbo':{name:'Qwen-Turbo',prov:'Alibaba',spd:'130 tok/s',lat:'120ms',price:'¥0.002/1K',q:80},
+  'ernie-4':{name:'ERNIE 4.0',prov:'Baidu',spd:'70 tok/s',lat:'350ms',price:'¥0.02/1K',q:87},
+  'glm-4':{name:'GLM-4',prov:'Zhipu',spd:'75 tok/s',lat:'300ms',price:'¥0.015/1K',q:86},
+  'moonshot-v1':{name:'Moonshot-128K',prov:'Moonshot',spd:'68 tok/s',lat:'380ms',price:'¥0.018/1K',q:85},
+};
+const C={
+  finance_chat:{t:'金融智能客服',s:'合规敏感 · 低幻觉',sc:[96,88,72],p:'¥3.2',m:[{id:'claude-3.5-sonnet',role:'主力模型',rc:'role-primary',w:'幻觉率最低'},{id:'gpt-4o',role:'备用模型',rc:'role-fallback',w:'主力不可用时切换'},{id:'qwen-turbo',role:'快速响应',rc:'role-specialist',w:'简单查询降本 80%'}],why:'金融客服对准确性要求极高。Claude 3.5 幻觉率 < 2%，处理复杂金融问题；简单查询走 Qwen-Turbo 快速响应。'},
+  finance_analysis:{t:'金融数据分析',s:'数值精准 · 深度推理',sc:[94,82,68],p:'¥4.5',m:[{id:'gpt-4o',role:'主力模型',rc:'role-primary',w:'数值推理最强'},{id:'claude-3.5-sonnet',role:'备用模型',rc:'role-fallback',w:'长文档分析'},{id:'deepseek-v3',role:'代码生成',rc:'role-specialist',w:'Python 分析脚本'}],why:'金融数据分析需要精确的数值推理。GPT-4o 数学评测最优；代码生成自动路由到 DeepSeek-V3。'},
+  medical_chat:{t:'医疗智能问诊',s:'医学知识 · 安全可控',sc:[97,80,75],p:'¥4.0',m:[{id:'gpt-4o',role:'主力模型',rc:'role-primary',w:'医学推理评测领先'},{id:'claude-3.5-sonnet',role:'备用模型',rc:'role-fallback',w:'医学对话能力强'},{id:'ernie-4',role:'中医知识',rc:'role-specialist',w:'中文医学语料丰富'}],why:'医疗场景安全性最高。GPT-4o USMLE 评测领先；中医问题路由到 ERNIE 4.0。'},
+  legal_chat:{t:'法律智能咨询',s:'法条引用 · 逻辑严谨',sc:[94,84,73],p:'¥3.6',m:[{id:'claude-3.5-sonnet',role:'主力模型',rc:'role-primary',w:'逻辑推理强'},{id:'glm-4',role:'备用模型',rc:'role-fallback',w:'中文法律术语好'},{id:'qwen-turbo',role:'快速检索',rc:'role-specialist',w:'简单法条查询'}],why:'法律咨询需要严谨推理和法条引用。Claude 3.5 逻辑一致性最优；中国法律走 GLM-4。'},
+  ecommerce_chat:{t:'电商智能客服',s:'高并发 · 快速响应 · 成本优先',sc:[85,96,92],p:'¥0.8',m:[{id:'qwen-turbo',role:'主力模型',rc:'role-primary',w:'性价比最高'},{id:'gpt-4o-mini',role:'备用模型',rc:'role-fallback',w:'高峰分流'},{id:'claude-3.5-sonnet',role:'复杂问题',rc:'role-specialist',w:'投诉退换升级处理'}],why:'电商客服 80% 是简单咨询，走 Qwen-Turbo 成本极低；复杂投诉自动升级到 Claude 3.5。'},
+  ecommerce_writing:{t:'电商内容生成',s:'商品描述 · 营销文案',sc:[88,92,85],p:'¥1.2',m:[{id:'deepseek-v3',role:'主力模型',rc:'role-primary',w:'中文创意性价比高'},{id:'gpt-4o-mini',role:'批量生成',rc:'role-specialist',w:'SKU 批量极低成本'},{id:'claude-3.5-sonnet',role:'高端文案',rc:'role-fallback',w:'品牌大促文案'}],why:'日常商品描述走 DeepSeek-V3；批量 SKU 走 GPT-4o Mini；品牌文案走 Claude 3.5。'},
+  crossborder_translation:{t:'跨境多语言翻译',s:'多语种 · 电商术语 · 本地化',sc:[92,90,78],p:'¥2.0',m:[{id:'gpt-4o',role:'主力模型',rc:'role-primary',w:'多语种翻译最佳'},{id:'deepseek-v3',role:'中英互译',rc:'role-specialist',w:'中英性价比高'},{id:'qwen-turbo',role:'批量翻译',rc:'role-fallback',w:'短文本批量'}],why:'跨境涉及英/日/韩/西/阿多语种。GPT-4o 质量最佳；高频中英走 DeepSeek 降本。'},
+  crossborder_chat:{t:'跨境客服',s:'多语言 · 时区覆盖',sc:[90,92,82],p:'¥1.5',m:[{id:'gpt-4o-mini',role:'主力模型',rc:'role-primary',w:'多语种快速低成本'},{id:'gpt-4o',role:'复杂问题',rc:'role-specialist',w:'纠纷索赔升级'},{id:'qwen-turbo',role:'中文客服',rc:'role-fallback',w:'国内买家中文'}],why:'跨境客服 7x24 多语言。GPT-4o Mini 多语种便宜；复杂纠纷升级到 GPT-4o。'},
+  education_chat:{t:'教育智能辅导',s:'知识讲解 · 因材施教',sc:[91,88,80],p:'¥2.2',m:[{id:'gpt-4o',role:'主力模型',rc:'role-primary',w:'教学解释清晰'},{id:'deepseek-v3',role:'理科解题',rc:'role-specialist',w:'数学物理推理优'},{id:'qwen-turbo',role:'基础问答',rc:'role-fallback',w:'简单知识点'}],why:'教育需清晰讲解和准确推理。GPT-4o 教学评测最佳；理科走 DeepSeek-V3。'},
 };
 
-const COMBOS = {
-  'finance_chat': {
-    title:'金融智能客服方案', sub:'合规敏感 · 高准确率 · 低幻觉',
-    scores:[96,88,72], price:'¥3.2',
-    models:[
-      {id:'claude-3.5-sonnet', role:'主力模型', roleClass:'role-primary', why:'金融领域理解能力强，幻觉率最低'},
-      {id:'gpt-4o', role:'备用模型', roleClass:'role-fallback', why:'主力不可用时自动切换'},
-      {id:'qwen-turbo', role:'快速响应', roleClass:'role-specialist', why:'简单查询用轻量模型，降低成本'},
-    ],
-    reason:'金融客服对准确性和合规性要求极高。Claude 3.5 Sonnet 在事实一致性评测中表现最优（幻觉率 < 2%），适合处理复杂金融问题；简单余额查询等走 Qwen-Turbo 快速响应，成本降低 80%。'
-  },
-  'finance_analysis': {
-    title:'金融数据分析方案', sub:'深度推理 · 数值精准 · 图表解读',
-    scores:[94,82,68], price:'¥4.5',
-    models:[
-      {id:'gpt-4o', role:'主力模型', roleClass:'role-primary', why:'数值推理和表格分析能力最强'},
-      {id:'claude-3.5-sonnet', role:'备用模型', roleClass:'role-fallback', why:'长文档分析时自动切换'},
-      {id:'deepseek-v3', role:'代码生成', roleClass:'role-specialist', why:'生成 Python 分析脚本'},
-    ],
-    reason:'金融数据分析需要精确的数值推理能力。GPT-4o 在数学/表格推理评测中得分最高；涉及代码生成（Python 数据分析脚本）时自动路由到 DeepSeek-V3。'
-  },
-  'finance_writing': {
-    title:'金融报告生成方案', sub:'专业措辞 · 格式规范 · 合规审核',
-    scores:[93,85,70], price:'¥3.8',
-    models:[
-      {id:'claude-3.5-sonnet', role:'主力模型', roleClass:'role-primary', why:'长文写作能力强，格式控制好'},
-      {id:'gpt-4o', role:'备用模型', roleClass:'role-fallback', why:'高峰期分流'},
-      {id:'glm-4', role:'中文润色', roleClass:'role-specialist', why:'中文金融术语更地道'},
-    ],
-    reason:'金融报告对格式和术语有严格要求。Claude 3.5 在结构化长文生成中表现最佳；最终中文润色可路由到 GLM-4，确保本土化术语精准。'
-  },
-  'finance_summary': {
-    title:'金融文档摘要方案', sub:'长文档 · 关键信息提取 · 精准概括',
-    scores:[92,90,65], price:'¥2.8',
-    models:[
-      {id:'moonshot-v1', role:'主力模型', roleClass:'role-primary', why:'128K 超长上下文，适合长文档'},
-      {id:'claude-3.5-sonnet', role:'备用模型', roleClass:'role-fallback', why:'精度要求高时切换'},
-      {id:'qwen-turbo', role:'快速摘要', roleClass:'role-specialist', why:'短文档用轻量模型'},
-    ],
-    reason:'金融报告通常篇幅很长。Moonshot 128K 可一次性处理完整年报；短文档自动走 Qwen-Turbo 节省成本。'
-  },
-  'medical_chat': {
-    title:'医疗智能问诊方案', sub:'医学知识 · 安全可控 · 辅助决策',
-    scores:[97,80,75], price:'¥4.0',
-    models:[
-      {id:'gpt-4o', role:'主力模型', roleClass:'role-primary', why:'医学推理评测最优，安全性高'},
-      {id:'claude-3.5-sonnet', role:'备用模型', roleClass:'role-fallback', why:'医学对话能力强'},
-      {id:'ernie-4', role:'中医知识', roleClass:'role-specialist', why:'中文医学语料丰富'},
-    ],
-    reason:'医疗场景对安全性要求最高。GPT-4o 在 USMLE 等医学评测中持续领先，配合严格的内容安全过滤；中医相关问题路由到文心一言，利用其丰富的中文医学知识。'
-  },
-  'medical_rag': {
-    title:'医学知识库问答方案', sub:'精准检索 · 循证依据 · 引用溯源',
-    scores:[95,83,70], price:'¥3.5',
-    models:[
-      {id:'claude-3.5-sonnet', role:'主力模型', roleClass:'role-primary', why:'RAG 场景引用准确率最高'},
-      {id:'gpt-4o', role:'备用模型', roleClass:'role-fallback', why:'复杂推理时切换'},
-      {id:'qwen-max', role:'中文检索增强', roleClass:'role-specialist', why:'中文医学文献理解力强'},
-    ],
-    reason:'医学 RAG 需要精确引用文献依据。Claude 3.5 在 RAG 引用准确性评测中得分最高（忠实度 > 97%），减少幻觉风险。'
-  },
-  'legal_chat': {
-    title:'法律咨询方案', sub:'法条引用 · 案例分析 · 逻辑严谨',
-    scores:[94,84,73], price:'¥3.6',
-    models:[
-      {id:'claude-3.5-sonnet', role:'主力模型', roleClass:'role-primary', why:'逻辑推理强，引用准确'},
-      {id:'glm-4', role:'备用模型', roleClass:'role-fallback', why:'中文法律术语好'},
-      {id:'qwen-turbo', role:'快速检索', roleClass:'role-specialist', why:'简单法条查询'},
-    ],
-    reason:'法律咨询需要严谨的逻辑推理和精确的法条引用。Claude 3.5 在逻辑一致性评测中表现最优；中国法律相关问题可利用 GLM-4 的中文法律语料优势。'
-  },
-  'ecommerce_chat': {
-    title:'电商客服方案', sub:'高并发 · 快速响应 · 成本优先',
-    scores:[85,96,92], price:'¥0.8',
-    models:[
-      {id:'qwen-turbo', role:'主力模型', roleClass:'role-primary', why:'性价比最高，速度快'},
-      {id:'gpt-4o-mini', role:'备用模型', roleClass:'role-fallback', why:'高峰期分流'},
-      {id:'claude-3.5-sonnet', role:'复杂问题', roleClass:'role-specialist', why:'投诉/退换等复杂场景'},
-    ],
-    reason:'电商客服日均调用量大，80% 是简单咨询（物流、尺码、价格），用 Qwen-Turbo 即可，成本极低；复杂投诉/退换自动升级到 Claude 3.5 处理。'
-  },
-  'ecommerce_writing': {
-    title:'电商内容生成方案', sub:'商品描述 · 营销文案 · 多风格',
-    scores:[88,92,85], price:'¥1.2',
-    models:[
-      {id:'deepseek-v3', role:'主力模型', roleClass:'role-primary', why:'中文创意写作性价比高'},
-      {id:'gpt-4o-mini', role:'批量生成', roleClass:'role-specialist', why:'批量SKU描述，极低成本'},
-      {id:'claude-3.5-sonnet', role:'高端文案', roleClass:'role-fallback', why:'品牌故事等高质量需求'},
-    ],
-    reason:'电商内容生成量大且多样。日常商品描述用 DeepSeek-V3 性价比最优；批量 SKU 走 GPT-4o Mini；品牌大促等高端文案自动路由到 Claude 3.5。'
-  },
-  'crossborder_translation': {
-    title:'跨境多语言翻译方案', sub:'多语种 · 电商术语 · 本地化',
-    scores:[92,90,78], price:'¥2.0',
-    models:[
-      {id:'gpt-4o', role:'主力模型', roleClass:'role-primary', why:'多语种翻译质量最佳'},
-      {id:'deepseek-v3', role:'中英翻译', roleClass:'role-specialist', why:'中英互译性价比高'},
-      {id:'qwen-turbo', role:'批量翻译', roleClass:'role-fallback', why:'标题/关键词批量翻译'},
-    ],
-    reason:'跨境电商涉及英/日/韩/西/阿等多语种。GPT-4o 在多语种翻译中质量最佳；高频的中英互译走 DeepSeek 降本；标题关键词等短文本批量走 Qwen-Turbo。'
-  },
-  'crossborder_chat': {
-    title:'跨境客服方案', sub:'多语言 · 时区覆盖 · 文化适配',
-    scores:[90,92,82], price:'¥1.5',
-    models:[
-      {id:'gpt-4o-mini', role:'主力模型', roleClass:'role-primary', why:'多语种响应快，成本低'},
-      {id:'gpt-4o', role:'复杂问题', roleClass:'role-specialist', why:'投诉/纠纷等复杂场景'},
-      {id:'qwen-turbo', role:'中文客服', roleClass:'role-fallback', why:'国内买家中文服务'},
-    ],
-    reason:'跨境客服 7×24 多语言，日均量大。GPT-4o Mini 多语种能力好且便宜；复杂纠纷/索赔自动升级到 GPT-4o；中国买家走 Qwen-Turbo。'
-  },
-  'education_chat': {
-    title:'教育辅导方案', sub:'知识讲解 · 互动答疑 · 因材施教',
-    scores:[91,88,80], price:'¥2.2',
-    models:[
-      {id:'gpt-4o', role:'主力模型', roleClass:'role-primary', why:'教学解释清晰，推理强'},
-      {id:'deepseek-v3', role:'理科解题', roleClass:'role-specialist', why:'数学/物理推理能力优'},
-      {id:'qwen-turbo', role:'基础问答', roleClass:'role-fallback', why:'简单知识点查询'},
-    ],
-    reason:'教育场景需要清晰的讲解能力和准确的推理。GPT-4o 在教学评测中表现最佳；数学物理等理科题目路由到 DeepSeek-V3。'
-  },
-  'default': {
-    title:'通用智能方案', sub:'均衡配置 · 全场景覆盖',
-    scores:[90,90,80], price:'¥2.5',
-    models:[
-      {id:'gpt-4o', role:'主力模型', roleClass:'role-primary', why:'综合能力最强'},
-      {id:'deepseek-v3', role:'备用模型', roleClass:'role-fallback', why:'性价比最优备选'},
-      {id:'qwen-turbo', role:'快速响应', roleClass:'role-specialist', why:'简单任务降本'},
-    ],
-    reason:'通用场景采用「强模型 + 高性价比 + 轻量快速」的三角组合，平台根据请求复杂度自动路由到对应模型。'
-  },
-};
-
-// Fill remaining combos with defaults
-const industries = ['finance','medical','legal','ecommerce','crossborder','education','manufacture','government'];
-const tasks = ['chat','writing','code','analysis','translation','summary','rag','agent'];
-for(const ind of industries){
-  for(const t of tasks){
-    const key = ind+'_'+t;
-    if(!COMBOS[key]){
-      // Derive from default with slight customization
-      COMBOS[key] = JSON.parse(JSON.stringify(COMBOS['default']));
-      const indNames = {finance:'金融',medical:'医疗',legal:'法律',ecommerce:'电商',crossborder:'跨境',education:'教育',manufacture:'制造',government:'政务'};
-      const taskNames = {chat:'智能对话',writing:'内容生成',code:'代码开发',analysis:'数据分析',translation:'翻译',summary:'文档摘要',rag:'知识问答',agent:'Agent 工作流'};
-      COMBOS[key].title = indNames[ind]+taskNames[t]+'方案';
-      COMBOS[key].sub = '基于场景智能匹配';
-
-      // Adjust for code tasks
-      if(t==='code'){
-        COMBOS[key].models[0] = {id:'deepseek-coder',role:'主力模型',roleClass:'role-primary',why:'代码生成评测最优'};
-        COMBOS[key].models[1] = {id:'claude-3.5-sonnet',role:'备用模型',roleClass:'role-fallback',why:'复杂架构设计'};
-        COMBOS[key].models[2] = {id:'gpt-4o-mini',role:'快速补全',roleClass:'role-specialist',why:'简单代码补全'};
-        COMBOS[key].reason = '代码场景首选 DeepSeek Coder V2，在 HumanEval 和 SWE-bench 上表现优异；复杂系统设计走 Claude 3.5；简单补全走 GPT-4o Mini。';
-        COMBOS[key].scores = [92,90,75];
-        COMBOS[key].price = '¥2.0';
-      }
-      if(t==='agent'){
-        COMBOS[key].models[0] = {id:'claude-3.5-sonnet',role:'主力模型',roleClass:'role-primary',why:'工具调用和多步推理最强'};
-        COMBOS[key].models[1] = {id:'gpt-4o',role:'备用模型',roleClass:'role-fallback',why:'Function Calling 能力强'};
-        COMBOS[key].models[2] = {id:'deepseek-v3',role:'执行层',roleClass:'role-specialist',why:'具体任务执行，性价比高'};
-        COMBOS[key].reason = 'Agent 工作流需要强大的工具调用和多步推理能力。Claude 3.5 在 Tool Use 评测中领先；具体执行步骤下发给 DeepSeek-V3 节省成本。';
-        COMBOS[key].scores = [94,85,72];
-        COMBOS[key].price = '¥3.5';
-      }
-      if(t==='translation'){
-        COMBOS[key].models[0] = {id:'gpt-4o',role:'主力模型',roleClass:'role-primary',why:'多语种翻译最优'};
-        COMBOS[key].models[1] = {id:'deepseek-v3',role:'中英互译',roleClass:'role-specialist',why:'中英翻译性价比高'};
-        COMBOS[key].price = '¥1.8';
-        COMBOS[key].reason = '翻译任务 GPT-4o 在多语种对上质量最佳，中英高频互译路由到 DeepSeek-V3 降本。';
-      }
-    }
-  }
+// Fill defaults for missing combos
+const INDS=['finance','medical','legal','ecommerce','crossborder','education','manufacture','government'];
+const TASKS=['chat','writing','code','analysis','translation','summary','rag','agent'];
+const IN={finance:'金融',medical:'医疗',legal:'法律',ecommerce:'电商',crossborder:'跨境',education:'教育',manufacture:'制造',government:'政务'};
+const TN={chat:'智能对话',writing:'内容生成',code:'代码开发',analysis:'数据分析',translation:'翻译',summary:'文档摘要',rag:'知识问答',agent:'Agent 工作流'};
+for(const i of INDS)for(const t of TASKS){
+  const k=i+'_'+t;if(C[k])continue;
+  let m=[{id:'gpt-4o',role:'主力模型',rc:'role-primary',w:'综合能力最强'},{id:'deepseek-v3',role:'备用模型',rc:'role-fallback',w:'性价比最优'},{id:'qwen-turbo',role:'快速响应',rc:'role-specialist',w:'简单任务降本'}];
+  let sc=[90,90,80],p='¥2.5',w='通用场景采用「强模型 + 高性价比 + 轻量快速」三角组合，根据请求复杂度自动路由。';
+  if(t==='code'){m=[{id:'deepseek-coder',role:'主力模型',rc:'role-primary',w:'代码评测最优'},{id:'claude-3.5-sonnet',role:'备用模型',rc:'role-fallback',w:'复杂架构设计'},{id:'gpt-4o-mini',role:'快速补全',rc:'role-specialist',w:'简单代码'}];sc=[92,90,75];p='¥2.0';w='代码场景首选 DeepSeek Coder V2（HumanEval 领先）；复杂设计走 Claude 3.5；简单补全走 GPT-4o Mini。';}
+  if(t==='agent'){m=[{id:'claude-3.5-sonnet',role:'主力模型',rc:'role-primary',w:'工具调用最强'},{id:'gpt-4o',role:'备用模型',rc:'role-fallback',w:'Function Calling 强'},{id:'deepseek-v3',role:'执行层',rc:'role-specialist',w:'具体任务执行降本'}];sc=[94,85,72];p='¥3.5';w='Agent 工作流需要强大的工具调用和多步推理。Claude 3.5 Tool Use 领先；执行步骤下发给 DeepSeek-V3。';}
+  if(t==='translation'){m[0]={id:'gpt-4o',role:'主力模型',rc:'role-primary',w:'多语种最优'};p='¥1.8';w='翻译任务 GPT-4o 多语种质量最佳，中英高频走 DeepSeek-V3 降本。';}
+  if(t==='summary'){m=[{id:'moonshot-v1',role:'主力模型',rc:'role-primary',w:'128K 超长上下文'},{id:'claude-3.5-sonnet',role:'备用模型',rc:'role-fallback',w:'精度要求高时切换'},{id:'qwen-turbo',role:'快速摘要',rc:'role-specialist',w:'短文档'}];sc=[92,90,65];p='¥2.8';w='长文档走 Moonshot 128K 一次性处理；短文档走 Qwen-Turbo 节省成本。';}
+  if(t==='rag'){m=[{id:'claude-3.5-sonnet',role:'主力模型',rc:'role-primary',w:'RAG 引用准确率最高'},{id:'gpt-4o',role:'备用模型',rc:'role-fallback',w:'复杂推理'},{id:'qwen-max',role:'中文检索',rc:'role-specialist',w:'中文文献理解强'}];sc=[95,83,70];p='¥3.5';w='知识问答需精确引用。Claude 3.5 引用忠实度 > 97%，减少幻觉风险。';}
+  C[k]={t:IN[i]+TN[t],s:'基于场景智能匹配',sc,p,m,why:w};
 }
 
-// ══════════════════════════════════════════════════════
-// STATE
-// ══════════════════════════════════════════════════════
-let selectedIndustry = null;
-let selectedTask = null;
-let currentCombo = null;
-let chatHistory = [];
-let totalTokens = 0;
-let totalCost = 0;
-let switchCount = 0;
+// ═══ STATE ═══
+let selInd=null,selTask=null,combo=null,totTok=0,totCost=0,swCnt=0;
 
-// ══════════════════════════════════════════════════════
-// PAGE SWITCHING
-// ══════════════════════════════════════════════════════
-function showPage(name){
+// ═══ PAGE ═══
+function showPage(n){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.getElementById('page-'+name).classList.add('active');
+  document.getElementById('page-'+n).classList.add('active');
   document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));
-  const navA = document.getElementById('nav-'+name);
-  if(navA) navA.classList.add('active');
-  window.scrollTo(0,0);
-  // Init observer for landing page
-  if(name==='landing') initFadeUp();
+  const a=document.getElementById('nav-'+n);if(a)a.classList.add('active');
+  if(n==='landing'){window.scrollTo(0,0);initFade();}
+  if(n==='chat'&&!combo){combo=C['ecommerce_chat'];buildSB();}
 }
 
-// ══════════════════════════════════════════════════════
-// CHIP SELECTION
-// ══════════════════════════════════════════════════════
-function selectChip(el, group){
-  const container = el.parentElement;
-  container.querySelectorAll('.sel-chip').forEach(c=>c.classList.remove('active'));
+// ═══ CHIPS ═══
+function pickChip(el,g){
+  el.parentElement.querySelectorAll('.sel-chip').forEach(c=>c.classList.remove('active'));
   el.classList.add('active');
-  if(group==='industry') selectedIndustry = el.dataset.val;
-  if(group==='task') selectedTask = el.dataset.val;
-  updateRecommendation();
+  if(g==='ind')selInd=el.dataset.v;else selTask=el.dataset.v;
+  if(selInd&&selTask)showCombo();
 }
-
-function updateRecommendation(){
-  if(!selectedIndustry || !selectedTask) return;
-  const key = selectedIndustry+'_'+selectedTask;
-  currentCombo = COMBOS[key] || COMBOS['default'];
-
+function showCombo(){
+  combo=C[selInd+'_'+selTask]||C['ecommerce_chat'];
   document.getElementById('rec-empty').style.display='none';
-  const filled = document.getElementById('rec-filled');
-  filled.classList.add('show');
-
-  document.getElementById('combo-title').textContent = currentCombo.title;
-  document.getElementById('combo-subtitle').textContent = currentCombo.sub;
-  document.getElementById('sc-quality').textContent = currentCombo.scores[0];
-  document.getElementById('sc-speed').textContent = currentCombo.scores[1];
-  document.getElementById('sc-cost').textContent = currentCombo.scores[2];
-  document.getElementById('combo-reason-text').textContent = currentCombo.reason;
-  document.getElementById('combo-price').textContent = currentCombo.price;
-
-  // Model cards
-  const container = document.getElementById('model-cards');
-  container.innerHTML = '';
-  currentCombo.models.forEach(m => {
-    const info = MODELS_DB[m.id];
-    container.innerHTML += `
-      <div class="model-card">
-        <span class="role-tag ${m.roleClass}">${m.role}</span>
-        <div class="mname">${info.name}</div>
-        <div class="mprov">${info.provider}</div>
-        <div class="mstats">
-          <span class="mstat">速度 <b>${info.speed}</b></span>
-          <span class="mstat">延迟 <b>${info.latency}</b></span>
-          <span class="mstat">价格 <b>${info.price}</b></span>
-        </div>
-        <div style="margin-top:8px;font-size:.78rem;color:var(--g500)">${m.why}</div>
-      </div>`;
-  });
-
-  // Scroll to result
+  document.getElementById('rec-filled').classList.add('show');
+  document.getElementById('combo-title').textContent=combo.t;
+  document.getElementById('combo-sub').textContent=combo.s;
+  document.getElementById('sc-q').textContent=combo.sc[0];
+  document.getElementById('sc-s').textContent=combo.sc[1];
+  document.getElementById('sc-c').textContent=combo.sc[2];
+  document.getElementById('combo-why').textContent=combo.why;
+  document.getElementById('combo-price').textContent=combo.p;
+  const mc=document.getElementById('model-cards');mc.innerHTML='';
+  combo.m.forEach(m=>{const info=MDB[m.id];mc.innerHTML+=`<div class="model-card"><span class="role-tag ${m.rc}">${m.role}</span><div class="mname">${info.name}</div><div class="mprov">${info.prov}</div><div class="mstats"><span class="mstat">速度 <b>${info.spd}</b></span><span class="mstat">延迟 <b>${info.lat}</b></span><span class="mstat">${info.price}</span></div><div style="margin-top:8px;font-size:.78rem;color:var(--g500)">${m.w}</div></div>`;});
   document.getElementById('rec-result').scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 
-// ══════════════════════════════════════════════════════
-// CHAT
-// ══════════════════════════════════════════════════════
-function startChat(){
-  if(!currentCombo) currentCombo = COMBOS['default'];
-  showPage('chat');
-  buildSidebar();
-  document.getElementById('ct-title').textContent = currentCombo.title;
+// ═══ CHAT ═══
+function enterChat(){showPage('chat');buildSB();document.getElementById('ct-title').textContent=combo.t;}
+function buildSB(){
+  const c=document.getElementById('sb-models');c.innerHTML='';
+  combo.m.forEach((m,i)=>{const info=MDB[m.id];c.innerHTML+=`<div class="sb-model ${i===0?'active-model':''}" id="sb-${i}"><div class="${i===0?'dot-live':'dot-standby'}" id="sd-${i}"></div><div class="sm-name">${info.name}</div><div class="sm-role ${m.rc==='role-primary'?'r-primary':m.rc==='role-fallback'?'r-fallback':'r-specialist'}">${m.role}</div><div class="sm-bar"><span>延迟 <b>${info.lat}</b></span><span>质量 <b>${info.q}</b></span><span>${info.price}</span></div></div>`;});
 }
-
-function buildSidebar(){
-  const c = document.getElementById('sb-models');
-  c.innerHTML = '';
-  currentCombo.models.forEach((m, i) => {
-    const info = MODELS_DB[m.id];
-    const isActive = i===0;
-    c.innerHTML += `
-      <div class="sb-model ${isActive?'active-model':''}" id="sb-m-${i}">
-        <div class="${isActive?'dot-live':'dot-standby'}" id="sb-dot-${i}"></div>
-        <div class="sm-name">${info.name}</div>
-        <div class="sm-role ${m.roleClass==='role-primary'?'r-primary':m.roleClass==='role-fallback'?'r-fallback':'r-specialist'}">${m.role}</div>
-        <div class="sm-bar">
-          <span>延迟 <b>${info.latency}</b></span>
-          <span>质量 <b>${info.quality}</b></span>
-          <span>${info.price}</span>
-        </div>
-      </div>`;
-  });
+function hlModel(i){
+  document.querySelectorAll('.sb-model').forEach((el,j)=>{el.classList.toggle('active-model',j===i);const d=document.getElementById('sd-'+j);if(d)d.className=j===i?'dot-live':'dot-standby';});
+  document.getElementById('ct-route').textContent='当前路由: '+MDB[combo.m[i].id].name;
 }
-
-function highlightModel(index){
-  // Update sidebar active state
-  document.querySelectorAll('.sb-model').forEach((el,i)=>{
-    el.classList.toggle('active-model', i===index);
-    const dot = document.getElementById('sb-dot-'+i);
-    if(dot){ dot.className = i===index ? 'dot-live' : 'dot-standby'; }
-  });
-  // Update route label
-  const info = MODELS_DB[currentCombo.models[index].id];
-  document.getElementById('ct-route-label').textContent = '当前路由: '+info.name;
+function addMsg(txt,isUser,mi){
+  const c=document.getElementById('chat-msgs'),d=document.createElement('div');
+  d.className='msg '+(isUser?'msg-user':'msg-ai');
+  if(isUser){d.innerHTML=`<div class="msg-avatar">U</div><div><div class="msg-bubble">${esc(txt)}</div></div>`;}
+  else{const info=mi!==undefined?MDB[combo.m[mi].id]:null;const tag=info?`<div class="msg-model-tag"><span class="mmt-dot" style="background:${mi===0?'var(--blue)':mi===1?'var(--orange)':'var(--purple)'}"></span>${info.name} · ${info.prov}</div>`:`<div class="msg-model-tag"><span class="mmt-dot"></span>系统</div>`;
+  d.innerHTML=`<div class="msg-avatar">TR</div><div><div class="msg-bubble">${txt}</div>${tag}</div>`;}
+  c.appendChild(d);c.scrollTop=c.scrollHeight;
 }
+function addTyping(){const c=document.getElementById('chat-msgs'),d=document.createElement('div');d.className='msg msg-ai';d.id='typing';d.innerHTML=`<div class="msg-avatar">TR</div><div class="typing"><span></span><span></span><span></span></div>`;c.appendChild(d);c.scrollTop=c.scrollHeight;}
+function rmTyping(){const e=document.getElementById('typing');if(e)e.remove();}
+function esc(t){const d=document.createElement('div');d.textContent=t;return d.innerHTML;}
 
-function addMessage(text, isUser, modelIndex){
-  const container = document.getElementById('chat-messages');
-  const div = document.createElement('div');
-  div.className = 'msg '+(isUser?'msg-user':'msg-ai');
-
-  if(isUser){
-    div.innerHTML = `
-      <div class="msg-avatar">U</div>
-      <div><div class="msg-bubble">${escapeHtml(text)}</div></div>`;
-  } else {
-    const info = modelIndex!==undefined ? MODELS_DB[currentCombo.models[modelIndex].id] : null;
-    const modelTag = info ?
-      `<div class="msg-model-tag"><span class="mmt-dot" style="background:${modelIndex===0?'var(--blue)':modelIndex===1?'var(--orange)':'var(--purple)'}"></span>${info.name} · ${info.provider}</div>` :
-      `<div class="msg-model-tag"><span class="mmt-dot"></span>系统</div>`;
-    div.innerHTML = `
-      <div class="msg-avatar">AT</div>
-      <div><div class="msg-bubble">${text}</div>${modelTag}</div>`;
-  }
-  container.appendChild(div);
-  container.scrollTop = container.scrollHeight;
-}
-
-function addTyping(){
-  const container = document.getElementById('chat-messages');
-  const div = document.createElement('div');
-  div.className = 'msg msg-ai';
-  div.id = 'typing-indicator';
-  div.innerHTML = `
-    <div class="msg-avatar">AT</div>
-    <div class="typing"><span></span><span></span><span></span></div>`;
-  container.appendChild(div);
-  container.scrollTop = container.scrollHeight;
-}
-
-function removeTyping(){
-  const el = document.getElementById('typing-indicator');
-  if(el) el.remove();
-}
-
-function escapeHtml(t){
-  const d=document.createElement('div'); d.textContent=t; return d.innerHTML;
-}
-
-// Simulated responses based on context
-const RESPONSES = [
-  { keywords:['你好','hello','hi','嗨'], reply:'你好！有什么可以帮你的吗？我已经根据你选择的场景配置了最优模型组合，可以直接提问。', model:0 },
-  { keywords:['介绍','是什么','说说','简介'], reply:'AI Token 平台是全国性的 AI 服务交易与调度基础设施。我们将算力、模型、数据等 AI 资源统一为 Token 进行交易和调度，帮助企业降低 AI 使用成本 20-50%，同时保证服务质量和稳定性。', model:0 },
-  { keywords:['代码','code','python','函数','编程'], reply:'这是一个编程相关的问题，让我切换到代码专项模型来处理。\n\n```python\n# 示例代码\ndef process_data(data):\n    \"\"\"处理数据并返回结果\"\"\"\n    results = []\n    for item in data:\n        transformed = item.strip().lower()\n        if transformed:\n            results.append(transformed)\n    return results\n```\n\n代码已生成，需要我解释或修改吗？', model:2 },
-  { keywords:['翻译','translate','英文','中文'], reply:'好的，我来帮你翻译。这类翻译任务已自动路由到多语种专项模型。\n\n请告诉我需要翻译的具体内容，我支持中、英、日、韩、西班牙、阿拉伯等多语种互译。', model:0 },
-  { keywords:['成本','价格','多少钱','费用','花费'], reply:'关于成本，当前模型组合的定价策略如下：\n\n• 简单查询：自动走轻量模型，约 ¥0.002/千 Token\n• 复杂任务：走主力模型，约 ¥0.03-0.04/千 Token\n• 平台智能路由平均可降低 30-40% 的 API 调用成本\n\n你可以在左侧面板实时查看当前对话的累计成本。', model:0 },
-  { keywords:['模型','切换','路由','选择'], reply:'当前对话使用的模型组合包含三个角色：\n\n1. **主力模型** — 处理大部分请求，质量最优\n2. **备用模型** — 主力不可用时自动切换，保证稳定性\n3. **专项模型** — 特定任务（如代码、翻译）走专项通道\n\n平台根据请求内容自动路由，你可以在左侧面板看到实时路由状态。绿色圆点表示当前活跃的模型。', model:0 },
+const RESP=[
+  {kw:['你好','hello','hi'],r:'你好！有什么可以帮你的？左侧面板显示了当前路由方案的实时状态。',mi:0},
+  {kw:['介绍','是什么','taskrouter'],r:'TaskRouter AI 是 AI 任务路由与成本管理平台。我们帮你把每个 AI 任务自动分配给最合适的模型，降低成本 30-50%，同时保证质量和稳定性。\n\n你不需要自己管理多个模型 API，只需提交任务，平台自动路由。',mi:0},
+  {kw:['代码','code','python','函数'],r:'这是编程任务，已自动路由到代码专项模型。\n\n```python\ndef process_data(data):\n    results = []\n    for item in data:\n        cleaned = item.strip().lower()\n        if cleaned:\n            results.append(cleaned)\n    return results\n```\n\n需要修改或解释吗？',mi:2},
+  {kw:['成本','价格','多少钱','降本'],r:'当前路由方案的定价策略：\n\n- 简单查询：走轻量模型，约 ¥0.002/千 Token\n- 复杂任务：走主力模型，约 ¥0.03-0.04/千 Token\n- 平台智能路由平均降本 30-40%\n\n左侧面板实时显示累计成本。',mi:0},
+  {kw:['模型','切换','路由'],r:'当前方案包含三个角色：\n\n1. **主力模型** — 处理大部分请求，质量最优\n2. **备用模型** — 主力不可用时秒级切换\n3. **专项模型** — 特定任务走专项通道\n\n平台根据请求内容自动路由，左侧面板绿色圆点 = 当前活跃模型。',mi:0},
 ];
-
-function getResponse(input){
-  const lower = input.toLowerCase();
-  for(const r of RESPONSES){
-    if(r.keywords.some(k => lower.includes(k))){
-      return { text: r.reply, model: r.model };
-    }
-  }
-  // Default response - pick based on length
-  if(input.length < 20){
-    return {
-      text: '收到。这个问题我用主力模型来处理。\n\n'+generatePlaceholder(input),
-      model: 0
-    };
-  } else {
-    return {
-      text: '这是一个比较复杂的请求，我已调用主力模型进行深度分析。\n\n'+generatePlaceholder(input),
-      model: 0
-    };
-  }
+function getResp(txt){
+  const l=txt.toLowerCase();
+  for(const r of RESP)if(r.kw.some(k=>l.includes(k)))return{t:r.r,mi:r.mi};
+  const tpls=['基于你的描述，以下是分析和建议：\n\n1. 明确核心问题的边界和约束\n2. 根据行业最佳实践，建议分步实施\n3. 设置合理的验证指标评估效果\n\n需要深入分析某个方面吗？','已分析你的需求：\n\n- 关键在于效率和质量的平衡\n- 推荐渐进式实施路径\n- 预计两周内可见初步效果\n\n需要展开哪个部分？','让我从几个维度回答：\n\n**背景**：当前方向有价值\n**建议**：从小规模试点开始\n**风险**：注意合规和数据安全\n\n需要了解更多吗？'];
+  return{t:tpls[Math.floor(Math.random()*tpls.length)],mi:0};
 }
-
-function generatePlaceholder(input){
-  const templates = [
-    '基于你的描述，以下是我的分析和建议：\n\n1. 首先，需要明确核心问题的边界和约束条件\n2. 其次，根据行业最佳实践，建议采用分步骤的方法\n3. 最后，建议设置合理的验证指标来评估效果\n\n需要我对某个方面进行更深入的分析吗？',
-    '我已经分析了你的需求，这里是主要发现：\n\n• 问题的关键在于找到效率和质量之间的平衡\n• 推荐方案是采用渐进式的实施路径\n• 预计可以在两周内看到初步效果\n\n你希望我展开哪个部分？',
-    '好问题。让我从几个维度来回答：\n\n**背景分析**：当前市场环境下，这个方向是有价值的\n**实施建议**：建议从小规模试点开始，验证效果后再推广\n**风险提示**：需要注意合规和数据安全方面的要求\n\n需要进一步了解哪个方面？',
-  ];
-  return templates[Math.floor(Math.random()*templates.length)];
-}
-
-async function sendMessage(){
-  const input = document.getElementById('chat-input');
-  const text = input.value.trim();
-  if(!text) return;
-
-  if(!currentCombo) currentCombo = COMBOS['default'];
-
-  input.value = '';
-  input.style.height = 'auto';
-  addMessage(text, true);
-
-  // Show typing
-  addTyping();
-
-  // Simulate routing delay
-  const response = getResponse(text);
-  const modelIdx = response.model;
-
-  // Simulate switching animation
-  setTimeout(()=>{ highlightModel(modelIdx); }, 300);
-
-  if(modelIdx !== 0){
-    switchCount++;
-    document.getElementById('m-switches').textContent = switchCount+' 次';
-  }
-
-  // Simulate response delay
-  const delay = 800 + Math.random()*1200;
+function send(){
+  const inp=document.getElementById('chat-input'),txt=inp.value.trim();if(!txt)return;
+  if(!combo)combo=C['ecommerce_chat'];
+  inp.value='';inp.style.height='auto';
+  addMsg(txt,true);addTyping();
+  const resp=getResp(txt),mi=resp.mi;
+  setTimeout(()=>hlModel(mi),300);
+  if(mi!==0){swCnt++;document.getElementById('m-sw').textContent=swCnt+' 次';}
   setTimeout(()=>{
-    removeTyping();
-    addMessage(response.text, false, modelIdx);
-
-    // Update metrics
-    const tokens = 50 + Math.floor(Math.random()*200);
-    totalTokens += tokens;
-    totalCost += tokens * 0.00003;
-    document.getElementById('m-tokens').textContent = totalTokens.toLocaleString();
-    document.getElementById('m-latency').textContent = (200+Math.floor(Math.random()*200))+'ms';
-    document.getElementById('m-cost').textContent = '¥'+totalCost.toFixed(3);
-
-    // Route back to primary after specialist
-    if(modelIdx !== 0){
-      setTimeout(()=>highlightModel(0), 2000);
-    }
-  }, delay);
+    rmTyping();addMsg(resp.t,false,mi);
+    const tok=50+Math.floor(Math.random()*200);totTok+=tok;totCost+=tok*0.00003;
+    document.getElementById('m-tok').textContent=totTok.toLocaleString();
+    document.getElementById('m-lat').textContent=(200+Math.floor(Math.random()*200))+'ms';
+    document.getElementById('m-cost').textContent='¥'+totCost.toFixed(3);
+    if(mi!==0)setTimeout(()=>hlModel(0),2000);
+  },800+Math.random()*1200);
 }
 
-function handleKey(e){
-  if(e.key==='Enter' && !e.shiftKey){
-    e.preventDefault();
-    sendMessage();
-  }
-}
-
-function autoResize(el){
-  el.style.height = 'auto';
-  el.style.height = Math.min(el.scrollHeight, 120)+'px';
-}
-
-// ── Fade up observer ──
-function initFadeUp(){
-  const obs = new IntersectionObserver(entries=>{
-    entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); });
-  },{threshold:0.1});
-  document.querySelectorAll('.fade-up').forEach(el=>obs.observe(el));
-}
-initFadeUp();
+// ═══ UTILS ═══
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.style.transform='translateX(-50%) translateY(0)';t.style.opacity='1';setTimeout(()=>{t.style.transform='translateX(-50%) translateY(100px)';t.style.opacity='0'},2000);}
+function switchAud(i,el){document.querySelectorAll('.aud-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.aud-panel').forEach(p=>p.classList.remove('active'));el.classList.add('active');document.getElementById('aud-'+i).classList.add('active');}
+function initFade(){const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')})},{threshold:0.1});document.querySelectorAll('.fade-up').forEach(el=>obs.observe(el));}
+initFade();
 </script>
 </body>
 </html>
