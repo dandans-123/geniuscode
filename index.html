@@ -206,9 +206,163 @@ footer{background:var(--navy);color:var(--g400);padding:48px 0 24px}
 .chat-send{width:42px;height:42px;border-radius:10px;background:var(--blue);color:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0}
 .chat-send:hover{background:var(--blue-l)}
 
+/* ══ KNOWLEDGE PAGE ══ */
+#page-knowledge{background:var(--g50)}
+.kb-container{max-width:1200px;margin:0 auto;padding:32px 24px}
+.kb-header{margin-bottom:20px}
+.kb-header .kb-title{font-size:1.6rem;font-weight:700}
+.kb-header .kb-sub{font-size:.9rem;color:var(--g500);margin-top:4px}
+.kb-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px}
+.kb-stat{background:#fff;border:1px solid var(--g200);border-radius:var(--r);padding:16px 20px}
+.kb-stat .v{font-size:1.7rem;font-weight:800;color:var(--navy);line-height:1}
+.kb-stat .l{font-size:.72rem;color:var(--g500);margin-top:6px;text-transform:uppercase;letter-spacing:.05em}
+.kb-layout{display:grid;grid-template-columns:300px 1fr;gap:20px;align-items:start}
+.kb-list-panel{background:#fff;border:1px solid var(--g200);border-radius:var(--r);padding:14px;position:sticky;top:84px}
+.kb-list-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;font-size:.78rem;font-weight:600;color:var(--g500);text-transform:uppercase;letter-spacing:.04em;padding:0 4px}
+.kb-list-header button{background:var(--blue);color:#fff;border:none;font-size:.75rem;font-weight:600;padding:5px 10px;border-radius:6px;cursor:pointer;text-transform:none;letter-spacing:0}
+.kb-list-header button:hover{background:var(--blue-l)}
+.kb-item{padding:12px;border:1.5px solid var(--g200);border-radius:10px;margin-bottom:8px;cursor:pointer;transition:all .15s}
+.kb-item:hover{border-color:var(--blue)}
+.kb-item.active{border-color:var(--blue);background:rgba(37,99,235,.04)}
+.kb-item .kb-name{font-size:.9rem;font-weight:700;margin-bottom:4px;display:flex;align-items:center;gap:6px}
+.kb-item .kb-meta{font-size:.7rem;color:var(--g500);display:flex;gap:8px;align-items:center}
+.kb-item .kb-tag{font-size:.65rem;padding:1px 6px;border-radius:3px;background:rgba(37,99,235,.08);color:var(--blue);font-weight:600}
+.kb-item .ka-flag{font-size:.62rem;color:var(--purple);background:rgba(124,58,237,.08);padding:1px 5px;border-radius:3px;font-weight:600;margin-left:auto}
+.kb-detail{background:#fff;border:1px solid var(--g200);border-radius:var(--r);padding:24px;min-height:400px}
+.kb-detail-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--g100);flex-wrap:wrap;gap:12px}
+.kb-detail-header h3{font-size:1.2rem;font-weight:700;margin-bottom:4px}
+.kb-detail-header .kbd-meta{font-size:.78rem;color:var(--g500)}
+.kb-detail-header .kbd-actions{display:flex;gap:8px;flex-wrap:wrap}
+.kb-detail-header .kbd-actions button{font-size:.75rem;padding:6px 12px;border-radius:6px;border:1px solid var(--g200);background:#fff;color:var(--g600);cursor:pointer;font-weight:500}
+.kb-detail-header .kbd-actions button:hover{border-color:var(--blue);color:var(--blue)}
+.kb-detail-header .kbd-actions button.attached{background:rgba(124,58,237,.1);border-color:var(--purple);color:var(--purple)}
+.kb-detail-header .kbd-actions button.danger:hover{border-color:var(--red);color:var(--red)}
+.kb-detail-empty{text-align:center;padding:80px 24px;color:var(--g400)}
+.kb-detail-empty svg{margin-bottom:12px;color:var(--g300)}
+.upload-zone{border:2px dashed var(--g300);border-radius:var(--r);padding:32px 24px;text-align:center;background:var(--g50);transition:all .2s;cursor:pointer;margin-bottom:20px}
+.upload-zone:hover,.upload-zone.dragover{border-color:var(--blue);background:rgba(37,99,235,.05)}
+.upload-zone .uz-icon{font-size:32px;margin-bottom:8px;display:block;color:var(--g400)}
+.upload-zone.dragover .uz-icon{color:var(--blue)}
+.upload-zone .uz-title{font-size:.95rem;font-weight:600;margin-bottom:4px;color:var(--g600)}
+.upload-zone .uz-sub{font-size:.75rem;color:var(--g500)}
+.upload-zone .uz-types{display:inline-flex;gap:6px;margin-top:10px;flex-wrap:wrap;justify-content:center}
+.upload-zone .uz-type{font-size:.65rem;font-weight:600;padding:2px 7px;border-radius:3px;background:#fff;border:1px solid var(--g200);color:var(--g500)}
+.doc-section-title{font-size:.78rem;font-weight:600;color:var(--g500);text-transform:uppercase;letter-spacing:.04em;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
+.doc-list{display:flex;flex-direction:column;gap:8px}
+.doc-item{display:flex;align-items:center;gap:12px;padding:11px 14px;border:1px solid var(--g200);border-radius:8px;transition:all .15s;animation:msgIn .25s ease}
+.doc-item:hover{border-color:var(--g300);background:var(--g50)}
+.doc-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;flex-shrink:0;letter-spacing:.5px}
+.doc-icon.pdf{background:#dc2626}
+.doc-icon.docx{background:var(--blue)}
+.doc-icon.txt{background:var(--g500)}
+.doc-icon.md{background:var(--purple)}
+.doc-icon.url{background:var(--green)}
+.doc-icon.csv{background:var(--orange)}
+.doc-info{flex:1;min-width:0}
+.doc-name{font-size:.88rem;font-weight:600;margin-bottom:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.doc-meta{font-size:.72rem;color:var(--g500);display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.doc-status{font-size:.7rem;font-weight:600;padding:3px 8px;border-radius:4px;flex-shrink:0;white-space:nowrap}
+.ds-ready{background:var(--green-l);color:var(--green)}
+.ds-processing{background:rgba(217,119,6,.1);color:var(--orange)}
+.ds-failed{background:rgba(220,38,38,.1);color:var(--red)}
+.doc-progress{height:3px;background:var(--g100);border-radius:2px;margin-top:6px;overflow:hidden}
+.doc-progress .bar{height:100%;background:var(--blue);transition:width .3s}
+.doc-actions{display:flex;gap:2px;flex-shrink:0}
+.doc-actions button{background:none;border:none;color:var(--g400);cursor:pointer;padding:6px;border-radius:4px;display:flex;align-items:center;justify-content:center}
+.doc-actions button:hover{background:var(--g100);color:var(--red)}
+/* dialog */
+.kb-dialog-bg{position:fixed;inset:0;background:rgba(15,23,42,.5);z-index:300;display:none;align-items:center;justify-content:center;padding:20px}
+.kb-dialog-bg.show{display:flex}
+.kb-dialog{background:#fff;border-radius:var(--r);padding:24px;width:100%;max-width:420px;box-shadow:var(--shadow-lg)}
+.kb-dialog h3{font-size:1.1rem;font-weight:700;margin-bottom:16px}
+.kb-dialog label{display:block;font-size:.8rem;font-weight:600;color:var(--g600);margin-bottom:6px;margin-top:12px}
+.kb-dialog input,.kb-dialog select{width:100%;padding:10px 12px;border:1.5px solid var(--g200);border-radius:8px;font-size:.9rem;font-family:inherit;outline:none;transition:border-color .15s}
+.kb-dialog input:focus,.kb-dialog select:focus{border-color:var(--blue)}
+.kb-dialog .kbd-buttons{display:flex;gap:10px;justify-content:flex-end;margin-top:20px}
+.kb-dialog .kbd-buttons button{padding:9px 18px;border-radius:8px;font-size:.85rem;font-weight:600;cursor:pointer;border:none}
+.kb-dialog .kbd-cancel{background:var(--g100);color:var(--g600)}
+.kb-dialog .kbd-confirm{background:var(--blue);color:#fff}
+/* KB attached badge in chat sidebar */
+.kb-attached{margin:0 12px 12px;padding:10px 12px;background:rgba(124,58,237,.05);border:1px solid rgba(124,58,237,.2);border-radius:8px}
+.kb-attached .ka-label{font-size:.65rem;color:var(--purple);font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;display:flex;align-items:center;gap:5px}
+.kb-attached .ka-list{display:flex;flex-direction:column;gap:4px}
+.kb-attached .ka-name{font-size:.78rem;font-weight:600;color:var(--g900);display:flex;align-items:center;justify-content:space-between}
+.kb-attached .ka-name .ka-cnt{font-size:.7rem;color:var(--g500);font-weight:500}
+.kb-attached .ka-link{font-size:.7rem;color:var(--blue);cursor:pointer;margin-top:6px;display:inline-block}
+.kb-source-tag{display:inline-flex;align-items:center;gap:4px;font-size:.68rem;color:var(--purple);background:rgba(124,58,237,.08);padding:2px 7px;border-radius:3px;margin-right:4px;margin-top:4px;font-weight:500}
+/* ══ KB tabs ══ */
+.kb-tabs{display:flex;gap:4px;border-bottom:2px solid var(--g200);margin-bottom:24px;flex-wrap:wrap}
+.kb-tab{padding:12px 18px;font-size:.9rem;font-weight:600;color:var(--g500);cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .15s;display:inline-flex;align-items:center;gap:7px}
+.kb-tab:hover{color:var(--blue)}
+.kb-tab.active{color:var(--blue);border-bottom-color:var(--blue)}
+.kb-tab .tab-count{background:var(--g100);color:var(--g500);padding:1px 8px;border-radius:10px;font-size:.7rem;font-weight:600;line-height:1.4}
+.kb-tab.active .tab-count{background:var(--blue);color:#fff}
+.tab-content{display:none}
+.tab-content.active{display:block}
+/* visibility selector in KB detail */
+.vis-row{display:flex;align-items:center;gap:6px;margin-top:10px;flex-wrap:wrap}
+.vis-row .vis-label{font-size:.7rem;color:var(--g500);font-weight:600;text-transform:uppercase;letter-spacing:.04em;margin-right:4px}
+.vis-btn{padding:5px 11px;font-size:.74rem;font-weight:600;border-radius:6px;border:1.5px solid var(--g200);background:#fff;color:var(--g600);cursor:pointer;display:inline-flex;align-items:center;gap:5px;transition:all .15s}
+.vis-btn:hover{border-color:var(--blue);color:var(--blue)}
+.vis-btn.active.private{background:var(--g100);color:var(--g900);border-color:var(--g400)}
+.vis-btn.active.team{background:rgba(37,99,235,.08);color:var(--blue);border-color:var(--blue)}
+.vis-btn.active.public{background:rgba(5,150,105,.08);color:var(--green);border-color:var(--green)}
+/* skill chips */
+.skill-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.skill-chip{font-size:.72rem;font-weight:500;padding:4px 10px;border-radius:5px;border:1.5px solid var(--g200);color:var(--g600);cursor:pointer;background:#fff;user-select:none;transition:all .15s}
+.skill-chip:hover{border-color:var(--blue);color:var(--blue)}
+.skill-chip.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+.skill-chip.compact{padding:2px 7px;font-size:.65rem;cursor:default;font-weight:600;background:rgba(124,58,237,.08);color:var(--purple);border-color:transparent}
+.skill-chip.compact:hover{border-color:transparent;color:var(--purple)}
+/* filter bar (public marketplace) */
+.kb-filter-bar{background:#fff;border:1px solid var(--g200);border-radius:var(--r);padding:18px 20px;margin-bottom:18px}
+.filter-section{margin-bottom:14px}
+.filter-section:last-child{margin-bottom:0}
+.filter-label{font-size:.7rem;font-weight:600;color:var(--g500);text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px;display:block}
+.filter-chips{display:flex;flex-wrap:wrap;gap:6px}
+.filter-chip{font-size:.78rem;font-weight:500;padding:5px 12px;border-radius:6px;border:1.5px solid var(--g200);background:#fff;color:var(--g600);cursor:pointer;user-select:none;transition:all .15s}
+.filter-chip:hover{border-color:var(--blue);color:var(--blue)}
+.filter-chip.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+.kb-result-count{font-size:.85rem;color:var(--g500);margin-bottom:14px;padding:0 4px}
+.kb-result-count b{color:var(--g900)}
+/* public KB grid */
+.kb-public-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px}
+.kb-public-card{background:#fff;border:1px solid var(--g200);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column;transition:all .2s}
+.kb-public-card:hover{box-shadow:var(--shadow);border-color:var(--blue);transform:translateY(-2px)}
+.kbpc-cover{height:78px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.4rem;font-weight:800;letter-spacing:.04em;position:relative;overflow:hidden}
+.kbpc-cover::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent 60%,rgba(0,0,0,.1))}
+.kbpc-price{position:absolute;top:8px;right:8px;background:rgba(255,255,255,.95);color:var(--navy);padding:3px 9px;border-radius:4px;font-size:.7rem;font-weight:700;z-index:2}
+.kbpc-price.free{color:var(--green)}
+.kbpc-body{padding:14px 16px 10px;flex:1;display:flex;flex-direction:column}
+.kbpc-name{font-size:.95rem;font-weight:700;margin-bottom:3px;line-height:1.3}
+.kbpc-author{font-size:.72rem;color:var(--g500);margin-bottom:8px;display:flex;align-items:center;gap:5px}
+.kbpc-author .ver-badge{background:rgba(37,99,235,.08);color:var(--blue);padding:1px 5px;border-radius:3px;font-size:.62rem;font-weight:600}
+.kbpc-desc{font-size:.78rem;color:var(--g600);line-height:1.5;margin-bottom:10px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;flex:1}
+.kbpc-tags{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px}
+.kbpc-tag{font-size:.66rem;font-weight:500;padding:2px 7px;border-radius:3px;background:var(--g100);color:var(--g600)}
+.kbpc-tag.industry{background:rgba(37,99,235,.08);color:var(--blue);font-weight:600}
+.kbpc-stats{font-size:.7rem;color:var(--g500);display:flex;justify-content:space-between;align-items:center;padding-top:8px;border-top:1px solid var(--g100)}
+.kbpc-stats .stars{color:var(--gold);font-weight:700}
+.kbpc-actions{padding:10px 16px 14px;display:flex;gap:6px}
+.kbpc-actions button{flex:1;padding:7px;font-size:.78rem;font-weight:600;border-radius:6px;cursor:pointer;border:1.5px solid var(--g200);background:#fff;color:var(--g600);transition:all .15s}
+.kbpc-actions button:hover{border-color:var(--blue);color:var(--blue)}
+.kbpc-actions button.primary{background:var(--blue);color:#fff;border-color:var(--blue)}
+.kbpc-actions button.primary:hover{background:var(--blue-l);color:#fff}
+.kbpc-actions button.subscribed{background:var(--green-l);color:var(--green);border-color:var(--green)}
+.kbpc-empty{text-align:center;padding:60px 20px;color:var(--g400);background:#fff;border:1px dashed var(--g200);border-radius:var(--r)}
+/* publish form (when KB is public) */
+.publish-form{background:rgba(5,150,105,.04);border:1px solid rgba(5,150,105,.2);border-radius:8px;padding:14px 16px;margin-top:14px}
+.publish-form .pf-title{font-size:.75rem;font-weight:600;color:var(--green);margin-bottom:10px;display:flex;align-items:center;gap:6px;text-transform:uppercase;letter-spacing:.04em}
+.publish-form label{display:block;font-size:.72rem;font-weight:600;color:var(--g600);margin-bottom:4px;margin-top:10px}
+.publish-form label:first-of-type{margin-top:0}
+.publish-form input,.publish-form textarea,.publish-form select{width:100%;padding:8px 10px;border:1px solid var(--g200);border-radius:6px;font-size:.85rem;font-family:inherit;outline:none;background:#fff}
+.publish-form input:focus,.publish-form textarea:focus,.publish-form select:focus{border-color:var(--green)}
+.publish-form textarea{resize:vertical;min-height:50px}
+.publish-form .pf-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
 /* responsive */
-@media(max-width:1024px){.feat-grid,.supply-row{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:768px){.hero h1{font-size:2.2rem}.hero-stats{flex-direction:column;gap:20px}.feat-grid,.cap-grid,.supply-row{grid-template-columns:1fr}.sel-panel{grid-template-columns:1fr}.chat-sidebar{display:none}.aud-tabs{flex-wrap:wrap}}
+@media(max-width:1024px){.feat-grid,.supply-row{grid-template-columns:repeat(2,1fr)}.kb-stats{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:768px){.hero h1{font-size:2.2rem}.hero-stats{flex-direction:column;gap:20px}.feat-grid,.cap-grid,.supply-row{grid-template-columns:1fr}.sel-panel{grid-template-columns:1fr}.chat-sidebar{display:none}.aud-tabs{flex-wrap:wrap}.kb-layout{grid-template-columns:1fr}.kb-list-panel{position:static}}
 .fade-up{opacity:0;transform:translateY(24px);transition:opacity .5s,transform .5s}
 .fade-up.visible{opacity:1;transform:translateY(0)}
 #toast{position:fixed;bottom:40px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--navy);color:#fff;padding:14px 28px;border-radius:10px;font-size:.9rem;font-weight:500;z-index:200;box-shadow:0 8px 32px rgba(0,0,0,.2);transition:transform .4s ease,opacity .4s;opacity:0;pointer-events:none}
@@ -223,6 +377,7 @@ footer{background:var(--navy);color:var(--g400);padding:48px 0 24px}
     <ul class="nav-links">
       <li><a onclick="showPage('landing')" id="nav-landing" class="active">首页</a></li>
       <li><a onclick="showPage('recommend')" id="nav-recommend">任务配置</a></li>
+      <li><a onclick="showPage('knowledge')" id="nav-knowledge">知识库</a></li>
       <li><a onclick="showPage('chat')" id="nav-chat">工作台</a></li>
     </ul>
     <button class="nav-cta" onclick="showPage('recommend')">进入控制台</button>
@@ -379,12 +534,105 @@ footer{background:var(--navy);color:var(--g400);padding:48px 0 24px}
   </div>
 </div>
 
+<!-- ══════════ PAGE: KNOWLEDGE ══════════ -->
+<div class="page" id="page-knowledge">
+  <div class="kb-container">
+    <div class="kb-header">
+      <div class="kb-title">企业知识库</div>
+      <div class="kb-sub">上传文档构建专属知识库，AI 在工作台回答时自动检索引用</div>
+    </div>
+    <div class="kb-stats">
+      <div class="kb-stat"><div class="v" id="kbs-count">0</div><div class="l">我的知识库</div></div>
+      <div class="kb-stat"><div class="v" id="kbs-docs">0</div><div class="l">文档总数</div></div>
+      <div class="kb-stat"><div class="v" id="kbs-chunks">0</div><div class="l">向量片段</div></div>
+      <div class="kb-stat"><div class="v" id="kbs-queries">0</div><div class="l">本月检索</div></div>
+    </div>
+
+    <div class="kb-tabs">
+      <button class="kb-tab active" id="tab-btn-my" onclick="switchKBTab('my')">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 7.5L7.5 3m0 0L12 7.5M7.5 3v13.5m13.5 0L16.5 21m0 0L12 16.5m4.5 4.5V7.5"/></svg>
+        我的上传 <span class="tab-count" id="tab-count-my">0</span>
+      </button>
+      <button class="kb-tab" id="tab-btn-public" onclick="switchKBTab('public')">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418"/></svg>
+        公共市场 <span class="tab-count" id="tab-count-public">0</span>
+      </button>
+    </div>
+
+    <!-- Tab: 我的上传 -->
+    <div class="tab-content active" id="tab-my">
+      <div class="kb-layout">
+        <div class="kb-list-panel">
+          <div class="kb-list-header"><span>我的知识库</span><button onclick="openKBDialog()">+ 新建</button></div>
+          <div id="kb-list"></div>
+        </div>
+        <div class="kb-detail" id="kb-detail">
+          <div class="kb-detail-empty">
+            <svg width="56" height="56" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/></svg>
+            <div>选择左侧知识库查看文档，或新建一个</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab: 公共市场 -->
+    <div class="tab-content" id="tab-public">
+      <div class="kb-filter-bar">
+        <div class="filter-section">
+          <span class="filter-label">行业</span>
+          <div class="filter-chips" id="filter-industry"></div>
+        </div>
+        <div class="filter-section">
+          <span class="filter-label">技能</span>
+          <div class="filter-chips" id="filter-skill"></div>
+        </div>
+        <div class="filter-section">
+          <span class="filter-label">排序</span>
+          <div class="filter-chips" id="filter-sort">
+            <div class="filter-chip active" data-v="hot" onclick="setSort('hot')">热门</div>
+            <div class="filter-chip" data-v="new" onclick="setSort('new')">最新</div>
+            <div class="filter-chip" data-v="rating" onclick="setSort('rating')">评分</div>
+            <div class="filter-chip" data-v="free" onclick="setSort('free')">仅免费</div>
+          </div>
+        </div>
+      </div>
+      <div class="kb-result-count" id="kb-result-count"></div>
+      <div class="kb-public-grid" id="kb-public-grid"></div>
+    </div>
+  </div>
+  <input type="file" id="kb-file-input" multiple accept=".pdf,.docx,.txt,.md,.csv" style="display:none">
+</div>
+
+<!-- KB CREATE DIALOG -->
+<div class="kb-dialog-bg" id="kb-dialog-bg" onclick="if(event.target===this)closeKBDialog()">
+  <div class="kb-dialog">
+    <h3>新建知识库</h3>
+    <label>名称</label>
+    <input type="text" id="kbd-name" placeholder="例如：金融合规手册" maxlength="30">
+    <label>所属行业</label>
+    <select id="kbd-industry"></select>
+    <label>适用技能 (多选)</label>
+    <div class="skill-chips" id="kbd-skill-chips"></div>
+    <label style="margin-top:14px">嵌入模型</label>
+    <select id="kbd-embed">
+      <option value="bge-m3">BGE-M3 (多语言, 推荐)</option>
+      <option value="text-embedding-3-large">OpenAI text-embedding-3-large</option>
+      <option value="qwen-embedding">通义 Embedding</option>
+    </select>
+    <div class="kbd-buttons">
+      <button class="kbd-cancel" onclick="closeKBDialog()">取消</button>
+      <button class="kbd-confirm" onclick="confirmCreateKB()">创建</button>
+    </div>
+  </div>
+</div>
+
 <!-- ══════════ PAGE: CHAT ══════════ -->
 <div class="page" id="page-chat">
   <div class="chat-layout">
     <div class="chat-sidebar">
       <div class="sb-header"><span>当前路由方案</span><span class="back-btn" onclick="showPage('recommend')">&#8592; 切换方案</span></div>
       <div class="sb-models" id="sb-models"></div>
+      <div id="sb-kb-attached"></div>
       <div class="sb-metrics">
         <h5>实时指标</h5>
         <div class="metric-row"><span class="ml">本次对话 Token</span><span class="mv mv-blue" id="m-tok">0</span></div>
@@ -458,6 +706,410 @@ for(const i of INDS)for(const t of TASKS){
 // ═══ STATE ═══
 let selInd=null,selTask=null,combo=null,totTok=0,totCost=0,swCnt=0;
 
+// ═══ KNOWLEDGE BASE STATE ═══
+const KB_INDUSTRY_LABEL={
+  finance:'金融',medical:'医疗',legal:'法律',ecommerce:'电商',crossborder:'跨境',
+  education:'教育',manufacture:'制造',government:'政务',
+  realestate:'房地产',automotive:'汽车',tourism:'文旅',energy:'能源',catering:'餐饮',
+  logistics:'物流',hr:'人力资源',research:'科研',gaming:'游戏',software:'软件开发',
+  general:'通用'
+};
+const SKILLS=[
+  {id:'rag',name:'知识问答'},{id:'summary',name:'文档摘要'},{id:'writing',name:'内容生成'},
+  {id:'code',name:'代码生成'},{id:'analysis',name:'数据分析'},{id:'translation',name:'翻译'},
+  {id:'ocr',name:'OCR识别'},{id:'table',name:'表格解析'},{id:'vision',name:'图像理解'},
+  {id:'cs',name:'智能客服'},{id:'compliance',name:'合规审核'},{id:'risk',name:'风险评估'},
+  {id:'sentiment',name:'情感分析'},{id:'ner',name:'实体抽取'},{id:'report',name:'报告生成'}
+];
+const SKILL_LABEL=Object.fromEntries(SKILLS.map(s=>[s.id,s.name]));
+const COVER_GRADIENTS=['linear-gradient(135deg,#2563eb,#7c3aed)','linear-gradient(135deg,#059669,#0891b2)','linear-gradient(135deg,#d97706,#dc2626)','linear-gradient(135deg,#7c3aed,#db2777)','linear-gradient(135deg,#0f172a,#1e40af)','linear-gradient(135deg,#0891b2,#059669)','linear-gradient(135deg,#dc2626,#d97706)','linear-gradient(135deg,#475569,#0f172a)'];
+
+let kbs=[
+  {id:'kb-1',name:'金融合规手册',industry:'finance',skills:['rag','compliance'],embed:'bge-m3',visibility:'private',attached:true,docs:[
+    {id:'d1',name:'2024年金融监管新规.pdf',type:'pdf',size:2456000,chunks:42,status:'ready',uploaded:'2026-05-08'},
+    {id:'d2',name:'反洗钱条例解读.docx',type:'docx',size:680000,chunks:18,status:'ready',uploaded:'2026-05-09'},
+    {id:'d3',name:'巴塞尔协议III要点.pdf',type:'pdf',size:1820000,chunks:31,status:'ready',uploaded:'2026-05-09'},
+  ]},
+  {id:'kb-2',name:'产品手册中心',industry:'software',skills:['rag','cs'],embed:'bge-m3',visibility:'team',attached:false,docs:[
+    {id:'d4',name:'API使用指南.md',type:'md',size:45000,chunks:8,status:'ready',uploaded:'2026-05-05'},
+    {id:'d5',name:'故障排查FAQ.txt',type:'txt',size:12000,chunks:4,status:'ready',uploaded:'2026-05-06'},
+  ]},
+];
+let selKB=null;
+let kbDialogSkills=new Set();
+
+// ═══ PUBLIC MARKETPLACE ═══
+const PUBLIC_KBS=[
+  {id:'pkb-1',name:'全球金融监管法规库',author:'金融研究院',verified:true,industry:'finance',skills:['rag','compliance','risk'],desc:'涵盖中、美、欧、日、新加坡等主要市场的金融监管法规，每日同步更新',docs:128,subscribers:1240,rating:4.8,price:0,cover:0},
+  {id:'pkb-2',name:'中医药典电子版',author:'同仁堂',verified:true,industry:'medical',skills:['rag','translation'],desc:'国家药典委员会授权，含中药材性味、归经、主治、用法用量及现代研究',docs:86,subscribers:458,rating:4.6,price:199,cover:1},
+  {id:'pkb-3',name:'中国法律法规全集',author:'平台官方',verified:true,industry:'legal',skills:['rag','compliance'],desc:'最高法、最高检、各部委、地方法规一站式检索，2026 年最新版',docs:312,subscribers:3520,rating:4.9,price:0,cover:4},
+  {id:'pkb-4',name:'跨境电商运营手册',author:'电商之家',verified:false,industry:'ecommerce',skills:['writing','translation','cs'],desc:'亚马逊/Shopify/TikTok Shop 全平台运营策略，含选品、广告、合规要点',docs:64,subscribers:892,rating:4.4,price:99,cover:2},
+  {id:'pkb-5',name:'K12教学大纲与题库',author:'教研中心',verified:true,industry:'education',skills:['summary','writing'],desc:'人教版/北师大/华师大全学科大纲，含历年真题及解析，适合智能辅导',docs:215,subscribers:2150,rating:4.7,price:0,cover:5},
+  {id:'pkb-6',name:'中国制造业ISO标准',author:'中国质量认证中心',verified:true,industry:'manufacture',skills:['rag','compliance'],desc:'ISO 9001/14001/45001 标准全文及实施指引，含中国 GB 标准对照',docs:48,subscribers:215,rating:4.5,price:299,cover:3},
+  {id:'pkb-7',name:'政府采购流程指南',author:'平台官方',verified:true,industry:'government',skills:['rag','report'],desc:'政府采购法及实施条例，招投标全流程模板与案例库',docs:35,subscribers:567,rating:4.6,price:0,cover:0},
+  {id:'pkb-8',name:'房产交易法规与合同',author:'链家研究院',verified:false,industry:'realestate',skills:['rag','compliance'],desc:'各城市限购限贷政策、交易税费、合同模板及风险提示',docs:42,subscribers:312,rating:4.3,price:149,cover:6},
+  {id:'pkb-9',name:'汽车维修技术资料',author:'汽修联盟',verified:false,industry:'automotive',skills:['rag','cs'],desc:'主流品牌轿车/SUV 维修手册、故障码大全、配件价格参考',docs:178,subscribers:745,rating:4.4,price:0,cover:7},
+  {id:'pkb-10',name:'旅游景点百科',author:'携程旅行',verified:true,industry:'tourism',skills:['rag','writing'],desc:'国内 5A/4A 景区详细介绍、攻略、当地特色与交通指南',docs:512,subscribers:1820,rating:4.7,price:0,cover:1},
+  {id:'pkb-11',name:'餐饮食品安全规范',author:'中国食品工业协会',verified:true,industry:'catering',skills:['compliance'],desc:'GB 食品安全国家标准、HACCP 体系、餐饮许可申请流程',docs:28,subscribers:423,rating:4.5,price:0,cover:2},
+  {id:'pkb-12',name:'HR招聘话术与面试题库',author:'人才云',verified:false,industry:'hr',skills:['writing','cs'],desc:'500+ 岗位 JD 模板、行为面试题、薪酬数据，含 AI 智能面试评分',docs:96,subscribers:1180,rating:4.6,price:79,cover:5},
+  {id:'pkb-13',name:'学术论文检索与摘要',author:'知网研学',verified:true,industry:'research',skills:['summary','translation','ner'],desc:'CNKI 1.2 亿篇文献摘要库，支持中英双语检索与一键综述生成',docs:1280,subscribers:876,rating:4.8,price:199,cover:4},
+  {id:'pkb-14',name:'软件开发最佳实践',author:'极客社区',verified:false,industry:'software',skills:['code','rag'],desc:'设计模式、架构案例、安全编码规范、code review checklist',docs:142,subscribers:2410,rating:4.7,price:0,cover:0},
+  {id:'pkb-15',name:'物流跨境清关指南',author:'菜鸟国际',verified:true,industry:'logistics',skills:['rag','translation'],desc:'各国海关申报要素、HS 编码查询、跨境结算与税务合规',docs:58,subscribers:234,rating:4.4,price:99,cover:3},
+];
+let subscribedIds=new Set(['pkb-3','pkb-5']);
+let filterIndustry='all',filterSkill='all',filterSort='hot';
+let activeKBTab='my';
+
+function refreshKBStats(){
+  document.getElementById('kbs-count').textContent=kbs.length;
+  let docs=0,chunks=0;
+  kbs.forEach(k=>{docs+=k.docs.length;k.docs.forEach(d=>chunks+=d.chunks||0);});
+  document.getElementById('kbs-docs').textContent=docs;
+  document.getElementById('kbs-chunks').textContent=chunks.toLocaleString();
+  document.getElementById('kbs-queries').textContent=(347+chunks*3).toLocaleString();
+  document.getElementById('tab-count-my').textContent=kbs.length;
+  document.getElementById('tab-count-public').textContent=PUBLIC_KBS.length;
+}
+
+function visIcon(v){
+  if(v==='public')return '<span style="color:var(--green);font-size:.62rem;background:rgba(5,150,105,.1);padding:1px 5px;border-radius:3px;font-weight:600">公开</span>';
+  if(v==='team')return '<span style="color:var(--blue);font-size:.62rem;background:rgba(37,99,235,.1);padding:1px 5px;border-radius:3px;font-weight:600">团队</span>';
+  return '<span style="color:var(--g500);font-size:.62rem;background:var(--g100);padding:1px 5px;border-radius:3px;font-weight:600">私有</span>';
+}
+function renderKBList(){
+  const c=document.getElementById('kb-list');c.innerHTML='';
+  if(kbs.length===0){c.innerHTML='<div style="font-size:.78rem;color:var(--g400);padding:14px 8px;text-align:center">还没有知识库<br>点击 + 新建</div>';return;}
+  kbs.forEach(k=>{
+    const active=selKB&&selKB.id===k.id?'active':'';
+    const flag=k.attached?'<span class="ka-flag">已挂载</span>':'';
+    c.innerHTML+=`<div class="kb-item ${active}" onclick="selectKB('${k.id}')">
+      <div class="kb-name">${esc(k.name)} ${flag}</div>
+      <div class="kb-meta">${visIcon(k.visibility||'private')}<span class="kb-tag">${KB_INDUSTRY_LABEL[k.industry]||k.industry}</span><span>${k.docs.length} 文档</span></div>
+    </div>`;
+  });
+}
+
+function selectKB(id){
+  selKB=kbs.find(k=>k.id===id);
+  renderKBList();
+  renderKBDetail();
+}
+
+function renderKBDetail(){
+  const d=document.getElementById('kb-detail');
+  if(!selKB){
+    d.innerHTML=`<div class="kb-detail-empty">
+      <svg width="56" height="56" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25"/></svg>
+      <div>选择左侧知识库查看文档，或新建一个</div>
+    </div>`;return;
+  }
+  const totalChunks=selKB.docs.reduce((s,d)=>s+(d.chunks||0),0);
+  const totalSize=selKB.docs.reduce((s,d)=>s+(d.size||0),0);
+  const attachLabel=selKB.attached?'<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg> 已挂载到工作台':'挂载到工作台';
+  const attachClass=selKB.attached?'attached':'';
+  const skillTags=(selKB.skills||[]).map(s=>`<span class="skill-chip compact">${SKILL_LABEL[s]||s}</span>`).join('');
+  const vis=selKB.visibility||'private';
+  const visRow=`<div class="vis-row">
+    <span class="vis-label">可见性</span>
+    <button class="vis-btn private ${vis==='private'?'active':''}" onclick="setVisibility('private')">🔒 私有</button>
+    <button class="vis-btn team ${vis==='team'?'active':''}" onclick="setVisibility('team')">👥 团队</button>
+    <button class="vis-btn public ${vis==='public'?'active':''}" onclick="setVisibility('public')">🌐 公开市场</button>
+  </div>`;
+  const publishForm=vis==='public'?`<div class="publish-form">
+      <div class="pf-title">📢 公开发布信息</div>
+      <label>简介 (公共市场展示)</label>
+      <textarea id="pf-desc" placeholder="描述这个知识库覆盖的内容和适用场景" oninput="selKB.publish_desc=this.value">${esc(selKB.publish_desc||'')}</textarea>
+      <div class="pf-row">
+        <div><label>定价模式</label><select id="pf-price-mode" onchange="selKB.publish_price_mode=this.value;renderKBDetail()">
+          <option value="free" ${(selKB.publish_price_mode||'free')==='free'?'selected':''}>免费</option>
+          <option value="monthly" ${selKB.publish_price_mode==='monthly'?'selected':''}>按月订阅</option>
+          <option value="onetime" ${selKB.publish_price_mode==='onetime'?'selected':''}>一次性</option>
+        </select></div>
+        <div><label>价格 (¥)</label><input type="number" id="pf-price" placeholder="0" value="${selKB.publish_price||0}" oninput="selKB.publish_price=parseInt(this.value)||0" ${(selKB.publish_price_mode||'free')==='free'?'disabled':''}></div>
+      </div>
+    </div>`:'';
+  d.innerHTML=`
+    <div class="kb-detail-header">
+      <div style="flex:1;min-width:0">
+        <h3>${esc(selKB.name)}</h3>
+        <div class="kbd-meta">${KB_INDUSTRY_LABEL[selKB.industry]} · ${selKB.docs.length} 文档 · ${totalChunks} 片段 · ${formatSize(totalSize)} · 嵌入 ${selKB.embed}</div>
+        ${skillTags?`<div class="skill-chips" style="margin-top:8px">${skillTags}</div>`:''}
+        ${visRow}
+        ${publishForm}
+      </div>
+      <div class="kbd-actions">
+        <button class="${attachClass}" onclick="toggleAttach()">${attachLabel}</button>
+        <button onclick="testKB()">检索测试</button>
+        <button class="danger" onclick="deleteKB()">删除</button>
+      </div>
+    </div>
+    <div class="upload-zone" id="kb-upload-zone" onclick="document.getElementById('kb-file-input').click()">
+      <svg class="uz-icon" width="36" height="36" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"/></svg>
+      <div class="uz-title">拖拽文件到此处，或点击上传</div>
+      <div class="uz-sub">单个文件 ≤ 20MB，自动解析、切片并向量化</div>
+      <div class="uz-types">
+        <span class="uz-type">PDF</span><span class="uz-type">DOCX</span><span class="uz-type">TXT</span><span class="uz-type">MD</span><span class="uz-type">CSV</span>
+      </div>
+    </div>
+    <div class="doc-section-title"><span>文档列表 (${selKB.docs.length})</span></div>
+    <div class="doc-list" id="kb-doc-list"></div>
+  `;
+  renderDocs();
+  bindUploadZone();
+}
+
+function renderDocs(){
+  if(!selKB)return;
+  const c=document.getElementById('kb-doc-list');if(!c)return;
+  if(selKB.docs.length===0){c.innerHTML='<div style="text-align:center;padding:30px;color:var(--g400);font-size:.85rem">还没有文档，上传第一份吧</div>';return;}
+  c.innerHTML='';
+  selKB.docs.forEach(doc=>{
+    const statusLabel={ready:'已索引',processing:doc.stage||'处理中',failed:'失败'}[doc.status];
+    const statusCls={ready:'ds-ready',processing:'ds-processing',failed:'ds-failed'}[doc.status];
+    const progress=doc.status==='processing'?`<div class="doc-progress"><div class="bar" style="width:${doc.progress||0}%"></div></div>`:'';
+    c.innerHTML+=`<div class="doc-item">
+      <div class="doc-icon ${doc.type}">${doc.type.toUpperCase()}</div>
+      <div class="doc-info">
+        <div class="doc-name">${esc(doc.name)}</div>
+        <div class="doc-meta"><span>${formatSize(doc.size)}</span>${doc.chunks?`<span>${doc.chunks} 片段</span>`:''}<span>${doc.uploaded||'刚刚'}</span></div>
+        ${progress}
+      </div>
+      <span class="doc-status ${statusCls}">${statusLabel}</span>
+      <div class="doc-actions"><button onclick="deleteDoc('${doc.id}')" title="删除"><svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"/></svg></button></div>
+    </div>`;
+  });
+}
+
+function formatSize(bytes){
+  if(!bytes)return '0 B';
+  if(bytes<1024)return bytes+' B';
+  if(bytes<1024*1024)return (bytes/1024).toFixed(1)+' KB';
+  return (bytes/1024/1024).toFixed(1)+' MB';
+}
+
+function bindUploadZone(){
+  const zone=document.getElementById('kb-upload-zone');
+  const input=document.getElementById('kb-file-input');
+  if(!zone||zone.dataset.bound)return;
+  zone.dataset.bound='1';
+  ['dragenter','dragover'].forEach(ev=>zone.addEventListener(ev,e=>{e.preventDefault();zone.classList.add('dragover');}));
+  ['dragleave','drop'].forEach(ev=>zone.addEventListener(ev,e=>{e.preventDefault();zone.classList.remove('dragover');}));
+  zone.addEventListener('drop',e=>handleFiles(e.dataTransfer.files));
+  input.onchange=e=>{handleFiles(e.target.files);input.value='';};
+}
+
+function handleFiles(files){
+  if(!selKB)return;
+  Array.from(files).forEach(f=>{
+    const ext=(f.name.split('.').pop()||'txt').toLowerCase();
+    if(!['pdf','docx','txt','md','csv'].includes(ext)){showToast('不支持的格式: '+ext);return;}
+    if(f.size>20*1024*1024){showToast('文件超过 20MB: '+f.name);return;}
+    const doc={id:'d-'+Date.now()+'-'+Math.random().toString(36).slice(2,6),name:f.name,type:ext,size:f.size,chunks:0,status:'processing',progress:0,stage:'上传中',uploaded:new Date().toISOString().slice(0,10)};
+    selKB.docs.unshift(doc);
+    renderDocs();
+    simulateProcess(doc);
+  });
+  refreshKBStats();renderKBList();renderKBDetail();
+}
+
+function simulateProcess(doc){
+  const stages=[
+    {label:'上传中',target:25,dur:600},
+    {label:'解析文本',target:50,dur:800},
+    {label:'切片',target:75,dur:600},
+    {label:'向量化',target:95,dur:900},
+  ];
+  let i=0;
+  function next(){
+    if(i>=stages.length){
+      doc.status='ready';doc.progress=100;doc.stage=null;
+      doc.chunks=Math.max(3,Math.round(doc.size/12000));
+      refreshKBStats();renderKBList();renderDocs();return;
+    }
+    const s=stages[i++];doc.stage=s.label;doc.progress=s.target;renderDocs();
+    setTimeout(next,s.dur);
+  }
+  setTimeout(next,200);
+}
+
+function openKBDialog(){
+  document.getElementById('kbd-name').value='';
+  // populate industry select
+  const ind=document.getElementById('kbd-industry');
+  ind.innerHTML=Object.entries(KB_INDUSTRY_LABEL).map(([k,v])=>`<option value="${k}">${v}</option>`).join('');
+  // populate skill chips
+  kbDialogSkills=new Set();
+  const sc=document.getElementById('kbd-skill-chips');
+  sc.innerHTML=SKILLS.map(s=>`<div class="skill-chip" data-v="${s.id}" onclick="toggleDialogSkill(this,'${s.id}')">${s.name}</div>`).join('');
+  document.getElementById('kb-dialog-bg').classList.add('show');
+  setTimeout(()=>document.getElementById('kbd-name').focus(),50);
+}
+function toggleDialogSkill(el,id){
+  if(kbDialogSkills.has(id)){kbDialogSkills.delete(id);el.classList.remove('active');}
+  else{kbDialogSkills.add(id);el.classList.add('active');}
+}
+function closeKBDialog(){document.getElementById('kb-dialog-bg').classList.remove('show');}
+function confirmCreateKB(){
+  const name=document.getElementById('kbd-name').value.trim();
+  if(!name){showToast('请输入知识库名称');return;}
+  const kb={id:'kb-'+Date.now(),name,industry:document.getElementById('kbd-industry').value,skills:Array.from(kbDialogSkills),embed:document.getElementById('kbd-embed').value,visibility:'private',attached:false,docs:[]};
+  kbs.push(kb);selKB=kb;
+  closeKBDialog();refreshKBStats();renderKBList();renderKBDetail();
+  showToast('知识库已创建');
+}
+function setVisibility(v){
+  if(!selKB)return;
+  selKB.visibility=v;
+  if(v==='public'&&!selKB.publish_price_mode)selKB.publish_price_mode='free';
+  renderKBList();renderKBDetail();
+  showToast({private:'已设为私有',team:'已共享给团队',public:'已发布到公共市场'}[v]);
+}
+
+function toggleAttach(){
+  if(!selKB)return;
+  selKB.attached=!selKB.attached;
+  renderKBList();renderKBDetail();
+  if(combo)renderAttachedKB();
+  showToast(selKB.attached?'已挂载到工作台':'已取消挂载');
+}
+
+function testKB(){
+  if(!selKB||selKB.docs.filter(d=>d.status==='ready').length===0){showToast('请先上传并等待文档处理完成');return;}
+  showToast('检索测试: 模拟从 '+selKB.docs.length+' 个文档中召回 Top-5 片段');
+}
+
+function deleteKB(){
+  if(!selKB||!confirm('删除知识库 "'+selKB.name+'" ?'))return;
+  kbs=kbs.filter(k=>k.id!==selKB.id);selKB=null;
+  refreshKBStats();renderKBList();renderKBDetail();renderAttachedKB();
+}
+
+function deleteDoc(id){
+  if(!selKB)return;
+  selKB.docs=selKB.docs.filter(d=>d.id!==id);
+  refreshKBStats();renderKBList();renderDocs();renderKBDetail();
+}
+
+function renderAttachedKB(){
+  const el=document.getElementById('sb-kb-attached');if(!el)return;
+  const att=kbs.filter(k=>k.attached);
+  if(att.length===0){el.innerHTML='';return;}
+  let inner='';
+  att.forEach(k=>{
+    const ch=k.docs.reduce((s,d)=>s+(d.chunks||0),0);
+    inner+=`<div class="ka-name">${esc(k.name)}<span class="ka-cnt">${ch} 片段</span></div>`;
+  });
+  el.innerHTML=`<div class="kb-attached">
+    <div class="ka-label"><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25"/></svg>已挂载知识库 (${att.length})</div>
+    <div class="ka-list">${inner}</div>
+    <a class="ka-link" onclick="showPage('knowledge')">管理 →</a>
+  </div>`;
+}
+
+// ═══ TABS ═══
+function switchKBTab(t){
+  activeKBTab=t;
+  document.querySelectorAll('.tab-content').forEach(el=>el.classList.remove('active'));
+  document.querySelectorAll('.kb-tab').forEach(el=>el.classList.remove('active'));
+  document.getElementById('tab-'+t).classList.add('active');
+  document.getElementById('tab-btn-'+t).classList.add('active');
+  if(t==='public')renderPublicMarket();
+}
+
+// ═══ PUBLIC MARKETPLACE ═══
+function renderFilterChips(){
+  // industry chips
+  const ic=document.getElementById('filter-industry');
+  // collect unique industries from public KBs (also include "all")
+  const usedInd=new Set(['all']);
+  PUBLIC_KBS.forEach(p=>usedInd.add(p.industry));
+  ic.innerHTML='<div class="filter-chip '+(filterIndustry==='all'?'active':'')+'" onclick="setFilterIndustry(\'all\')">全部</div>'+
+    Array.from(usedInd).filter(i=>i!=='all').map(i=>`<div class="filter-chip ${filterIndustry===i?'active':''}" onclick="setFilterIndustry('${i}')">${KB_INDUSTRY_LABEL[i]||i}</div>`).join('');
+  // skill chips
+  const sc=document.getElementById('filter-skill');
+  const usedSk=new Set();
+  PUBLIC_KBS.forEach(p=>(p.skills||[]).forEach(s=>usedSk.add(s)));
+  sc.innerHTML='<div class="filter-chip '+(filterSkill==='all'?'active':'')+'" onclick="setFilterSkill(\'all\')">全部</div>'+
+    Array.from(usedSk).map(s=>`<div class="filter-chip ${filterSkill===s?'active':''}" onclick="setFilterSkill('${s}')">${SKILL_LABEL[s]||s}</div>`).join('');
+}
+function setFilterIndustry(v){filterIndustry=v;renderPublicMarket();}
+function setFilterSkill(v){filterSkill=v;renderPublicMarket();}
+function setSort(v){
+  filterSort=v;
+  document.querySelectorAll('#filter-sort .filter-chip').forEach(c=>c.classList.toggle('active',c.dataset.v===v));
+  renderPublicMarket();
+}
+
+function renderPublicMarket(){
+  renderFilterChips();
+  // include user's own public KBs
+  const myPublic=kbs.filter(k=>k.visibility==='public').map(k=>({
+    id:k.id,name:k.name,author:'我',verified:false,industry:k.industry,
+    skills:k.skills||[],desc:k.publish_desc||'我发布的知识库',
+    docs:k.docs.length,subscribers:0,rating:0,
+    price:k.publish_price_mode==='free'?0:(k.publish_price||0),
+    cover:Math.abs(hash(k.id))%COVER_GRADIENTS.length,
+    isMine:true
+  }));
+  let list=[...myPublic,...PUBLIC_KBS];
+  // filter
+  if(filterIndustry!=='all')list=list.filter(p=>p.industry===filterIndustry);
+  if(filterSkill!=='all')list=list.filter(p=>(p.skills||[]).includes(filterSkill));
+  if(filterSort==='free')list=list.filter(p=>p.price===0);
+  // sort
+  if(filterSort==='hot')list.sort((a,b)=>b.subscribers-a.subscribers);
+  else if(filterSort==='new')list.sort((a,b)=>(b.id<a.id?1:-1));
+  else if(filterSort==='rating')list.sort((a,b)=>b.rating-a.rating);
+
+  document.getElementById('kb-result-count').innerHTML=`共 <b>${list.length}</b> 个公开知识库 ${filterIndustry!=='all'?'· '+KB_INDUSTRY_LABEL[filterIndustry]:''} ${filterSkill!=='all'?'· '+SKILL_LABEL[filterSkill]:''}`;
+  const grid=document.getElementById('kb-public-grid');
+  if(list.length===0){grid.innerHTML='<div class="kbpc-empty" style="grid-column:1/-1">没有匹配的知识库，试试其他筛选条件</div>';return;}
+  grid.innerHTML=list.map(p=>{
+    const subscribed=subscribedIds.has(p.id);
+    const priceTag=p.price===0?'<div class="kbpc-price free">免费</div>':`<div class="kbpc-price">¥${p.price}/月</div>`;
+    const verBadge=p.verified?'<span class="ver-badge">官方认证</span>':'';
+    const mineBadge=p.isMine?'<span class="ver-badge" style="background:rgba(124,58,237,.08);color:var(--purple)">我发布</span>':'';
+    const tags=[`<span class="kbpc-tag industry">${KB_INDUSTRY_LABEL[p.industry]||p.industry}</span>`]
+      .concat((p.skills||[]).slice(0,3).map(s=>`<span class="kbpc-tag">${SKILL_LABEL[s]||s}</span>`)).join('');
+    const stars=p.rating>0?`<span><span class="stars">★</span> ${p.rating.toFixed(1)}</span>`:'<span></span>';
+    const subBtn=p.isMine?`<button onclick="showToast('已发布在公共市场')">已发布</button>`:
+      subscribed?`<button class="subscribed" onclick="unsubscribe('${p.id}')">✓ 已订阅</button>`:
+      `<button class="primary" onclick="subscribePKB('${p.id}')">${p.price===0?'立即订阅':'订阅 ¥'+p.price+'/月'}</button>`;
+    return `<div class="kb-public-card">
+      <div class="kbpc-cover" style="background:${COVER_GRADIENTS[p.cover||0]}">${esc(p.name.slice(0,2))}${priceTag}</div>
+      <div class="kbpc-body">
+        <div class="kbpc-name">${esc(p.name)}</div>
+        <div class="kbpc-author">${esc(p.author)} ${verBadge} ${mineBadge}</div>
+        <div class="kbpc-desc">${esc(p.desc)}</div>
+        <div class="kbpc-tags">${tags}</div>
+        <div class="kbpc-stats">
+          <span>${p.docs} 文档 · ${p.subscribers.toLocaleString()} 订阅</span>
+          ${stars}
+        </div>
+      </div>
+      <div class="kbpc-actions">
+        <button onclick="previewPKB('${p.id}')">预览</button>
+        ${subBtn}
+      </div>
+    </div>`;
+  }).join('');
+}
+function subscribePKB(id){
+  subscribedIds.add(id);
+  const p=PUBLIC_KBS.find(x=>x.id===id);if(p)p.subscribers++;
+  renderPublicMarket();showToast('已订阅，可在工作台挂载使用');
+}
+function unsubscribe(id){
+  subscribedIds.delete(id);
+  renderPublicMarket();showToast('已取消订阅');
+}
+function previewPKB(id){
+  const p=PUBLIC_KBS.find(x=>x.id===id)||kbs.find(k=>k.id===id);
+  if(!p)return;
+  showToast('预览: '+p.name+' (含 '+(p.docs||p.docs?.length||0)+' 个文档样本)');
+}
+function hash(s){let h=0;for(let i=0;i<s.length;i++){h=((h<<5)-h)+s.charCodeAt(i);h|=0;}return h;}
+
 // ═══ PAGE ═══
 function showPage(n){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
@@ -465,7 +1117,8 @@ function showPage(n){
   document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));
   const a=document.getElementById('nav-'+n);if(a)a.classList.add('active');
   if(n==='landing'){window.scrollTo(0,0);initFade();}
-  if(n==='chat'&&!combo){combo=C['ecommerce_chat'];buildSB();}
+  if(n==='chat'){if(!combo){combo=C['ecommerce_chat'];buildSB();}renderAttachedKB();}
+  if(n==='knowledge'){refreshKBStats();renderKBList();renderKBDetail();if(activeKBTab==='public')renderPublicMarket();}
 }
 
 // ═══ CHIPS ═══
