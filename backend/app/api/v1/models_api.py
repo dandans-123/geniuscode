@@ -25,7 +25,7 @@ def list_models(
                 "id": m.name,
                 "object": "model",
                 "created": int(time.time()),
-                "owned_by": "taskrouter",
+                "owned_by": "modelmux",
                 "permission": [],
                 "root": m.name,
                 "parent": None,

@@ -28,7 +28,7 @@ def get_api_key(key_id: int, db: Session = Depends(get_db)):
 
 @router.post("/api-keys", response_model=ApiKeyResponse)
 def create_api_key(data: ApiKeyCreate, db: Session = Depends(get_db)):
-    key = data.key or f"sk-taskrouter-{secrets.token_hex(24)}"
+    key = data.key or f"sk-modelmux-{secrets.token_hex(24)}"
     api_key = ApiKey(
         key=key,
         name=data.name,

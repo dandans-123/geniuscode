@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TaskRouter AI - AI 任务路由与成本管理平台</title>
+<title>ModelMux AI - AI 任务路由与成本管理平台</title>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
@@ -373,7 +373,7 @@ footer{background:var(--navy);color:var(--g400);padding:48px 0 24px}
 <!-- NAV -->
 <nav>
   <div class="container">
-    <div class="nav-logo" onclick="showPage('landing')"><div class="dot">TR</div>TaskRouter AI</div>
+    <div class="nav-logo" onclick="showPage('landing')"><div class="dot">TR</div>ModelMux AI</div>
     <ul class="nav-links">
       <li><a onclick="showPage('landing')" id="nav-landing" class="active">首页</a></li>
       <li><a onclick="showPage('recommend')" id="nav-recommend">任务配置</a></li>
@@ -391,21 +391,21 @@ footer{background:var(--navy);color:var(--g400);padding:48px 0 24px}
   <div class="particles"><i></i><i></i><i></i><i></i><i></i><i></i></div>
   <div class="hero-grid"></div>
   <div class="container">
-    <div class="hero-badge"><span class="pulse"></span>AI 任务路由与成本管理平台</div>
-    <h1>让每个 AI 任务<br>自动找到<span class="gr">最合适的模型</span></h1>
-    <p class="hero-desc">你只需提交 AI 任务，TaskRouter 帮你自动选择最优模型组合，降低调用成本 30-50%，并生成可追踪的用量和质量报告。</p>
+    <div class="hero-badge"><span class="pulse"></span>ModelMux · 开发者最懂业务的 AI 路由层 / The AI routing layer that gets your business</div>
+    <h1>一行代码，<br>让每个请求<span class="gr">跑在对的模型上</span><br><small style="font-size:.5em;font-weight:500;opacity:.85;display:block;margin-top:.6em">One line of code. Every call on the right model.</small></h1>
+    <p class="hero-desc">OpenAI 兼容接口，按任务和预算自动路由到合适的模型，账单和质量都能追溯。<br><span style="opacity:.85">OpenAI-compatible API. Routes each call to the right model by task and budget — with auditable cost and quality.</span></p>
     <div class="hero-actions">
       <button class="btn btn-primary" onclick="showPage('recommend')">
         <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
-        配置任务路由
+        免费接入 / Start free
       </button>
-      <button class="btn btn-outline-w" onclick="showPage('chat')">体验工作台</button>
+      <button class="btn btn-outline-w" onclick="showPage('chat')">看 5 分钟 Demo / See 5-min demo</button>
     </div>
     <div class="hero-stats">
-      <div class="hero-stat"><div class="num">200<span>+</span></div><div class="label">接入模型与能力</div></div>
-      <div class="hero-stat"><div class="num">30-50<span>%</span></div><div class="label">平均降本幅度</div></div>
-      <div class="hero-stat"><div class="num">99.<span>9%</span></div><div class="label">平台可用率</div></div>
-      <div class="hero-stat"><div class="num">&lt;100<span>ms</span></div><div class="label">路由延迟</div></div>
+      <div class="hero-stat"><div class="num">2<span>+</span></div><div class="label">V1 已接入 (OpenAI · DeepSeek)</div></div>
+      <div class="hero-stat"><div class="num">30-50<span>%</span></div><div class="label">典型场景降本区间</div></div>
+      <div class="hero-stat"><div class="num">[V1]<span></span></div><div class="label">真实可用率 (上线后填充)</div></div>
+      <div class="hero-stat"><div class="num">&lt;100<span>ms</span></div><div class="label">路由层延迟</div></div>
     </div>
   </div>
 </section>
@@ -413,8 +413,8 @@ footer{background:var(--navy);color:var(--g400);padding:48px 0 24px}
 <!-- FEATURES -->
 <section class="section section-gray" id="features">
   <div class="container">
-    <div class="stitle fade-up">六大核心模块</div>
-    <div class="ssub fade-up">不是简单的 API 转售，而是覆盖任务路由、成本治理、质量评估和结算的完整基础设施</div>
+    <div class="stitle fade-up">六大核心模块 / Six building blocks</div>
+    <div class="ssub fade-up">不只是 API 网关：路由、成本、质量、结算，开发者要的都在一层里。<br><span style="opacity:.8">More than a gateway: routing, cost, quality and billing — all in one layer you control.</span></div>
     <div class="feat-grid">
       <div class="feat-card fade-up"><div class="icon" style="background:rgba(37,99,235,.1);color:var(--blue)"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div><h3>多模型网关</h3><p>统一 API 接入 200+ 模型，OpenAI 兼容格式，SDK 开箱即用，代码零改动。</p></div>
       <div class="feat-card fade-up"><div class="icon" style="background:rgba(5,150,105,.1);color:var(--green)"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6m6 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0h6m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14"/></svg></div><h3>任务路由引擎</h3><p>根据任务类型、质量要求、成本预算和延迟目标，自动选择最优模型组合。</p></div>
@@ -478,7 +478,7 @@ footer{background:var(--navy);color:var(--g400);padding:48px 0 24px}
 <!-- CTA -->
 <section class="cta-section">
   <div class="container"><div class="cta-content fade-up">
-    <h2>开始使用 TaskRouter AI</h2>
+    <h2>开始使用 ModelMux AI</h2>
     <p>加入试点计划，成为首批客户或能力供应商</p>
     <div class="cta-actions">
       <button class="btn btn-gold" onclick="showToast('试点申请即将开放')">申请企业试用</button>
@@ -488,8 +488,8 @@ footer{background:var(--navy);color:var(--g400);padding:48px 0 24px}
 </section>
 
 <footer><div class="container"><div class="footer-inner">
-  <div class="nav-logo"><div class="dot">TR</div>TaskRouter AI</div>
-  <div class="footer-right">&copy; 2026 TaskRouter AI &middot; 让每个 AI 任务，自动找到最合适的模型</div>
+  <div class="nav-logo"><div class="dot">TR</div>ModelMux AI</div>
+  <div class="footer-right">&copy; 2026 ModelMux AI &middot; 让每个 AI 任务，自动找到最合适的模型</div>
 </div></div></footer>
 </div>
 
@@ -643,12 +643,12 @@ footer{background:var(--navy);color:var(--g400);padding:48px 0 24px}
     </div>
     <div class="chat-main">
       <div class="chat-topbar">
-        <span class="ct-title" id="ct-title">TaskRouter 工作台</span>
+        <span class="ct-title" id="ct-title">ModelMux 工作台</span>
         <span class="ct-badge">在线</span>
         <div class="ct-route"><span class="route-dot"></span><span id="ct-route">智能路由中</span></div>
       </div>
       <div class="chat-messages" id="chat-msgs">
-        <div class="msg msg-ai"><div class="msg-avatar">TR</div><div><div class="msg-bubble">你好！TaskRouter 工作台已就绪。左侧面板显示当前路由方案和实时指标，你可以直接提问。</div><div class="msg-model-tag"><span class="mmt-dot"></span>系统消息</div></div></div>
+        <div class="msg msg-ai"><div class="msg-avatar">TR</div><div><div class="msg-bubble">你好！ModelMux 工作台已就绪。左侧面板显示当前路由方案和实时指标，你可以直接提问。</div><div class="msg-model-tag"><span class="mmt-dot"></span>系统消息</div></div></div>
       </div>
       <div class="chat-input-bar">
         <textarea class="chat-input" id="chat-input" rows="1" placeholder="输入消息... (Enter 发送)" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();send()}" oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,120)+'px'"></textarea>
@@ -677,7 +677,7 @@ const MDB={
 const C={
   finance_chat:{t:'金融智能客服',s:'合规敏感 · 低幻觉',sc:[96,88,72],p:'¥3.2',m:[{id:'claude-3.5-sonnet',role:'主力模型',rc:'role-primary',w:'幻觉率最低'},{id:'gpt-4o',role:'备用模型',rc:'role-fallback',w:'主力不可用时切换'},{id:'qwen-turbo',role:'快速响应',rc:'role-specialist',w:'简单查询降本 80%'}],why:'金融客服对准确性要求极高。Claude 3.5 幻觉率 < 2%，处理复杂金融问题；简单查询走 Qwen-Turbo 快速响应。'},
   finance_analysis:{t:'金融数据分析',s:'数值精准 · 深度推理',sc:[94,82,68],p:'¥4.5',m:[{id:'gpt-4o',role:'主力模型',rc:'role-primary',w:'数值推理最强'},{id:'claude-3.5-sonnet',role:'备用模型',rc:'role-fallback',w:'长文档分析'},{id:'deepseek-v3',role:'代码生成',rc:'role-specialist',w:'Python 分析脚本'}],why:'金融数据分析需要精确的数值推理。GPT-4o 数学评测最优；代码生成自动路由到 DeepSeek-V3。'},
-  medical_chat:{t:'医疗智能问诊',s:'医学知识 · 安全可控',sc:[97,80,75],p:'¥4.0',m:[{id:'gpt-4o',role:'主力模型',rc:'role-primary',w:'医学推理评测领先'},{id:'claude-3.5-sonnet',role:'备用模型',rc:'role-fallback',w:'医学对话能力强'},{id:'ernie-4',role:'中医知识',rc:'role-specialist',w:'中文医学语料丰富'}],why:'医疗场景安全性最高。GPT-4o USMLE 评测领先；中医问题路由到 ERNIE 4.0。'},
+  medical_chat:{t:'医疗智能问诊',s:'医学知识 · 安全可控',sc:[97,80,75],p:'¥4.0',m:[{id:'gpt-4o',role:'主力模型',rc:'role-primary',w:'医学推理基准表现稳定 [V1 上线后填充分数]'},{id:'claude-3.5-sonnet',role:'备用模型',rc:'role-fallback',w:'医学对话能力强'},{id:'ernie-4',role:'中医知识',rc:'role-specialist',w:'中文医学语料丰富'}],why:'医疗场景安全性最高。GPT-4o 在 USMLE 类基准上表现稳定 [V1 上线后填充分数]；中医问题路由到 ERNIE 4.0。'},
   legal_chat:{t:'法律智能咨询',s:'法条引用 · 逻辑严谨',sc:[94,84,73],p:'¥3.6',m:[{id:'claude-3.5-sonnet',role:'主力模型',rc:'role-primary',w:'逻辑推理强'},{id:'glm-4',role:'备用模型',rc:'role-fallback',w:'中文法律术语好'},{id:'qwen-turbo',role:'快速检索',rc:'role-specialist',w:'简单法条查询'}],why:'法律咨询需要严谨推理和法条引用。Claude 3.5 逻辑一致性最优；中国法律走 GLM-4。'},
   ecommerce_chat:{t:'电商智能客服',s:'高并发 · 快速响应 · 成本优先',sc:[85,96,92],p:'¥0.8',m:[{id:'qwen-turbo',role:'主力模型',rc:'role-primary',w:'性价比最高'},{id:'gpt-4o-mini',role:'备用模型',rc:'role-fallback',w:'高峰分流'},{id:'claude-3.5-sonnet',role:'复杂问题',rc:'role-specialist',w:'投诉退换升级处理'}],why:'电商客服 80% 是简单咨询，走 Qwen-Turbo 成本极低；复杂投诉自动升级到 Claude 3.5。'},
   ecommerce_writing:{t:'电商内容生成',s:'商品描述 · 营销文案',sc:[88,92,85],p:'¥1.2',m:[{id:'deepseek-v3',role:'主力模型',rc:'role-primary',w:'中文创意性价比高'},{id:'gpt-4o-mini',role:'批量生成',rc:'role-specialist',w:'SKU 批量极低成本'},{id:'claude-3.5-sonnet',role:'高端文案',rc:'role-fallback',w:'品牌大促文案'}],why:'日常商品描述走 DeepSeek-V3；批量 SKU 走 GPT-4o Mini；品牌文案走 Claude 3.5。'},
@@ -695,8 +695,8 @@ for(const i of INDS)for(const t of TASKS){
   const k=i+'_'+t;if(C[k])continue;
   let m=[{id:'gpt-4o',role:'主力模型',rc:'role-primary',w:'综合能力最强'},{id:'deepseek-v3',role:'备用模型',rc:'role-fallback',w:'性价比最优'},{id:'qwen-turbo',role:'快速响应',rc:'role-specialist',w:'简单任务降本'}];
   let sc=[90,90,80],p='¥2.5',w='通用场景采用「强模型 + 高性价比 + 轻量快速」三角组合，根据请求复杂度自动路由。';
-  if(t==='code'){m=[{id:'deepseek-coder',role:'主力模型',rc:'role-primary',w:'代码评测最优'},{id:'claude-3.5-sonnet',role:'备用模型',rc:'role-fallback',w:'复杂架构设计'},{id:'gpt-4o-mini',role:'快速补全',rc:'role-specialist',w:'简单代码'}];sc=[92,90,75];p='¥2.0';w='代码场景首选 DeepSeek Coder V2（HumanEval 领先）；复杂设计走 Claude 3.5；简单补全走 GPT-4o Mini。';}
-  if(t==='agent'){m=[{id:'claude-3.5-sonnet',role:'主力模型',rc:'role-primary',w:'工具调用最强'},{id:'gpt-4o',role:'备用模型',rc:'role-fallback',w:'Function Calling 强'},{id:'deepseek-v3',role:'执行层',rc:'role-specialist',w:'具体任务执行降本'}];sc=[94,85,72];p='¥3.5';w='Agent 工作流需要强大的工具调用和多步推理。Claude 3.5 Tool Use 领先；执行步骤下发给 DeepSeek-V3。';}
+  if(t==='code'){m=[{id:'deepseek-coder',role:'主力模型',rc:'role-primary',w:'代码任务表现优异 [V1 上线后填 HumanEval 实测]'},{id:'claude-3.5-sonnet',role:'备用模型',rc:'role-fallback',w:'复杂架构设计'},{id:'gpt-4o-mini',role:'快速补全',rc:'role-specialist',w:'简单代码'}];sc=[92,90,75];p='¥2.0';w='代码场景首选 DeepSeek Coder V2（HumanEval 表现优异，分数 [V1 上线后填充]）；复杂设计走 Claude 3.5；简单补全走 GPT-4o Mini。';}
+  if(t==='agent'){m=[{id:'claude-3.5-sonnet',role:'主力模型',rc:'role-primary',w:'Tool Use 表现稳定 [V1 上线后填实测]'},{id:'gpt-4o',role:'备用模型',rc:'role-fallback',w:'Function Calling 强'},{id:'deepseek-v3',role:'执行层',rc:'role-specialist',w:'具体任务执行降本'}];sc=[94,85,72];p='¥3.5';w='Agent 工作流需要强大的工具调用和多步推理。Claude 3.5 在 Tool Use 类基准上表现稳定 [V1 上线后填分数]；执行步骤下发给 DeepSeek-V3。';}
   if(t==='translation'){m[0]={id:'gpt-4o',role:'主力模型',rc:'role-primary',w:'多语种最优'};p='¥1.8';w='翻译任务 GPT-4o 多语种质量最佳，中英高频走 DeepSeek-V3 降本。';}
   if(t==='summary'){m=[{id:'moonshot-v1',role:'主力模型',rc:'role-primary',w:'128K 超长上下文'},{id:'claude-3.5-sonnet',role:'备用模型',rc:'role-fallback',w:'精度要求高时切换'},{id:'qwen-turbo',role:'快速摘要',rc:'role-specialist',w:'短文档'}];sc=[92,90,65];p='¥2.8';w='长文档走 Moonshot 128K 一次性处理；短文档走 Qwen-Turbo 节省成本。';}
   if(t==='rag'){m=[{id:'claude-3.5-sonnet',role:'主力模型',rc:'role-primary',w:'RAG 引用准确率最高'},{id:'gpt-4o',role:'备用模型',rc:'role-fallback',w:'复杂推理'},{id:'qwen-max',role:'中文检索',rc:'role-specialist',w:'中文文献理解强'}];sc=[95,83,70];p='¥3.5';w='知识问答需精确引用。Claude 3.5 引用忠实度 > 97%，减少幻觉风险。';}
@@ -1168,7 +1168,7 @@ function esc(t){const d=document.createElement('div');d.textContent=t;return d.i
 
 const RESP=[
   {kw:['你好','hello','hi'],r:'你好！有什么可以帮你的？左侧面板显示了当前路由方案的实时状态。',mi:0},
-  {kw:['介绍','是什么','taskrouter'],r:'TaskRouter AI 是 AI 任务路由与成本管理平台。我们帮你把每个 AI 任务自动分配给最合适的模型，降低成本 30-50%，同时保证质量和稳定性。\n\n你不需要自己管理多个模型 API，只需提交任务，平台自动路由。',mi:0},
+  {kw:['介绍','是什么','modelmux'],r:'ModelMux AI 是 AI 任务路由与成本管理平台。我们帮你把每个 AI 任务自动分配给最合适的模型，降低成本 30-50%，同时保证质量和稳定性。\n\n你不需要自己管理多个模型 API，只需提交任务，平台自动路由。',mi:0},
   {kw:['代码','code','python','函数'],r:'这是编程任务，已自动路由到代码专项模型。\n\n```python\ndef process_data(data):\n    results = []\n    for item in data:\n        cleaned = item.strip().lower()\n        if cleaned:\n            results.append(cleaned)\n    return results\n```\n\n需要修改或解释吗？',mi:2},
   {kw:['成本','价格','多少钱','降本'],r:'当前路由方案的定价策略：\n\n- 简单查询：走轻量模型，约 ¥0.002/千 Token\n- 复杂任务：走主力模型，约 ¥0.03-0.04/千 Token\n- 平台智能路由平均降本 30-40%\n\n左侧面板实时显示累计成本。',mi:0},
   {kw:['模型','切换','路由'],r:'当前方案包含三个角色：\n\n1. **主力模型** — 处理大部分请求，质量最优\n2. **备用模型** — 主力不可用时秒级切换\n3. **专项模型** — 特定任务走专项通道\n\n平台根据请求内容自动路由，左侧面板绿色圆点 = 当前活跃模型。',mi:0},

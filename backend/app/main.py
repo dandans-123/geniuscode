@@ -26,7 +26,7 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(
-    title="TaskRouter AI",
+    title="ModelMux AI",
     description="Multi-model AI gateway with intelligent routing and usage billing",
     version="0.1.0",
     lifespan=lifespan,

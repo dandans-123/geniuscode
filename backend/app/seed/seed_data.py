@@ -260,9 +260,9 @@ def seed_database(db: Session):
 
     # Create default API key
     api_key = ApiKey(
-        key="sk-taskrouter-dev-000000000000000000000000",
+        key="sk-modelmux-dev-000000000000000000000000",
         name="Development Key",
-        owner_email="dev@taskrouter.ai",
+        owner_email="dev@modelmux.ai",
         is_active=True,
         rate_limit_rpm=60,
         rate_limit_tpm=100000,

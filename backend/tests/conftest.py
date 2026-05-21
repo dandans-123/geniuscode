@@ -40,7 +40,7 @@ def client(db_session):
 
 @pytest.fixture
 def auth_headers():
-    return {"Authorization": "Bearer sk-taskrouter-dev-000000000000000000000000"}
+    return {"Authorization": "Bearer sk-modelmux-dev-000000000000000000000000"}
 
 
 @pytest.fixture

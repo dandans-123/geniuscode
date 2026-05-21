@@ -4,7 +4,7 @@ from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
-    DATABASE_URL: str = "sqlite:///./taskrouter.db"
+    DATABASE_URL: str = "sqlite:///./modelmux.db"
     ADMIN_API_KEY: str = "admin-secret-key-change-me"
     DEFAULT_RATE_LIMIT_RPM: int = 60
     DEFAULT_RATE_LIMIT_TPM: int = 100000

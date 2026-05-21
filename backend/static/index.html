@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TaskRouter AI - AI 任务路由与成本管理平台</title>
+<title>ModelMux AI - AI 任务路由与成本管理平台</title>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
@@ -373,7 +373,7 @@ footer{background:var(--navy);color:var(--g400);padding:48px 0 24px}
 <!-- NAV -->
 <nav>
   <div class="container">
-    <div class="nav-logo" onclick="showPage('landing')"><div class="dot">TR</div>TaskRouter AI</div>
+    <div class="nav-logo" onclick="showPage('landing')"><div class="dot">TR</div>ModelMux AI</div>
     <ul class="nav-links">
       <li><a onclick="showPage('landing')" id="nav-landing" class="active">首页</a></li>
       <li><a onclick="showPage('recommend')" id="nav-recommend">任务配置</a></li>
@@ -393,7 +393,7 @@ footer{background:var(--navy);color:var(--g400);padding:48px 0 24px}
   <div class="container">
     <div class="hero-badge"><span class="pulse"></span>AI 任务路由与成本管理平台</div>
     <h1>让每个 AI 任务<br>自动找到<span class="gr">最合适的模型</span></h1>
-    <p class="hero-desc">你只需提交 AI 任务，TaskRouter 帮你自动选择最优模型组合，降低调用成本 30-50%，并生成可追踪的用量和质量报告。</p>
+    <p class="hero-desc">你只需提交 AI 任务，ModelMux 帮你自动选择最优模型组合，降低调用成本 30-50%，并生成可追踪的用量和质量报告。</p>
     <div class="hero-actions">
       <button class="btn btn-primary" onclick="showPage('recommend')">
         <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
@@ -478,7 +478,7 @@ footer{background:var(--navy);color:var(--g400);padding:48px 0 24px}
 <!-- CTA -->
 <section class="cta-section">
   <div class="container"><div class="cta-content fade-up">
-    <h2>开始使用 TaskRouter AI</h2>
+    <h2>开始使用 ModelMux AI</h2>
     <p>加入试点计划，成为首批客户或能力供应商</p>
     <div class="cta-actions">
       <button class="btn btn-gold" onclick="showToast('试点申请即将开放')">申请企业试用</button>
@@ -488,8 +488,8 @@ footer{background:var(--navy);color:var(--g400);padding:48px 0 24px}
 </section>
 
 <footer><div class="container"><div class="footer-inner">
-  <div class="nav-logo"><div class="dot">TR</div>TaskRouter AI</div>
-  <div class="footer-right">&copy; 2026 TaskRouter AI &middot; 让每个 AI 任务，自动找到最合适的模型</div>
+  <div class="nav-logo"><div class="dot">TR</div>ModelMux AI</div>
+  <div class="footer-right">&copy; 2026 ModelMux AI &middot; 让每个 AI 任务，自动找到最合适的模型</div>
 </div></div></footer>
 </div>
 
@@ -643,12 +643,12 @@ footer{background:var(--navy);color:var(--g400);padding:48px 0 24px}
     </div>
     <div class="chat-main">
       <div class="chat-topbar">
-        <span class="ct-title" id="ct-title">TaskRouter 工作台</span>
+        <span class="ct-title" id="ct-title">ModelMux 工作台</span>
         <span class="ct-badge">在线</span>
         <div class="ct-route"><span class="route-dot"></span><span id="ct-route">智能路由中</span></div>
       </div>
       <div class="chat-messages" id="chat-msgs">
-        <div class="msg msg-ai"><div class="msg-avatar">TR</div><div><div class="msg-bubble">你好！TaskRouter 工作台已就绪。左侧面板显示当前路由方案和实时指标，你可以直接提问。</div><div class="msg-model-tag"><span class="mmt-dot"></span>系统消息</div></div></div>
+        <div class="msg msg-ai"><div class="msg-avatar">TR</div><div><div class="msg-bubble">你好！ModelMux 工作台已就绪。左侧面板显示当前路由方案和实时指标，你可以直接提问。</div><div class="msg-model-tag"><span class="mmt-dot"></span>系统消息</div></div></div>
       </div>
       <div class="chat-input-bar">
         <textarea class="chat-input" id="chat-input" rows="1" placeholder="输入消息... (Enter 发送)" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();send()}" oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,120)+'px'"></textarea>
@@ -708,7 +708,7 @@ let selInd=null,selTask=null,combo=null,totTok=0,totCost=0,swCnt=0;
 
 // ═══ KNOWLEDGE API HELPER ═══
 const KB_API='/v1/knowledge';
-const KB_TOKEN='sk-taskrouter-dev-000000000000000000000000';
+const KB_TOKEN='sk-modelmux-dev-000000000000000000000000';
 async function kbApi(path,opts={}){
   const headers={'Authorization':'Bearer '+KB_TOKEN,...(opts.headers||{})};
   if(opts.body!==undefined&&!(opts.body instanceof FormData)){
@@ -1190,7 +1190,7 @@ function esc(t){const d=document.createElement('div');d.textContent=t;return d.i
 
 const RESP=[
   {kw:['你好','hello','hi'],r:'你好！有什么可以帮你的？左侧面板显示了当前路由方案的实时状态。',mi:0},
-  {kw:['介绍','是什么','taskrouter'],r:'TaskRouter AI 是 AI 任务路由与成本管理平台。我们帮你把每个 AI 任务自动分配给最合适的模型，降低成本 30-50%，同时保证质量和稳定性。\n\n你不需要自己管理多个模型 API，只需提交任务，平台自动路由。',mi:0},
+  {kw:['介绍','是什么','modelmux'],r:'ModelMux AI 是 AI 任务路由与成本管理平台。我们帮你把每个 AI 任务自动分配给最合适的模型，降低成本 30-50%，同时保证质量和稳定性。\n\n你不需要自己管理多个模型 API，只需提交任务，平台自动路由。',mi:0},
   {kw:['代码','code','python','函数'],r:'这是编程任务，已自动路由到代码专项模型。\n\n```python\ndef process_data(data):\n    results = []\n    for item in data:\n        cleaned = item.strip().lower()\n        if cleaned:\n            results.append(cleaned)\n    return results\n```\n\n需要修改或解释吗？',mi:2},
   {kw:['成本','价格','多少钱','降本'],r:'当前路由方案的定价策略：\n\n- 简单查询：走轻量模型，约 ¥0.002/千 Token\n- 复杂任务：走主力模型，约 ¥0.03-0.04/千 Token\n- 平台智能路由平均降本 30-40%\n\n左侧面板实时显示累计成本。',mi:0},
   {kw:['模型','切换','路由'],r:'当前方案包含三个角色：\n\n1. **主力模型** — 处理大部分请求，质量最优\n2. **备用模型** — 主力不可用时秒级切换\n3. **专项模型** — 特定任务走专项通道\n\n平台根据请求内容自动路由，左侧面板绿色圆点 = 当前活跃模型。',mi:0},
@@ -1212,7 +1212,7 @@ async function send(){
       method:'POST',
       headers:{
         'Content-Type':'application/json',
-        'Authorization':'Bearer sk-taskrouter-dev-000000000000000000000000',
+        'Authorization':'Bearer sk-modelmux-dev-000000000000000000000000',
         'X-Industry':selInd||'',
         'X-Task-Type':selTask||''
       },
