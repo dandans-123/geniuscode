@@ -3,118 +3,181 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ModelMux AI - AI 任务路由与成本管理平台</title>
+<title>ModelMux — 一行代码，让每个请求跑在对的模型上</title>
+<meta name="description" content="OpenAI 兼容接口, 按任务和预算自动路由到合适的模型, 账单和质量都能追溯。">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="ModelMux — 一行代码，让每个请求跑在对的模型上">
+<meta property="og:description" content="OpenAI 兼容接口, 按任务和预算自动路由到合适的模型, 账单和质量都能追溯。">
+<meta property="og:url" content="https://modelmux.ai/">
+<meta property="og:image" content="https://modelmux.ai/assets/og.png">
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="ModelMux — One line of code. Every call on the right model.">
+<meta name="twitter:description" content="OpenAI-compatible API. Routes each call to the right model by task and budget — with auditable cost and quality.">
+<meta name="twitter:image" content="https://modelmux.ai/assets/og.png">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;color:#1e293b;background:#fff;line-height:1.6;overflow-x:hidden}
-a{color:inherit;text-decoration:none}
 :root{
-  --navy:#0f172a;--blue:#2563eb;--blue-l:#3b82f6;--gold:#d4a843;
-  --g50:#f8fafc;--g100:#f1f5f9;--g200:#e2e8f0;--g300:#cbd5e1;
-  --g400:#94a3b8;--g500:#64748b;--g600:#475569;--g900:#0f172a;
-  --green:#059669;--green-l:#d1fae5;--purple:#7c3aed;
-  --pink:#db2777;--orange:#d97706;--red:#dc2626;
-  --r:12px;--shadow:0 4px 24px rgba(0,0,0,.08);--shadow-lg:0 12px 48px rgba(0,0,0,.12);
+  /* Stage 1 tokens (locked) */
+  --blue:#2563EB;--blue-l:#3B82F6;--blue-d:#1D4ED8;
+  --green:#059669;--green-l:#D1FAE5;
+  --gold:#D4A843;
+  --purple:#7c3aed;--orange:#d97706;--red:#dc2626;--pink:#db2777;
+  /* Neutrals */
+  --bg:#FFFFFF;--bg-soft:#F8FAFC;--border:#E2E8F0;--ink:#0F172A;
+  --g100:#F1F5F9;--g200:#E2E8F0;--g300:#CBD5E1;--g400:#94A3B8;
+  --g500:#64748B;--g600:#475569;--g900:#0F172A;
+  --navy:#0F172A;
+  /* Geometry */
+  --r-sm:4px;--r:8px;--r-lg:12px;
+  --shadow-1:0 1px 3px rgba(15,23,42,.06),0 1px 2px rgba(15,23,42,.04);
+  --shadow-2:0 10px 30px rgba(15,23,42,.08),0 4px 12px rgba(15,23,42,.04);
+  --shadow:0 4px 24px rgba(0,0,0,.06);--shadow-lg:0 12px 48px rgba(0,0,0,.10);
+  --t:all .2s ease;
+  /* Mono */
+  --mono:"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
 }
+body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Inter","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;color:var(--ink);background:var(--bg);line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit}
 .container{max-width:1200px;margin:0 auto;padding:0 24px}
-/* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(15,23,42,.88);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,.06)}
-nav .container{display:flex;align-items:center;justify-content:space-between;height:64px}
-.nav-logo{display:flex;align-items:center;gap:10px;font-size:1.15rem;font-weight:700;color:#fff;cursor:pointer}
-.nav-logo .dot{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--blue),var(--purple));display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff}
-.nav-links{display:flex;gap:24px;list-style:none}
-.nav-links a{color:var(--g400);font-size:.85rem;font-weight:500;transition:color .2s;cursor:pointer}
-.nav-links a:hover,.nav-links a.active{color:#fff}
-.nav-cta{padding:8px 20px;background:var(--blue);color:#fff;border-radius:8px;font-size:.8rem;font-weight:600;border:none;cursor:pointer;transition:all .2s}
-.nav-cta:hover{background:var(--blue-l)}
+/* NAV (light) */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,.85);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+nav .container{display:flex;align-items:center;justify-content:space-between;height:64px;gap:24px}
+.nav-logo{display:flex;align-items:center;gap:10px;font-size:1.05rem;font-weight:700;color:var(--ink);cursor:pointer;letter-spacing:-0.01em}
+.nav-logo svg{display:block}
+.nav-links{display:flex;gap:28px;list-style:none}
+.nav-links a{color:var(--g600);font-size:.9rem;font-weight:500;transition:var(--t);cursor:pointer;padding:6px 0}
+.nav-links a:hover,.nav-links a.active{color:var(--blue)}
+.nav-cta{padding:9px 18px;background:var(--blue);color:#fff;border-radius:var(--r);font-size:.85rem;font-weight:600;border:none;cursor:pointer;transition:var(--t);min-height:40px}
+.nav-cta:hover{background:var(--blue-d)}
+.nav-burger{display:none;background:none;border:none;color:var(--ink);cursor:pointer;padding:8px;min-width:44px;min-height:44px;align-items:center;justify-content:center}
 /* PAGES */
 .page{display:none;min-height:100vh;padding-top:64px}
 .page.active{display:block}
 #page-chat.active{display:flex;flex-direction:column;height:100vh;padding-top:64px}
 
-/* ══ LANDING ══ */
-.hero{position:relative;min-height:calc(100vh - 64px);background:var(--navy);display:flex;align-items:center;overflow:hidden}
-.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 20% 40%,rgba(37,99,235,.15) 0%,transparent 70%),radial-gradient(ellipse 60% 50% at 80% 60%,rgba(124,58,237,.1) 0%,transparent 70%)}
-.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:60px 60px}
-.hero .container{position:relative;z-index:2;text-align:center}
-.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(37,99,235,.15);border:1px solid rgba(37,99,235,.3);border-radius:20px;padding:6px 16px;margin-bottom:28px;font-size:.85rem;color:var(--blue-l)}
-.hero-badge .pulse{width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.5)}}
-.hero h1{font-size:3.5rem;font-weight:800;color:#fff;line-height:1.15;letter-spacing:-0.03em;max-width:860px;margin:0 auto 20px}
-.hero h1 .gr{background:linear-gradient(135deg,var(--blue-l),var(--purple),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hero p.hero-desc{font-size:1.15rem;color:var(--g400);max-width:600px;margin:0 auto 36px;line-height:1.7}
-.hero-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
-.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 28px;border-radius:8px;font-size:.95rem;font-weight:600;cursor:pointer;border:none;transition:all .25s}
+/* ══ LANDING (light theme) ══ */
+.hero{position:relative;background:var(--bg);padding:80px 0 64px;overflow:hidden}
+.hero::before{content:'';position:absolute;left:50%;top:0;width:1200px;height:600px;transform:translateX(-50%);background:radial-gradient(ellipse 60% 70% at 50% 0%,rgba(37,99,235,.06) 0%,transparent 70%);pointer-events:none}
+.hero .container{position:relative;z-index:2;display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(37,99,235,.08);border:1px solid rgba(37,99,235,.18);border-radius:999px;padding:5px 14px;margin-bottom:20px;font-size:.78rem;color:var(--blue-d);font-weight:600}
+.hero-eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--green)}
+.hero h1{font-size:3rem;font-weight:800;color:var(--ink);line-height:1.15;letter-spacing:-0.02em;margin-bottom:14px}
+.hero h1 .accent{background:linear-gradient(135deg,var(--blue-d),var(--blue-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero h1 .en{display:block;font-size:1.05rem;font-weight:500;color:var(--g500);margin-top:14px;letter-spacing:0;line-height:1.4}
+.hero-desc{font-size:1.05rem;color:var(--g600);max-width:540px;margin-bottom:28px;line-height:1.65}
+.hero-desc .en{display:block;color:var(--g500);font-size:.92rem;margin-top:6px}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:24px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 22px;border-radius:var(--r);font-size:.92rem;font-weight:600;cursor:pointer;border:none;transition:var(--t);min-height:44px;line-height:1.2}
 .btn-primary{background:var(--blue);color:#fff}
-.btn-primary:hover{background:var(--blue-l);transform:translateY(-2px);box-shadow:0 8px 24px rgba(37,99,235,.3)}
+.btn-primary:hover{background:var(--blue-d);transform:translateY(-1px);box-shadow:0 8px 20px rgba(37,99,235,.25)}
+.btn-ghost{background:#fff;color:var(--ink);border:1px solid var(--border)}
+.btn-ghost:hover{border-color:var(--blue);color:var(--blue)}
 .btn-outline-w{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.3)}
 .btn-outline-w:hover{border-color:#fff;background:rgba(255,255,255,.08)}
 .btn-gold{background:linear-gradient(135deg,var(--gold),#f0d78c);color:var(--navy);font-weight:700}
-.btn-gold:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(212,168,67,.4)}
-.hero-stats{display:flex;gap:48px;justify-content:center;margin-top:64px;padding-top:40px;border-top:1px solid rgba(255,255,255,.08)}
-.hero-stat{text-align:center}
-.hero-stat .num{font-size:2.2rem;font-weight:800;color:#fff}
-.hero-stat .num span{color:var(--gold)}
-.hero-stat .label{font-size:.8rem;color:var(--g500);margin-top:2px}
-.particles{position:absolute;inset:0;overflow:hidden;pointer-events:none}
-.particles i{position:absolute;width:4px;height:4px;border-radius:50%;background:rgba(37,99,235,.4);animation:fl linear infinite}
-.particles i:nth-child(1){left:10%;animation-duration:18s}.particles i:nth-child(2){left:25%;animation-duration:22s;animation-delay:2s;width:3px;height:3px;background:rgba(124,58,237,.3)}.particles i:nth-child(3){left:40%;animation-duration:16s;animation-delay:4s}.particles i:nth-child(4){left:55%;animation-duration:20s;animation-delay:1s;width:5px;height:5px;background:rgba(212,168,67,.3)}.particles i:nth-child(5){left:70%;animation-duration:24s;animation-delay:3s}.particles i:nth-child(6){left:85%;animation-duration:17s;animation-delay:5s;background:rgba(124,58,237,.3)}
-@keyframes fl{0%{transform:translateY(100vh) scale(0);opacity:0}10%{opacity:1}90%{opacity:1}100%{transform:translateY(-10vh) scale(1);opacity:0}}
+.hero-meta{display:flex;gap:24px;font-size:.8rem;color:var(--g500);flex-wrap:wrap}
+.hero-meta span b{color:var(--ink);font-weight:700}
+/* code card in hero */
+.code-card{background:#0F172A;border-radius:var(--r-lg);box-shadow:var(--shadow-2);overflow:hidden;font-family:var(--mono);font-size:.82rem}
+.code-card-head{display:flex;align-items:center;gap:6px;padding:10px 14px;background:#1E293B;border-bottom:1px solid #334155}
+.code-card-head .dots{display:flex;gap:6px}
+.code-card-head .dots i{width:10px;height:10px;border-radius:50%;background:#475569}
+.code-card-head .file{margin-left:10px;color:#94A3B8;font-size:.72rem;font-family:var(--mono)}
+.code-tabs{display:flex;gap:0;background:#1E293B;border-bottom:1px solid #334155;padding:0 6px}
+.code-tab{background:none;border:none;color:#94A3B8;padding:9px 14px;font-size:.76rem;font-family:var(--mono);cursor:pointer;font-weight:600;border-bottom:2px solid transparent;margin-bottom:-1px;transition:var(--t);min-height:36px}
+.code-tab:hover{color:#E2E8F0}
+.code-tab.active{color:#fff;border-bottom-color:var(--blue-l)}
+.code-copy{margin-left:auto;background:none;border:1px solid #334155;color:#94A3B8;padding:5px 10px;border-radius:var(--r-sm);font-size:.7rem;cursor:pointer;font-family:var(--mono);transition:var(--t);align-self:center;margin-right:8px;min-height:30px}
+.code-copy:hover{border-color:var(--blue-l);color:#fff}
+.code-body{padding:18px 18px;overflow-x:auto;background:#0F172A;color:#E2E8F0;line-height:1.65;max-height:340px}
+.code-body pre{font-family:var(--mono);font-size:.82rem;white-space:pre;margin:0}
+.code-body .k{color:#C084FC}.code-body .s{color:#86EFAC}.code-body .n{color:#FBBF24}.code-body .c{color:#64748B;font-style:italic}.code-body .f{color:#60A5FA}.code-body .v{color:#E2E8F0}
+.code-pane{display:none}.code-pane.active{display:block}
+
 /* sections */
-.section{padding:80px 0}.section-gray{background:var(--g50)}
-.stitle{font-size:2rem;font-weight:700;text-align:center;margin-bottom:12px}
-.ssub{font-size:1rem;color:var(--g500);text-align:center;max-width:620px;margin:0 auto 48px}
-.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.feat-card{background:#fff;border:1px solid var(--g200);border-radius:var(--r);padding:32px 24px;transition:all .3s;position:relative;overflow:hidden}
-.feat-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:var(--blue)}
-.feat-card::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--blue),var(--purple));opacity:0;transition:opacity .3s}
-.feat-card:hover::after{opacity:1}
-.feat-card .icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:16px}
-.feat-card h3{font-size:1.1rem;font-weight:700;margin-bottom:8px}
-.feat-card p{font-size:.875rem;color:var(--g600);line-height:1.6}
-/* supply types */
-.supply-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;max-width:1000px;margin:0 auto}
-.supply-card{background:#fff;border:1px solid var(--g200);border-radius:var(--r);padding:28px 20px;text-align:center;transition:all .3s}
-.supply-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
-.supply-card .s-emoji{font-size:2.2rem;margin-bottom:12px;display:block}
-.supply-card h4{font-size:1rem;font-weight:700;margin-bottom:6px}
-.supply-card p{font-size:.8rem;color:var(--g500);line-height:1.5;margin-bottom:12px}
-.supply-card .s-ex{font-size:.75rem;color:var(--g400);border-top:1px solid var(--g100);padding-top:10px;text-align:left}
-/* cap cards */
-.cap-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;max-width:900px;margin:0 auto}
-.cap-card{background:#fff;border:1px solid var(--g200);border-radius:var(--r);padding:24px;display:flex;gap:16px;align-items:flex-start;transition:all .3s}
-.cap-card:hover{box-shadow:var(--shadow);border-color:var(--blue)}
-.cap-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
-.cap-card h4{font-size:1rem;font-weight:700;margin-bottom:4px}
-.cap-card .cap-desc{font-size:.85rem;color:var(--g500);line-height:1.5;margin-bottom:8px}
-.cap-tag{display:inline-block;font-size:.7rem;font-weight:600;padding:2px 8px;border-radius:4px;margin-right:4px}
-.cap-tag-blue{background:rgba(37,99,235,.08);color:var(--blue)}
-.cap-tag-green{background:rgba(5,150,105,.08);color:var(--green)}
-.cap-tag-purple{background:rgba(124,58,237,.08);color:var(--purple)}
-/* audience tabs */
-.aud-tabs{display:flex;justify-content:center;gap:8px;margin-bottom:32px}
-.aud-tab{padding:10px 24px;border-radius:8px;font-size:.9rem;font-weight:600;cursor:pointer;border:1.5px solid var(--g200);background:#fff;color:var(--g500);transition:all .2s}
-.aud-tab:hover{border-color:var(--blue);color:var(--blue)}
-.aud-tab.active{background:var(--blue);color:#fff;border-color:var(--blue)}
-.aud-panel{display:none;max-width:700px;margin:0 auto;text-align:center}
-.aud-panel.active{display:block}
-.aud-panel .aud-title{font-size:1.3rem;font-weight:700;margin-bottom:8px}
-.aud-panel .aud-sub{font-size:.95rem;color:var(--g500);margin-bottom:20px;line-height:1.7}
-.aud-panel .aud-quote{background:var(--g50);border-left:3px solid var(--blue);padding:16px 20px;border-radius:0 8px 8px 0;font-size:.95rem;color:var(--g600);line-height:1.7;text-align:left}
-/* cta */
-.cta-section{background:linear-gradient(135deg,var(--navy) 0%,#1e1b4b 100%);position:relative;overflow:hidden;padding:100px 0}
-.cta-section::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 50% 80% at 80% 50%,rgba(37,99,235,.2) 0%,transparent 70%)}
-.cta-content{position:relative;z-index:2;text-align:center}
-.cta-content h2{font-size:2.5rem;font-weight:800;color:#fff;margin-bottom:16px}
-.cta-content p{font-size:1.1rem;color:var(--g400);margin-bottom:40px;max-width:500px;margin-left:auto;margin-right:auto}
-.cta-actions{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
-/* footer */
-footer{background:var(--navy);color:var(--g400);padding:48px 0 24px}
-.footer-inner{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
-.footer-inner .nav-logo .dot{width:24px;height:24px;font-size:9px}
-.footer-inner .nav-logo{font-size:1rem}
-.footer-right{font-size:.8rem;color:var(--g500)}
+.section{padding:80px 0}
+.section-soft{background:var(--bg-soft)}
+.stitle{font-size:2rem;font-weight:700;text-align:center;margin-bottom:12px;letter-spacing:-0.01em;color:var(--ink)}
+.ssub{font-size:1rem;color:var(--g500);text-align:center;max-width:640px;margin:0 auto 56px;line-height:1.6}
+
+/* Trust bar */
+.trust{padding:48px 0;background:var(--bg-soft);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.trust-label{text-align:center;font-size:.78rem;color:var(--g500);letter-spacing:.08em;text-transform:uppercase;margin-bottom:24px;font-weight:600}
+.trust-row{display:flex;justify-content:center;align-items:center;gap:48px;flex-wrap:wrap;opacity:.78}
+.trust-item{font-size:.95rem;font-weight:700;color:var(--g600);letter-spacing:.02em;display:inline-flex;align-items:center;gap:8px}
+.trust-item svg{width:18px;height:18px;color:var(--g500)}
+
+/* Code showcase section */
+.code-showcase{display:grid;grid-template-columns:1fr 1.1fr;gap:48px;align-items:center}
+.code-showcase .left h2{font-size:1.8rem;font-weight:700;margin-bottom:14px;color:var(--ink);letter-spacing:-0.01em}
+.code-showcase .left p{font-size:1rem;color:var(--g600);line-height:1.7;margin-bottom:18px}
+.code-showcase .left ul{list-style:none;padding:0;margin:0}
+.code-showcase .left ul li{font-size:.92rem;color:var(--g600);padding:6px 0 6px 26px;position:relative;line-height:1.55}
+.code-showcase .left ul li::before{content:'';position:absolute;left:0;top:11px;width:16px;height:16px;background:rgba(5,150,105,.12);border-radius:50%}
+.code-showcase .left ul li::after{content:'';position:absolute;left:5px;top:15px;width:6px;height:3px;border-left:2px solid var(--green);border-bottom:2px solid var(--green);transform:rotate(-45deg)}
+
+/* Features (3) */
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.feat-card{background:#fff;border:1px solid var(--border);border-radius:var(--r-lg);padding:28px 24px;transition:var(--t);position:relative}
+.feat-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-2);border-color:var(--blue)}
+.feat-card .icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:18px;background:rgba(37,99,235,.08);color:var(--blue)}
+.feat-card .icon svg{width:22px;height:22px}
+.feat-card h3{font-size:1.1rem;font-weight:700;margin-bottom:8px;color:var(--ink)}
+.feat-card p{font-size:.9rem;color:var(--g600);line-height:1.65}
+
+/* How it works */
+.how-row{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;position:relative}
+.how-step{background:#fff;border:1px solid var(--border);border-radius:var(--r-lg);padding:24px;position:relative}
+.how-step .num{position:absolute;top:-14px;left:24px;width:28px;height:28px;border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700}
+.how-step h4{font-size:1rem;font-weight:700;margin:8px 0 6px;color:var(--ink)}
+.how-step p{font-size:.85rem;color:var(--g600);line-height:1.6;margin-bottom:10px}
+.how-step code{font-family:var(--mono);font-size:.78rem;background:var(--bg-soft);border:1px solid var(--border);padding:2px 8px;border-radius:var(--r-sm);color:var(--blue-d);display:inline-block;word-break:break-all}
+
+/* Pricing */
+.price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1000px;margin:0 auto}
+.price-card{background:#fff;border:1px solid var(--border);border-radius:var(--r-lg);padding:28px 24px;display:flex;flex-direction:column;position:relative;transition:var(--t)}
+.price-card.featured{border:2px solid var(--blue);box-shadow:0 12px 30px rgba(37,99,235,.12)}
+.price-card .badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--blue);color:#fff;font-size:.68rem;font-weight:700;padding:4px 12px;border-radius:999px;letter-spacing:.05em}
+.price-card .tier{font-size:.78rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--g500);margin-bottom:8px}
+.price-card .price{font-size:2.2rem;font-weight:800;color:var(--ink);line-height:1.1;letter-spacing:-0.02em}
+.price-card .price small{font-size:.85rem;color:var(--g500);font-weight:500;margin-left:4px}
+.price-card .sub{font-size:.85rem;color:var(--g500);margin-top:6px;margin-bottom:18px;min-height:36px}
+.price-card ul{list-style:none;padding:0;margin:0 0 22px;flex:1}
+.price-card ul li{font-size:.88rem;color:var(--g600);padding:6px 0 6px 22px;position:relative;line-height:1.5}
+.price-card ul li::before{content:'';position:absolute;left:0;top:11px;width:5px;height:9px;border-right:2px solid var(--green);border-bottom:2px solid var(--green);transform:rotate(45deg)}
+.price-card .price-cta{display:block;text-align:center;padding:10px 16px;border-radius:var(--r);font-size:.88rem;font-weight:600;cursor:pointer;border:1px solid var(--border);background:#fff;color:var(--ink);transition:var(--t);min-height:42px;line-height:1.4}
+.price-card .price-cta:hover{border-color:var(--blue);color:var(--blue)}
+.price-card.featured .price-cta{background:var(--blue);color:#fff;border-color:var(--blue)}
+.price-card.featured .price-cta:hover{background:var(--blue-d)}
+.price-note{text-align:center;font-size:.82rem;color:var(--g500);margin-top:24px}
+.price-note a{color:var(--blue);text-decoration:underline}
+
+/* Docs cross-link */
+.docs-link{background:linear-gradient(135deg,#1E40AF,#2563EB);color:#fff;border-radius:var(--r-lg);padding:36px 40px;display:flex;align-items:center;justify-content:space-between;gap:32px;flex-wrap:wrap}
+.docs-link h3{font-size:1.4rem;font-weight:700;margin-bottom:6px;color:#fff}
+.docs-link p{font-size:.95rem;color:rgba(255,255,255,.85);max-width:520px;line-height:1.55}
+.docs-link-cols{display:flex;gap:24px;flex-wrap:wrap;margin-top:14px}
+.docs-link-cols a{font-size:.85rem;color:#fff;opacity:.85;text-decoration:underline;transition:var(--t)}
+.docs-link-cols a:hover{opacity:1}
+.docs-arrow{flex-shrink:0;background:#fff;color:var(--blue);padding:14px 22px;border-radius:var(--r);font-weight:600;font-size:.92rem;display:inline-flex;align-items:center;gap:8px;min-height:48px}
+
+/* Footer (light) */
+footer.site-footer{background:var(--bg-soft);color:var(--g600);padding:56px 0 28px;border-top:1px solid var(--border)}
+.footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:32px;margin-bottom:32px}
+.footer-brand .nav-logo{margin-bottom:14px;color:var(--ink)}
+.footer-brand p{font-size:.85rem;color:var(--g500);line-height:1.6;max-width:280px}
+.footer-col h5{font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--g500);margin-bottom:14px}
+.footer-col ul{list-style:none;padding:0;margin:0}
+.footer-col ul li{margin-bottom:8px}
+.footer-col ul li a{font-size:.88rem;color:var(--g600);transition:var(--t);cursor:pointer}
+.footer-col ul li a:hover{color:var(--blue)}
+.footer-bottom{border-top:1px solid var(--border);padding-top:20px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;font-size:.78rem;color:var(--g500)}
+.footer-bottom a{color:var(--g500)}.footer-bottom a:hover{color:var(--blue)}
 
 /* ══ RECOMMEND PAGE ══ */
 #page-recommend{background:var(--g50)}
@@ -391,21 +454,21 @@ footer{background:var(--navy);color:var(--g400);padding:48px 0 24px}
   <div class="particles"><i></i><i></i><i></i><i></i><i></i><i></i></div>
   <div class="hero-grid"></div>
   <div class="container">
-    <div class="hero-badge"><span class="pulse"></span>AI 任务路由与成本管理平台</div>
-    <h1>让每个 AI 任务<br>自动找到<span class="gr">最合适的模型</span></h1>
-    <p class="hero-desc">你只需提交 AI 任务，ModelMux 帮你自动选择最优模型组合，降低调用成本 30-50%，并生成可追踪的用量和质量报告。</p>
+    <div class="hero-badge"><span class="pulse"></span>ModelMux · 开发者最懂业务的 AI 路由层 / The AI routing layer that gets your business</div>
+    <h1>一行代码，<br>让每个请求<span class="gr">跑在对的模型上</span><br><small style="font-size:.5em;font-weight:500;opacity:.85;display:block;margin-top:.6em">One line of code. Every call on the right model.</small></h1>
+    <p class="hero-desc">OpenAI 兼容接口，按任务和预算自动路由到合适的模型，账单和质量都能追溯。<br><span style="opacity:.85">OpenAI-compatible API. Routes each call to the right model by task and budget — with auditable cost and quality.</span></p>
     <div class="hero-actions">
       <button class="btn btn-primary" onclick="showPage('recommend')">
         <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
-        配置任务路由
+        免费接入 / Start free
       </button>
-      <button class="btn btn-outline-w" onclick="showPage('chat')">体验工作台</button>
+      <button class="btn btn-outline-w" onclick="showPage('chat')">看 5 分钟 Demo / See 5-min demo</button>
     </div>
     <div class="hero-stats">
-      <div class="hero-stat"><div class="num">200<span>+</span></div><div class="label">接入模型与能力</div></div>
-      <div class="hero-stat"><div class="num">30-50<span>%</span></div><div class="label">平均降本幅度</div></div>
-      <div class="hero-stat"><div class="num">99.<span>9%</span></div><div class="label">平台可用率</div></div>
-      <div class="hero-stat"><div class="num">&lt;100<span>ms</span></div><div class="label">路由延迟</div></div>
+      <div class="hero-stat"><div class="num">2<span>+</span></div><div class="label">V1 已接入 (OpenAI · DeepSeek)</div></div>
+      <div class="hero-stat"><div class="num">30-50<span>%</span></div><div class="label">典型场景降本区间</div></div>
+      <div class="hero-stat"><div class="num">[V1]<span></span></div><div class="label">真实可用率 (上线后填充)</div></div>
+      <div class="hero-stat"><div class="num">&lt;100<span>ms</span></div><div class="label">路由层延迟</div></div>
     </div>
   </div>
 </section>
@@ -413,8 +476,8 @@ footer{background:var(--navy);color:var(--g400);padding:48px 0 24px}
 <!-- FEATURES -->
 <section class="section section-gray" id="features">
   <div class="container">
-    <div class="stitle fade-up">六大核心模块</div>
-    <div class="ssub fade-up">不是简单的 API 转售，而是覆盖任务路由、成本治理、质量评估和结算的完整基础设施</div>
+    <div class="stitle fade-up">六大核心模块 / Six building blocks</div>
+    <div class="ssub fade-up">不只是 API 网关：路由、成本、质量、结算，开发者要的都在一层里。<br><span style="opacity:.8">More than a gateway: routing, cost, quality and billing — all in one layer you control.</span></div>
     <div class="feat-grid">
       <div class="feat-card fade-up"><div class="icon" style="background:rgba(37,99,235,.1);color:var(--blue)"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div><h3>多模型网关</h3><p>统一 API 接入 200+ 模型，OpenAI 兼容格式，SDK 开箱即用，代码零改动。</p></div>
       <div class="feat-card fade-up"><div class="icon" style="background:rgba(5,150,105,.1);color:var(--green)"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6m6 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0h6m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14"/></svg></div><h3>任务路由引擎</h3><p>根据任务类型、质量要求、成本预算和延迟目标，自动选择最优模型组合。</p></div>
@@ -677,7 +740,7 @@ const MDB={
 const C={
   finance_chat:{t:'金融智能客服',s:'合规敏感 · 低幻觉',sc:[96,88,72],p:'¥3.2',m:[{id:'claude-3.5-sonnet',role:'主力模型',rc:'role-primary',w:'幻觉率最低'},{id:'gpt-4o',role:'备用模型',rc:'role-fallback',w:'主力不可用时切换'},{id:'qwen-turbo',role:'快速响应',rc:'role-specialist',w:'简单查询降本 80%'}],why:'金融客服对准确性要求极高。Claude 3.5 幻觉率 < 2%，处理复杂金融问题；简单查询走 Qwen-Turbo 快速响应。'},
   finance_analysis:{t:'金融数据分析',s:'数值精准 · 深度推理',sc:[94,82,68],p:'¥4.5',m:[{id:'gpt-4o',role:'主力模型',rc:'role-primary',w:'数值推理最强'},{id:'claude-3.5-sonnet',role:'备用模型',rc:'role-fallback',w:'长文档分析'},{id:'deepseek-v3',role:'代码生成',rc:'role-specialist',w:'Python 分析脚本'}],why:'金融数据分析需要精确的数值推理。GPT-4o 数学评测最优；代码生成自动路由到 DeepSeek-V3。'},
-  medical_chat:{t:'医疗智能问诊',s:'医学知识 · 安全可控',sc:[97,80,75],p:'¥4.0',m:[{id:'gpt-4o',role:'主力模型',rc:'role-primary',w:'医学推理评测领先'},{id:'claude-3.5-sonnet',role:'备用模型',rc:'role-fallback',w:'医学对话能力强'},{id:'ernie-4',role:'中医知识',rc:'role-specialist',w:'中文医学语料丰富'}],why:'医疗场景安全性最高。GPT-4o USMLE 评测领先；中医问题路由到 ERNIE 4.0。'},
+  medical_chat:{t:'医疗智能问诊',s:'医学知识 · 安全可控',sc:[97,80,75],p:'¥4.0',m:[{id:'gpt-4o',role:'主力模型',rc:'role-primary',w:'医学推理基准表现稳定 [V1 上线后填充分数]'},{id:'claude-3.5-sonnet',role:'备用模型',rc:'role-fallback',w:'医学对话能力强'},{id:'ernie-4',role:'中医知识',rc:'role-specialist',w:'中文医学语料丰富'}],why:'医疗场景安全性最高。GPT-4o 在 USMLE 类基准上表现稳定 [V1 上线后填充分数]；中医问题路由到 ERNIE 4.0。'},
   legal_chat:{t:'法律智能咨询',s:'法条引用 · 逻辑严谨',sc:[94,84,73],p:'¥3.6',m:[{id:'claude-3.5-sonnet',role:'主力模型',rc:'role-primary',w:'逻辑推理强'},{id:'glm-4',role:'备用模型',rc:'role-fallback',w:'中文法律术语好'},{id:'qwen-turbo',role:'快速检索',rc:'role-specialist',w:'简单法条查询'}],why:'法律咨询需要严谨推理和法条引用。Claude 3.5 逻辑一致性最优；中国法律走 GLM-4。'},
   ecommerce_chat:{t:'电商智能客服',s:'高并发 · 快速响应 · 成本优先',sc:[85,96,92],p:'¥0.8',m:[{id:'qwen-turbo',role:'主力模型',rc:'role-primary',w:'性价比最高'},{id:'gpt-4o-mini',role:'备用模型',rc:'role-fallback',w:'高峰分流'},{id:'claude-3.5-sonnet',role:'复杂问题',rc:'role-specialist',w:'投诉退换升级处理'}],why:'电商客服 80% 是简单咨询，走 Qwen-Turbo 成本极低；复杂投诉自动升级到 Claude 3.5。'},
   ecommerce_writing:{t:'电商内容生成',s:'商品描述 · 营销文案',sc:[88,92,85],p:'¥1.2',m:[{id:'deepseek-v3',role:'主力模型',rc:'role-primary',w:'中文创意性价比高'},{id:'gpt-4o-mini',role:'批量生成',rc:'role-specialist',w:'SKU 批量极低成本'},{id:'claude-3.5-sonnet',role:'高端文案',rc:'role-fallback',w:'品牌大促文案'}],why:'日常商品描述走 DeepSeek-V3；批量 SKU 走 GPT-4o Mini；品牌文案走 Claude 3.5。'},
@@ -695,8 +758,8 @@ for(const i of INDS)for(const t of TASKS){
   const k=i+'_'+t;if(C[k])continue;
   let m=[{id:'gpt-4o',role:'主力模型',rc:'role-primary',w:'综合能力最强'},{id:'deepseek-v3',role:'备用模型',rc:'role-fallback',w:'性价比最优'},{id:'qwen-turbo',role:'快速响应',rc:'role-specialist',w:'简单任务降本'}];
   let sc=[90,90,80],p='¥2.5',w='通用场景采用「强模型 + 高性价比 + 轻量快速」三角组合，根据请求复杂度自动路由。';
-  if(t==='code'){m=[{id:'deepseek-coder',role:'主力模型',rc:'role-primary',w:'代码评测最优'},{id:'claude-3.5-sonnet',role:'备用模型',rc:'role-fallback',w:'复杂架构设计'},{id:'gpt-4o-mini',role:'快速补全',rc:'role-specialist',w:'简单代码'}];sc=[92,90,75];p='¥2.0';w='代码场景首选 DeepSeek Coder V2（HumanEval 领先）；复杂设计走 Claude 3.5；简单补全走 GPT-4o Mini。';}
-  if(t==='agent'){m=[{id:'claude-3.5-sonnet',role:'主力模型',rc:'role-primary',w:'工具调用最强'},{id:'gpt-4o',role:'备用模型',rc:'role-fallback',w:'Function Calling 强'},{id:'deepseek-v3',role:'执行层',rc:'role-specialist',w:'具体任务执行降本'}];sc=[94,85,72];p='¥3.5';w='Agent 工作流需要强大的工具调用和多步推理。Claude 3.5 Tool Use 领先；执行步骤下发给 DeepSeek-V3。';}
+  if(t==='code'){m=[{id:'deepseek-coder',role:'主力模型',rc:'role-primary',w:'代码任务表现优异 [V1 上线后填 HumanEval 实测]'},{id:'claude-3.5-sonnet',role:'备用模型',rc:'role-fallback',w:'复杂架构设计'},{id:'gpt-4o-mini',role:'快速补全',rc:'role-specialist',w:'简单代码'}];sc=[92,90,75];p='¥2.0';w='代码场景首选 DeepSeek Coder V2（HumanEval 表现优异，分数 [V1 上线后填充]）；复杂设计走 Claude 3.5；简单补全走 GPT-4o Mini。';}
+  if(t==='agent'){m=[{id:'claude-3.5-sonnet',role:'主力模型',rc:'role-primary',w:'Tool Use 表现稳定 [V1 上线后填实测]'},{id:'gpt-4o',role:'备用模型',rc:'role-fallback',w:'Function Calling 强'},{id:'deepseek-v3',role:'执行层',rc:'role-specialist',w:'具体任务执行降本'}];sc=[94,85,72];p='¥3.5';w='Agent 工作流需要强大的工具调用和多步推理。Claude 3.5 在 Tool Use 类基准上表现稳定 [V1 上线后填分数]；执行步骤下发给 DeepSeek-V3。';}
   if(t==='translation'){m[0]={id:'gpt-4o',role:'主力模型',rc:'role-primary',w:'多语种最优'};p='¥1.8';w='翻译任务 GPT-4o 多语种质量最佳，中英高频走 DeepSeek-V3 降本。';}
   if(t==='summary'){m=[{id:'moonshot-v1',role:'主力模型',rc:'role-primary',w:'128K 超长上下文'},{id:'claude-3.5-sonnet',role:'备用模型',rc:'role-fallback',w:'精度要求高时切换'},{id:'qwen-turbo',role:'快速摘要',rc:'role-specialist',w:'短文档'}];sc=[92,90,65];p='¥2.8';w='长文档走 Moonshot 128K 一次性处理；短文档走 Qwen-Turbo 节省成本。';}
   if(t==='rag'){m=[{id:'claude-3.5-sonnet',role:'主力模型',rc:'role-primary',w:'RAG 引用准确率最高'},{id:'gpt-4o',role:'备用模型',rc:'role-fallback',w:'复杂推理'},{id:'qwen-max',role:'中文检索',rc:'role-specialist',w:'中文文献理解强'}];sc=[95,83,70];p='¥3.5';w='知识问答需精确引用。Claude 3.5 引用忠实度 > 97%，减少幻觉风险。';}
@@ -705,22 +768,6 @@ for(const i of INDS)for(const t of TASKS){
 
 // ═══ STATE ═══
 let selInd=null,selTask=null,combo=null,totTok=0,totCost=0,swCnt=0;
-
-// ═══ KNOWLEDGE API HELPER ═══
-const KB_API='/v1/knowledge';
-const KB_TOKEN='sk-modelmux-dev-000000000000000000000000';
-async function kbApi(path,opts={}){
-  const headers={'Authorization':'Bearer '+KB_TOKEN,...(opts.headers||{})};
-  if(opts.body!==undefined&&!(opts.body instanceof FormData)){
-    headers['Content-Type']='application/json';
-    opts.body=JSON.stringify(opts.body);
-  }
-  const r=await fetch(KB_API+path,{...opts,headers});
-  if(!r.ok)throw new Error('HTTP '+r.status+' '+await r.text());
-  return r.status===204?null:r.json();
-}
-function normDoc(d){return {...d,uploaded:d.uploaded_at?String(d.uploaded_at).slice(0,10):''};}
-function normKB(k){return {...k,docs:(k.docs||[]).map(normDoc)};}
 
 // ═══ KNOWLEDGE BASE STATE ═══
 const KB_INDUSTRY_LABEL={
@@ -740,28 +787,39 @@ const SKILLS=[
 const SKILL_LABEL=Object.fromEntries(SKILLS.map(s=>[s.id,s.name]));
 const COVER_GRADIENTS=['linear-gradient(135deg,#2563eb,#7c3aed)','linear-gradient(135deg,#059669,#0891b2)','linear-gradient(135deg,#d97706,#dc2626)','linear-gradient(135deg,#7c3aed,#db2777)','linear-gradient(135deg,#0f172a,#1e40af)','linear-gradient(135deg,#0891b2,#059669)','linear-gradient(135deg,#dc2626,#d97706)','linear-gradient(135deg,#475569,#0f172a)'];
 
-let kbs=[];
+let kbs=[
+  {id:'kb-1',name:'金融合规手册',industry:'finance',skills:['rag','compliance'],embed:'bge-m3',visibility:'private',attached:true,docs:[
+    {id:'d1',name:'2024年金融监管新规.pdf',type:'pdf',size:2456000,chunks:42,status:'ready',uploaded:'2026-05-08'},
+    {id:'d2',name:'反洗钱条例解读.docx',type:'docx',size:680000,chunks:18,status:'ready',uploaded:'2026-05-09'},
+    {id:'d3',name:'巴塞尔协议III要点.pdf',type:'pdf',size:1820000,chunks:31,status:'ready',uploaded:'2026-05-09'},
+  ]},
+  {id:'kb-2',name:'产品手册中心',industry:'software',skills:['rag','cs'],embed:'bge-m3',visibility:'team',attached:false,docs:[
+    {id:'d4',name:'API使用指南.md',type:'md',size:45000,chunks:8,status:'ready',uploaded:'2026-05-05'},
+    {id:'d5',name:'故障排查FAQ.txt',type:'txt',size:12000,chunks:4,status:'ready',uploaded:'2026-05-06'},
+  ]},
+];
 let selKB=null;
 let kbDialogSkills=new Set();
 
-async function loadKBs(){
-  try{
-    const data=await kbApi('/bases');
-    kbs=data.map(normKB);
-    if(selKB){selKB=kbs.find(k=>k.id===selKB.id)||null;}
-  }catch(e){console.error('loadKBs',e);showToast('加载知识库失败');}
-}
-async function loadMarketplace(){
-  try{
-    const q=new URLSearchParams({industry:filterIndustry,skill:filterSkill,sort:filterSort});
-    PUBLIC_KBS=await kbApi('/marketplace?'+q);
-    subscribedIds=new Set(PUBLIC_KBS.filter(p=>p.subscribed).map(p=>p.id));
-  }catch(e){console.error('loadMarketplace',e);showToast('加载市场失败');}
-}
-
 // ═══ PUBLIC MARKETPLACE ═══
-let PUBLIC_KBS=[];
-let subscribedIds=new Set();
+const PUBLIC_KBS=[
+  {id:'pkb-1',name:'全球金融监管法规库',author:'金融研究院',verified:true,industry:'finance',skills:['rag','compliance','risk'],desc:'涵盖中、美、欧、日、新加坡等主要市场的金融监管法规，每日同步更新',docs:128,subscribers:1240,rating:4.8,price:0,cover:0},
+  {id:'pkb-2',name:'中医药典电子版',author:'同仁堂',verified:true,industry:'medical',skills:['rag','translation'],desc:'国家药典委员会授权，含中药材性味、归经、主治、用法用量及现代研究',docs:86,subscribers:458,rating:4.6,price:199,cover:1},
+  {id:'pkb-3',name:'中国法律法规全集',author:'平台官方',verified:true,industry:'legal',skills:['rag','compliance'],desc:'最高法、最高检、各部委、地方法规一站式检索，2026 年最新版',docs:312,subscribers:3520,rating:4.9,price:0,cover:4},
+  {id:'pkb-4',name:'跨境电商运营手册',author:'电商之家',verified:false,industry:'ecommerce',skills:['writing','translation','cs'],desc:'亚马逊/Shopify/TikTok Shop 全平台运营策略，含选品、广告、合规要点',docs:64,subscribers:892,rating:4.4,price:99,cover:2},
+  {id:'pkb-5',name:'K12教学大纲与题库',author:'教研中心',verified:true,industry:'education',skills:['summary','writing'],desc:'人教版/北师大/华师大全学科大纲，含历年真题及解析，适合智能辅导',docs:215,subscribers:2150,rating:4.7,price:0,cover:5},
+  {id:'pkb-6',name:'中国制造业ISO标准',author:'中国质量认证中心',verified:true,industry:'manufacture',skills:['rag','compliance'],desc:'ISO 9001/14001/45001 标准全文及实施指引，含中国 GB 标准对照',docs:48,subscribers:215,rating:4.5,price:299,cover:3},
+  {id:'pkb-7',name:'政府采购流程指南',author:'平台官方',verified:true,industry:'government',skills:['rag','report'],desc:'政府采购法及实施条例，招投标全流程模板与案例库',docs:35,subscribers:567,rating:4.6,price:0,cover:0},
+  {id:'pkb-8',name:'房产交易法规与合同',author:'链家研究院',verified:false,industry:'realestate',skills:['rag','compliance'],desc:'各城市限购限贷政策、交易税费、合同模板及风险提示',docs:42,subscribers:312,rating:4.3,price:149,cover:6},
+  {id:'pkb-9',name:'汽车维修技术资料',author:'汽修联盟',verified:false,industry:'automotive',skills:['rag','cs'],desc:'主流品牌轿车/SUV 维修手册、故障码大全、配件价格参考',docs:178,subscribers:745,rating:4.4,price:0,cover:7},
+  {id:'pkb-10',name:'旅游景点百科',author:'携程旅行',verified:true,industry:'tourism',skills:['rag','writing'],desc:'国内 5A/4A 景区详细介绍、攻略、当地特色与交通指南',docs:512,subscribers:1820,rating:4.7,price:0,cover:1},
+  {id:'pkb-11',name:'餐饮食品安全规范',author:'中国食品工业协会',verified:true,industry:'catering',skills:['compliance'],desc:'GB 食品安全国家标准、HACCP 体系、餐饮许可申请流程',docs:28,subscribers:423,rating:4.5,price:0,cover:2},
+  {id:'pkb-12',name:'HR招聘话术与面试题库',author:'人才云',verified:false,industry:'hr',skills:['writing','cs'],desc:'500+ 岗位 JD 模板、行为面试题、薪酬数据，含 AI 智能面试评分',docs:96,subscribers:1180,rating:4.6,price:79,cover:5},
+  {id:'pkb-13',name:'学术论文检索与摘要',author:'知网研学',verified:true,industry:'research',skills:['summary','translation','ner'],desc:'CNKI 1.2 亿篇文献摘要库，支持中英双语检索与一键综述生成',docs:1280,subscribers:876,rating:4.8,price:199,cover:4},
+  {id:'pkb-14',name:'软件开发最佳实践',author:'极客社区',verified:false,industry:'software',skills:['code','rag'],desc:'设计模式、架构案例、安全编码规范、code review checklist',docs:142,subscribers:2410,rating:4.7,price:0,cover:0},
+  {id:'pkb-15',name:'物流跨境清关指南',author:'菜鸟国际',verified:true,industry:'logistics',skills:['rag','translation'],desc:'各国海关申报要素、HS 编码查询、跨境结算与税务合规',docs:58,subscribers:234,rating:4.4,price:99,cover:3},
+];
+let subscribedIds=new Set(['pkb-3','pkb-5']);
 let filterIndustry='all',filterSkill='all',filterSort='hot';
 let activeKBTab='my';
 
@@ -787,7 +845,7 @@ function renderKBList(){
   kbs.forEach(k=>{
     const active=selKB&&selKB.id===k.id?'active':'';
     const flag=k.attached?'<span class="ka-flag">已挂载</span>':'';
-    c.innerHTML+=`<div class="kb-item ${active}" onclick="selectKB(${k.id})">
+    c.innerHTML+=`<div class="kb-item ${active}" onclick="selectKB('${k.id}')">
       <div class="kb-name">${esc(k.name)} ${flag}</div>
       <div class="kb-meta">${visIcon(k.visibility||'private')}<span class="kb-tag">${KB_INDUSTRY_LABEL[k.industry]||k.industry}</span><span>${k.docs.length} 文档</span></div>
     </div>`;
@@ -795,7 +853,7 @@ function renderKBList(){
 }
 
 function selectKB(id){
-  selKB=kbs.find(k=>String(k.id)===String(id))||null;
+  selKB=kbs.find(k=>k.id===id);
   renderKBList();
   renderKBDetail();
 }
@@ -823,14 +881,14 @@ function renderKBDetail(){
   const publishForm=vis==='public'?`<div class="publish-form">
       <div class="pf-title">📢 公开发布信息</div>
       <label>简介 (公共市场展示)</label>
-      <textarea id="pf-desc" placeholder="描述这个知识库覆盖的内容和适用场景" oninput="selKB.publish_desc=this.value;schedulePublishSave()">${esc(selKB.publish_desc||'')}</textarea>
+      <textarea id="pf-desc" placeholder="描述这个知识库覆盖的内容和适用场景" oninput="selKB.publish_desc=this.value">${esc(selKB.publish_desc||'')}</textarea>
       <div class="pf-row">
-        <div><label>定价模式</label><select id="pf-price-mode" onchange="selKB.publish_price_mode=this.value;schedulePublishSave();renderKBDetail()">
+        <div><label>定价模式</label><select id="pf-price-mode" onchange="selKB.publish_price_mode=this.value;renderKBDetail()">
           <option value="free" ${(selKB.publish_price_mode||'free')==='free'?'selected':''}>免费</option>
           <option value="monthly" ${selKB.publish_price_mode==='monthly'?'selected':''}>按月订阅</option>
           <option value="onetime" ${selKB.publish_price_mode==='onetime'?'selected':''}>一次性</option>
         </select></div>
-        <div><label>价格 (¥)</label><input type="number" id="pf-price" placeholder="0" value="${selKB.publish_price||0}" oninput="selKB.publish_price=parseInt(this.value)||0;schedulePublishSave()" ${(selKB.publish_price_mode||'free')==='free'?'disabled':''}></div>
+        <div><label>价格 (¥)</label><input type="number" id="pf-price" placeholder="0" value="${selKB.publish_price||0}" oninput="selKB.publish_price=parseInt(this.value)||0" ${(selKB.publish_price_mode||'free')==='free'?'disabled':''}></div>
       </div>
     </div>`:'';
   d.innerHTML=`
@@ -903,34 +961,46 @@ function bindUploadZone(){
   input.onchange=e=>{handleFiles(e.target.files);input.value='';};
 }
 
-async function handleFiles(files){
+function handleFiles(files){
   if(!selKB)return;
-  for(const f of Array.from(files)){
+  Array.from(files).forEach(f=>{
     const ext=(f.name.split('.').pop()||'txt').toLowerCase();
-    if(!['pdf','docx','txt','md','csv'].includes(ext)){showToast('不支持的格式: '+ext);continue;}
-    if(f.size>20*1024*1024){showToast('文件超过 20MB: '+f.name);continue;}
-    const tempId='tmp-'+Date.now()+'-'+Math.random().toString(36).slice(2,6);
-    const tempDoc={id:tempId,name:f.name,type:ext,size:f.size,chunks:0,status:'processing',progress:30,stage:'上传中',uploaded:new Date().toISOString().slice(0,10)};
-    selKB.docs.unshift(tempDoc);renderDocs();
-    try{
-      const fd=new FormData();fd.append('file',f);
-      const real=await kbApi('/bases/'+selKB.id+'/documents',{method:'POST',body:fd});
-      const idx=selKB.docs.findIndex(d=>d.id===tempId);
-      if(idx>=0)selKB.docs[idx]=normDoc(real);
-      refreshKBStats();renderKBList();renderDocs();
-    }catch(e){
-      const idx=selKB.docs.findIndex(d=>d.id===tempId);
-      if(idx>=0){selKB.docs[idx].status='failed';selKB.docs[idx].stage='失败';}
-      renderDocs();showToast('上传失败: '+e.message);
+    if(!['pdf','docx','txt','md','csv'].includes(ext)){showToast('不支持的格式: '+ext);return;}
+    if(f.size>20*1024*1024){showToast('文件超过 20MB: '+f.name);return;}
+    const doc={id:'d-'+Date.now()+'-'+Math.random().toString(36).slice(2,6),name:f.name,type:ext,size:f.size,chunks:0,status:'processing',progress:0,stage:'上传中',uploaded:new Date().toISOString().slice(0,10)};
+    selKB.docs.unshift(doc);
+    renderDocs();
+    simulateProcess(doc);
+  });
+  refreshKBStats();renderKBList();renderKBDetail();
+}
+
+function simulateProcess(doc){
+  const stages=[
+    {label:'上传中',target:25,dur:600},
+    {label:'解析文本',target:50,dur:800},
+    {label:'切片',target:75,dur:600},
+    {label:'向量化',target:95,dur:900},
+  ];
+  let i=0;
+  function next(){
+    if(i>=stages.length){
+      doc.status='ready';doc.progress=100;doc.stage=null;
+      doc.chunks=Math.max(3,Math.round(doc.size/12000));
+      refreshKBStats();renderKBList();renderDocs();return;
     }
+    const s=stages[i++];doc.stage=s.label;doc.progress=s.target;renderDocs();
+    setTimeout(next,s.dur);
   }
-  renderKBDetail();
+  setTimeout(next,200);
 }
 
 function openKBDialog(){
   document.getElementById('kbd-name').value='';
+  // populate industry select
   const ind=document.getElementById('kbd-industry');
   ind.innerHTML=Object.entries(KB_INDUSTRY_LABEL).map(([k,v])=>`<option value="${k}">${v}</option>`).join('');
+  // populate skill chips
   kbDialogSkills=new Set();
   const sc=document.getElementById('kbd-skill-chips');
   sc.innerHTML=SKILLS.map(s=>`<div class="skill-chip" data-v="${s.id}" onclick="toggleDialogSkill(this,'${s.id}')">${s.name}</div>`).join('');
@@ -942,48 +1012,28 @@ function toggleDialogSkill(el,id){
   else{kbDialogSkills.add(id);el.classList.add('active');}
 }
 function closeKBDialog(){document.getElementById('kb-dialog-bg').classList.remove('show');}
-async function confirmCreateKB(){
+function confirmCreateKB(){
   const name=document.getElementById('kbd-name').value.trim();
   if(!name){showToast('请输入知识库名称');return;}
-  try{
-    const created=await kbApi('/bases',{method:'POST',body:{name,industry:document.getElementById('kbd-industry').value,skills:Array.from(kbDialogSkills),embed:document.getElementById('kbd-embed').value}});
-    const kb=normKB(created);
-    kbs.push(kb);selKB=kb;
-    closeKBDialog();refreshKBStats();renderKBList();renderKBDetail();
-    showToast('知识库已创建');
-  }catch(e){showToast('创建失败: '+e.message);}
+  const kb={id:'kb-'+Date.now(),name,industry:document.getElementById('kbd-industry').value,skills:Array.from(kbDialogSkills),embed:document.getElementById('kbd-embed').value,visibility:'private',attached:false,docs:[]};
+  kbs.push(kb);selKB=kb;
+  closeKBDialog();refreshKBStats();renderKBList();renderKBDetail();
+  showToast('知识库已创建');
 }
-async function setVisibility(v){
+function setVisibility(v){
   if(!selKB)return;
-  const body={visibility:v};
-  if(v==='public'&&!selKB.publish_price_mode)body.publish_price_mode='free';
-  try{
-    const updated=await kbApi('/bases/'+selKB.id,{method:'PATCH',body});
-    Object.assign(selKB,normKB(updated));
-    renderKBList();renderKBDetail();
-    showToast({private:'已设为私有',team:'已共享给团队',public:'已发布到公共市场'}[v]);
-  }catch(e){showToast('保存失败: '+e.message);}
-}
-let pubSaveTimer=null;
-function schedulePublishSave(){
-  if(!selKB||selKB.visibility!=='public')return;
-  clearTimeout(pubSaveTimer);
-  const kb=selKB;  // capture: user may navigate before debounce fires
-  pubSaveTimer=setTimeout(async()=>{
-    try{
-      await kbApi('/bases/'+kb.id,{method:'PATCH',body:{publish_desc:kb.publish_desc||'',publish_price_mode:kb.publish_price_mode||'free',publish_price:kb.publish_price||0}});
-    }catch(e){console.error('publish save',e);}
-  },600);
+  selKB.visibility=v;
+  if(v==='public'&&!selKB.publish_price_mode)selKB.publish_price_mode='free';
+  renderKBList();renderKBDetail();
+  showToast({private:'已设为私有',team:'已共享给团队',public:'已发布到公共市场'}[v]);
 }
 
-async function toggleAttach(){
+function toggleAttach(){
   if(!selKB)return;
-  try{
-    const updated=await kbApi('/bases/'+selKB.id,{method:'PATCH',body:{attached:!selKB.attached}});
-    Object.assign(selKB,normKB(updated));
-    renderKBList();renderKBDetail();renderAttachedKB();
-    showToast(selKB.attached?'已挂载到工作台':'已取消挂载');
-  }catch(e){showToast('保存失败: '+e.message);}
+  selKB.attached=!selKB.attached;
+  renderKBList();renderKBDetail();
+  if(combo)renderAttachedKB();
+  showToast(selKB.attached?'已挂载到工作台':'已取消挂载');
 }
 
 function testKB(){
@@ -991,23 +1041,15 @@ function testKB(){
   showToast('检索测试: 模拟从 '+selKB.docs.length+' 个文档中召回 Top-5 片段');
 }
 
-async function deleteKB(){
+function deleteKB(){
   if(!selKB||!confirm('删除知识库 "'+selKB.name+'" ?'))return;
-  try{
-    await kbApi('/bases/'+selKB.id,{method:'DELETE'});
-    kbs=kbs.filter(k=>k.id!==selKB.id);selKB=null;
-    refreshKBStats();renderKBList();renderKBDetail();renderAttachedKB();
-  }catch(e){showToast('删除失败: '+e.message);}
+  kbs=kbs.filter(k=>k.id!==selKB.id);selKB=null;
+  refreshKBStats();renderKBList();renderKBDetail();renderAttachedKB();
 }
 
-async function deleteDoc(id){
+function deleteDoc(id){
   if(!selKB)return;
-  const isTemp=String(id).startsWith('tmp-');
-  if(!isTemp){
-    try{ await kbApi('/documents/'+id,{method:'DELETE'}); }
-    catch(e){showToast('删除失败: '+e.message);return;}
-  }
-  selKB.docs=selKB.docs.filter(d=>String(d.id)!==String(id));
+  selKB.docs=selKB.docs.filter(d=>d.id!==id);
   refreshKBStats();renderKBList();renderDocs();renderKBDetail();
 }
 
@@ -1028,60 +1070,74 @@ function renderAttachedKB(){
 }
 
 // ═══ TABS ═══
-async function switchKBTab(t){
+function switchKBTab(t){
   activeKBTab=t;
   document.querySelectorAll('.tab-content').forEach(el=>el.classList.remove('active'));
   document.querySelectorAll('.kb-tab').forEach(el=>el.classList.remove('active'));
   document.getElementById('tab-'+t).classList.add('active');
   document.getElementById('tab-btn-'+t).classList.add('active');
-  if(t==='public'){await ensureFilterUniverse();await loadMarketplace();renderPublicMarket();}
+  if(t==='public')renderPublicMarket();
 }
 
 // ═══ PUBLIC MARKETPLACE ═══
-// Static industry/skill lists (don't depend on current filter result)
-let ALL_PUBLIC_INDUSTRIES=null,ALL_PUBLIC_SKILLS=null;
-async function ensureFilterUniverse(){
-  if(ALL_PUBLIC_INDUSTRIES)return;
-  try{
-    const all=await kbApi('/marketplace?sort=hot');
-    ALL_PUBLIC_INDUSTRIES=Array.from(new Set(all.map(p=>p.industry)));
-    const sk=new Set();all.forEach(p=>(p.skills||[]).forEach(s=>sk.add(s)));
-    ALL_PUBLIC_SKILLS=Array.from(sk);
-  }catch(e){ALL_PUBLIC_INDUSTRIES=[];ALL_PUBLIC_SKILLS=[];}
-}
 function renderFilterChips(){
+  // industry chips
   const ic=document.getElementById('filter-industry');
+  // collect unique industries from public KBs (also include "all")
+  const usedInd=new Set(['all']);
+  PUBLIC_KBS.forEach(p=>usedInd.add(p.industry));
   ic.innerHTML='<div class="filter-chip '+(filterIndustry==='all'?'active':'')+'" onclick="setFilterIndustry(\'all\')">全部</div>'+
-    (ALL_PUBLIC_INDUSTRIES||[]).map(i=>`<div class="filter-chip ${filterIndustry===i?'active':''}" onclick="setFilterIndustry('${i}')">${KB_INDUSTRY_LABEL[i]||i}</div>`).join('');
+    Array.from(usedInd).filter(i=>i!=='all').map(i=>`<div class="filter-chip ${filterIndustry===i?'active':''}" onclick="setFilterIndustry('${i}')">${KB_INDUSTRY_LABEL[i]||i}</div>`).join('');
+  // skill chips
   const sc=document.getElementById('filter-skill');
+  const usedSk=new Set();
+  PUBLIC_KBS.forEach(p=>(p.skills||[]).forEach(s=>usedSk.add(s)));
   sc.innerHTML='<div class="filter-chip '+(filterSkill==='all'?'active':'')+'" onclick="setFilterSkill(\'all\')">全部</div>'+
-    (ALL_PUBLIC_SKILLS||[]).map(s=>`<div class="filter-chip ${filterSkill===s?'active':''}" onclick="setFilterSkill('${s}')">${SKILL_LABEL[s]||s}</div>`).join('');
+    Array.from(usedSk).map(s=>`<div class="filter-chip ${filterSkill===s?'active':''}" onclick="setFilterSkill('${s}')">${SKILL_LABEL[s]||s}</div>`).join('');
 }
-async function setFilterIndustry(v){filterIndustry=v;await loadMarketplace();renderPublicMarket();}
-async function setFilterSkill(v){filterSkill=v;await loadMarketplace();renderPublicMarket();}
-async function setSort(v){
+function setFilterIndustry(v){filterIndustry=v;renderPublicMarket();}
+function setFilterSkill(v){filterSkill=v;renderPublicMarket();}
+function setSort(v){
   filterSort=v;
   document.querySelectorAll('#filter-sort .filter-chip').forEach(c=>c.classList.toggle('active',c.dataset.v===v));
-  await loadMarketplace();renderPublicMarket();
+  renderPublicMarket();
 }
 
 function renderPublicMarket(){
   renderFilterChips();
-  const list=PUBLIC_KBS;  // backend has already filtered + sorted
+  // include user's own public KBs
+  const myPublic=kbs.filter(k=>k.visibility==='public').map(k=>({
+    id:k.id,name:k.name,author:'我',verified:false,industry:k.industry,
+    skills:k.skills||[],desc:k.publish_desc||'我发布的知识库',
+    docs:k.docs.length,subscribers:0,rating:0,
+    price:k.publish_price_mode==='free'?0:(k.publish_price||0),
+    cover:Math.abs(hash(k.id))%COVER_GRADIENTS.length,
+    isMine:true
+  }));
+  let list=[...myPublic,...PUBLIC_KBS];
+  // filter
+  if(filterIndustry!=='all')list=list.filter(p=>p.industry===filterIndustry);
+  if(filterSkill!=='all')list=list.filter(p=>(p.skills||[]).includes(filterSkill));
+  if(filterSort==='free')list=list.filter(p=>p.price===0);
+  // sort
+  if(filterSort==='hot')list.sort((a,b)=>b.subscribers-a.subscribers);
+  else if(filterSort==='new')list.sort((a,b)=>(b.id<a.id?1:-1));
+  else if(filterSort==='rating')list.sort((a,b)=>b.rating-a.rating);
+
   document.getElementById('kb-result-count').innerHTML=`共 <b>${list.length}</b> 个公开知识库 ${filterIndustry!=='all'?'· '+KB_INDUSTRY_LABEL[filterIndustry]:''} ${filterSkill!=='all'?'· '+SKILL_LABEL[filterSkill]:''}`;
   const grid=document.getElementById('kb-public-grid');
   if(list.length===0){grid.innerHTML='<div class="kbpc-empty" style="grid-column:1/-1">没有匹配的知识库，试试其他筛选条件</div>';return;}
   grid.innerHTML=list.map(p=>{
-    const subscribed=p.subscribed||subscribedIds.has(p.id);
+    const subscribed=subscribedIds.has(p.id);
     const priceTag=p.price===0?'<div class="kbpc-price free">免费</div>':`<div class="kbpc-price">¥${p.price}/月</div>`;
     const verBadge=p.verified?'<span class="ver-badge">官方认证</span>':'';
-    const mineBadge=p.is_mine?'<span class="ver-badge" style="background:rgba(124,58,237,.08);color:var(--purple)">我发布</span>':'';
+    const mineBadge=p.isMine?'<span class="ver-badge" style="background:rgba(124,58,237,.08);color:var(--purple)">我发布</span>':'';
     const tags=[`<span class="kbpc-tag industry">${KB_INDUSTRY_LABEL[p.industry]||p.industry}</span>`]
       .concat((p.skills||[]).slice(0,3).map(s=>`<span class="kbpc-tag">${SKILL_LABEL[s]||s}</span>`)).join('');
     const stars=p.rating>0?`<span><span class="stars">★</span> ${p.rating.toFixed(1)}</span>`:'<span></span>';
-    const subBtn=p.is_mine?`<button onclick="showToast('已发布在公共市场')">已发布</button>`:
-      subscribed?`<button class="subscribed" onclick="unsubscribe(${p.id})">✓ 已订阅</button>`:
-      `<button class="primary" onclick="subscribePKB(${p.id})">${p.price===0?'立即订阅':'订阅 ¥'+p.price+'/月'}</button>`;
+    const subBtn=p.isMine?`<button onclick="showToast('已发布在公共市场')">已发布</button>`:
+      subscribed?`<button class="subscribed" onclick="unsubscribe('${p.id}')">✓ 已订阅</button>`:
+      `<button class="primary" onclick="subscribePKB('${p.id}')">${p.price===0?'立即订阅':'订阅 ¥'+p.price+'/月'}</button>`;
     return `<div class="kb-public-card">
       <div class="kbpc-cover" style="background:${COVER_GRADIENTS[p.cover||0]}">${esc(p.name.slice(0,2))}${priceTag}</div>
       <div class="kbpc-body">
@@ -1095,33 +1151,27 @@ function renderPublicMarket(){
         </div>
       </div>
       <div class="kbpc-actions">
-        <button onclick="previewPKB(${p.id})">预览</button>
+        <button onclick="previewPKB('${p.id}')">预览</button>
         ${subBtn}
       </div>
     </div>`;
   }).join('');
 }
-async function subscribePKB(id){
-  try{
-    await kbApi('/subscribe/'+id,{method:'POST'});
-    subscribedIds.add(id);
-    const p=PUBLIC_KBS.find(x=>x.id===id);if(p){p.subscribers++;p.subscribed=true;}
-    renderPublicMarket();showToast('已订阅，可在工作台挂载使用');
-  }catch(e){showToast('订阅失败: '+e.message);}
+function subscribePKB(id){
+  subscribedIds.add(id);
+  const p=PUBLIC_KBS.find(x=>x.id===id);if(p)p.subscribers++;
+  renderPublicMarket();showToast('已订阅，可在工作台挂载使用');
 }
-async function unsubscribe(id){
-  try{
-    await kbApi('/subscribe/'+id,{method:'DELETE'});
-    subscribedIds.delete(id);
-    const p=PUBLIC_KBS.find(x=>x.id===id);if(p){p.subscribers=Math.max(0,p.subscribers-1);p.subscribed=false;}
-    renderPublicMarket();showToast('已取消订阅');
-  }catch(e){showToast('取消失败: '+e.message);}
+function unsubscribe(id){
+  subscribedIds.delete(id);
+  renderPublicMarket();showToast('已取消订阅');
 }
 function previewPKB(id){
-  const p=PUBLIC_KBS.find(x=>x.id===id);
+  const p=PUBLIC_KBS.find(x=>x.id===id)||kbs.find(k=>k.id===id);
   if(!p)return;
-  showToast('预览: '+p.name+' (含 '+p.docs+' 个文档)');
+  showToast('预览: '+p.name+' (含 '+(p.docs||p.docs?.length||0)+' 个文档样本)');
 }
+function hash(s){let h=0;for(let i=0;i<s.length;i++){h=((h<<5)-h)+s.charCodeAt(i);h|=0;}return h;}
 
 // ═══ PAGE ═══
 function showPage(n){
@@ -1130,17 +1180,8 @@ function showPage(n){
   document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));
   const a=document.getElementById('nav-'+n);if(a)a.classList.add('active');
   if(n==='landing'){window.scrollTo(0,0);initFade();}
-  if(n==='chat'){
-    if(!combo){combo=C['ecommerce_chat'];buildSB();}
-    if(kbs.length===0){loadKBs().then(renderAttachedKB);}else{renderAttachedKB();}
-  }
-  if(n==='knowledge'){
-    (async()=>{
-      await loadKBs();
-      refreshKBStats();renderKBList();renderKBDetail();renderAttachedKB();
-      if(activeKBTab==='public'){await ensureFilterUniverse();await loadMarketplace();renderPublicMarket();}
-    })();
-  }
+  if(n==='chat'){if(!combo){combo=C['ecommerce_chat'];buildSB();}renderAttachedKB();}
+  if(n==='knowledge'){refreshKBStats();renderKBList();renderKBDetail();if(activeKBTab==='public')renderPublicMarket();}
 }
 
 // ═══ CHIPS ═══
@@ -1201,65 +1242,22 @@ function getResp(txt){
   const tpls=['基于你的描述，以下是分析和建议：\n\n1. 明确核心问题的边界和约束\n2. 根据行业最佳实践，建议分步实施\n3. 设置合理的验证指标评估效果\n\n需要深入分析某个方面吗？','已分析你的需求：\n\n- 关键在于效率和质量的平衡\n- 推荐渐进式实施路径\n- 预计两周内可见初步效果\n\n需要展开哪个部分？','让我从几个维度回答：\n\n**背景**：当前方向有价值\n**建议**：从小规模试点开始\n**风险**：注意合规和数据安全\n\n需要了解更多吗？'];
   return{t:tpls[Math.floor(Math.random()*tpls.length)],mi:0};
 }
-async function send(){
+function send(){
   const inp=document.getElementById('chat-input'),txt=inp.value.trim();if(!txt)return;
   if(!combo)combo=C['ecommerce_chat'];
   inp.value='';inp.style.height='auto';
   addMsg(txt,true);addTyping();
-
-  try{
-    const res=await fetch('/v1/chat/completions',{
-      method:'POST',
-      headers:{
-        'Content-Type':'application/json',
-        'Authorization':'Bearer sk-modelmux-dev-000000000000000000000000',
-        'X-Industry':selInd||'',
-        'X-Task-Type':selTask||''
-      },
-      body:JSON.stringify({messages:[{role:'user',content:txt}]})
-    });
-    if(!res.ok) throw new Error('HTTP '+res.status+': '+(await res.text()));
-    const data=await res.json();
-
-    // Find which sidebar model matches the response provider
-    let mi=0;
-    if(data.x_provider){
-      const idx=combo.m.findIndex(m=>MDB[m.id]&&MDB[m.id].name===data.x_provider);
-      if(idx>=0)mi=idx;
-    }
-
-    hlModel(mi);
-    if(mi!==0){swCnt++;document.getElementById('m-sw').textContent=swCnt+' 次';}
-
-    rmTyping();
-    const content=data.choices&&data.choices[0]&&data.choices[0].message?data.choices[0].message.content:'(空响应)';
-    addMsg(content,false,mi);
-
-    // Update metrics with real data
-    const tok=data.usage?data.usage.total_tokens:0;
-    totTok+=tok;
+  const resp=getResp(txt),mi=resp.mi;
+  setTimeout(()=>hlModel(mi),300);
+  if(mi!==0){swCnt++;document.getElementById('m-sw').textContent=swCnt+' 次';}
+  setTimeout(()=>{
+    rmTyping();addMsg(resp.t,false,mi);
+    const tok=50+Math.floor(Math.random()*200);totTok+=tok;totCost+=tok*0.00003;
     document.getElementById('m-tok').textContent=totTok.toLocaleString();
-
-    if(data.x_latency_ms!=null) document.getElementById('m-lat').textContent=data.x_latency_ms+'ms';
-    if(data.x_cost_usd!=null){totCost+=data.x_cost_usd*7.2;document.getElementById('m-cost').textContent='¥'+totCost.toFixed(3);}
-    if(data.x_routing_strategy) document.getElementById('ct-route').textContent='路由策略: '+data.x_routing_strategy;
-
+    document.getElementById('m-lat').textContent=(200+Math.floor(Math.random()*200))+'ms';
+    document.getElementById('m-cost').textContent='¥'+totCost.toFixed(3);
     if(mi!==0)setTimeout(()=>hlModel(0),2000);
-  }catch(e){
-    // Fallback to local fake response
-    console.warn('Backend unavailable, using local fallback:',e.message);
-    const resp=getResp(txt),mi=resp.mi;
-    setTimeout(()=>hlModel(mi),300);
-    if(mi!==0){swCnt++;document.getElementById('m-sw').textContent=swCnt+' 次';}
-    setTimeout(()=>{
-      rmTyping();addMsg(resp.t,false,mi);
-      const tok=50+Math.floor(Math.random()*200);totTok+=tok;totCost+=tok*0.00003;
-      document.getElementById('m-tok').textContent=totTok.toLocaleString();
-      document.getElementById('m-lat').textContent=(200+Math.floor(Math.random()*200))+'ms';
-      document.getElementById('m-cost').textContent='¥'+totCost.toFixed(3);
-      if(mi!==0)setTimeout(()=>hlModel(0),2000);
-    },800+Math.random()*1200);
-  }
+  },800+Math.random()*1200);
 }
 
 // ═══ UTILS ═══
