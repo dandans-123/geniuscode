@@ -36,7 +36,7 @@ def test_generate_mock_response_format():
 
 def test_generate_mock_response_different_models():
     messages = [ChatMessage(role="user", content="test")]
-    for model_name in ["gpt-4o", "claude-3.5-sonnet", "deepseek-v3", "claude-3-haiku"]:
+    for model_name in ["gpt-4o", "claude-3.5-sonnet", "deepseek-chat", "claude-3-haiku"]:
         response = generate_mock_response(model_name, messages)
         assert response["model"] == model_name
         assert len(response["choices"][0]["message"]["content"]) > 0

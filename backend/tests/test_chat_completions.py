@@ -24,11 +24,11 @@ def test_chat_completions_with_model(client, auth_headers):
     response = client.post(
         "/v1/chat/completions",
         headers=auth_headers,
-        json={"model": "deepseek-v3", "messages": [{"role": "user", "content": "Hello"}]},
+        json={"model": "deepseek-chat", "messages": [{"role": "user", "content": "Hello"}]},
     )
     assert response.status_code == 200
     data = response.json()
-    assert data["model"] == "deepseek-v3"
+    assert data["model"] == "deepseek-chat"
 
 
 def test_chat_completions_with_routing_headers(client, auth_headers):

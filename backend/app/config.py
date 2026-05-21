@@ -16,6 +16,10 @@ class Settings(BaseSettings):
     OPENAI_API_KEY: Optional[str] = None
     OPENAI_TIMEOUT_SECONDS: float = 60.0
 
+    DEEPSEEK_API_KEY: Optional[str] = None
+    DEEPSEEK_BASE_URL: str = "https://api.deepseek.com"
+    DEEPSEEK_TIMEOUT_SECONDS: float = 60.0
+
     class Config:
         env_file = ".env"
         extra = "ignore"  # tolerate keys for providers wired in later tasks

@@ -34,99 +34,27 @@ MODELS = [
     ("gpt-3.5-turbo", "openai", 0.70, 0.93, 0.0005, 0.0015, 350, 130, 16385, '["chat","code"]'),
     ("claude-3.5-sonnet", "anthropic", 0.96, 0.75, 0.003, 0.015, 900, 70, 200000, '["chat","code","analysis","vision"]'),
     ("claude-3-haiku", "anthropic", 0.78, 0.95, 0.00025, 0.00125, 300, 150, 200000, '["chat","code"]'),
-    ("deepseek-v3", "deepseek", 0.88, 0.85, 0.0002, 0.0006, 600, 100, 64000, '["chat","code","analysis"]'),
-    ("deepseek-r1", "deepseek", 0.92, 0.60, 0.0004, 0.0016, 1200, 50, 64000, '["chat","code","reasoning"]'),
+    # DeepSeek model names must match the API's accepted `model` field.
+    ("deepseek-chat", "deepseek", 0.88, 0.85, 0.0002, 0.0006, 600, 100, 64000, '["chat","code","analysis"]'),
+    ("deepseek-reasoner", "deepseek", 0.92, 0.60, 0.0004, 0.0016, 1200, 50, 64000, '["chat","code","reasoning"]'),
     ("qwen-max", "alibaba", 0.85, 0.82, 0.0004, 0.0012, 700, 90, 32000, '["chat","code","analysis"]'),
     ("ernie-4.0", "baidu", 0.83, 0.78, 0.0008, 0.002, 650, 85, 8000, '["chat","analysis"]'),
     ("glm-4", "zhipu", 0.80, 0.88, 0.0003, 0.001, 500, 95, 128000, '["chat","code"]'),
     ("moonshot-v1", "moonshot", 0.79, 0.90, 0.00025, 0.001, 450, 110, 128000, '["chat","code","analysis"]'),
 ]
 
-INDUSTRIES = ["finance", "healthcare", "legal", "education", "ecommerce", "technology", "manufacturing", "media"]
-TASK_TYPES = ["chat", "code_generation", "data_analysis", "content_writing", "translation", "summarization", "reasoning", "customer_service"]
+# V1 routing: 3 hard defaults (chat / code_generation / summarization). Other
+# task_types fall through to the model the caller explicitly passes — no
+# behind-the-scenes routing magic until we have real usage data to back it.
+# Schema kept (primary / fallback / specialist) for forward compatibility.
+INDUSTRIES = ["default"]
+TASK_TYPES = ["chat", "code_generation", "summarization"]
 
-# Mapping: (industry, task) -> (primary, fallback, specialist) model names
-# Simplified: use quality-first for complex tasks, cost-first for simple ones
 ROUTING_LOGIC = {
-    "finance": {
-        "chat": ("gpt-4o-mini", "claude-3-haiku", "qwen-max"),
-        "code_generation": ("gpt-4o", "claude-3.5-sonnet", "deepseek-v3"),
-        "data_analysis": ("gpt-4o", "deepseek-r1", "qwen-max"),
-        "content_writing": ("claude-3.5-sonnet", "gpt-4o", "ernie-4.0"),
-        "translation": ("gpt-4o-mini", "qwen-max", "glm-4"),
-        "summarization": ("claude-3-haiku", "gpt-4o-mini", "deepseek-v3"),
-        "reasoning": ("deepseek-r1", "gpt-4o", "claude-3.5-sonnet"),
-        "customer_service": ("gpt-4o-mini", "claude-3-haiku", "moonshot-v1"),
-    },
-    "healthcare": {
-        "chat": ("claude-3.5-sonnet", "gpt-4o", "ernie-4.0"),
-        "code_generation": ("gpt-4o", "deepseek-v3", "claude-3.5-sonnet"),
-        "data_analysis": ("gpt-4o", "deepseek-r1", "claude-3.5-sonnet"),
-        "content_writing": ("claude-3.5-sonnet", "gpt-4o", "qwen-max"),
-        "translation": ("gpt-4o-mini", "qwen-max", "glm-4"),
-        "summarization": ("claude-3-haiku", "gpt-4o-mini", "deepseek-v3"),
-        "reasoning": ("deepseek-r1", "claude-3.5-sonnet", "gpt-4o"),
-        "customer_service": ("claude-3-haiku", "gpt-4o-mini", "moonshot-v1"),
-    },
-    "legal": {
-        "chat": ("claude-3.5-sonnet", "gpt-4o", "deepseek-r1"),
-        "code_generation": ("gpt-4o", "deepseek-v3", "claude-3.5-sonnet"),
-        "data_analysis": ("deepseek-r1", "gpt-4o", "claude-3.5-sonnet"),
-        "content_writing": ("claude-3.5-sonnet", "gpt-4o", "ernie-4.0"),
-        "translation": ("gpt-4o", "qwen-max", "glm-4"),
-        "summarization": ("claude-3.5-sonnet", "gpt-4o-mini", "deepseek-v3"),
-        "reasoning": ("deepseek-r1", "claude-3.5-sonnet", "gpt-4o"),
-        "customer_service": ("gpt-4o-mini", "claude-3-haiku", "qwen-max"),
-    },
-    "education": {
-        "chat": ("gpt-4o-mini", "claude-3-haiku", "moonshot-v1"),
-        "code_generation": ("deepseek-v3", "gpt-4o", "claude-3.5-sonnet"),
-        "data_analysis": ("gpt-4o-mini", "deepseek-v3", "qwen-max"),
-        "content_writing": ("claude-3.5-sonnet", "gpt-4o", "qwen-max"),
-        "translation": ("qwen-max", "gpt-4o-mini", "glm-4"),
-        "summarization": ("claude-3-haiku", "gpt-4o-mini", "deepseek-v3"),
-        "reasoning": ("deepseek-r1", "gpt-4o", "claude-3.5-sonnet"),
-        "customer_service": ("moonshot-v1", "gpt-4o-mini", "claude-3-haiku"),
-    },
-    "ecommerce": {
-        "chat": ("gpt-4o-mini", "claude-3-haiku", "moonshot-v1"),
-        "code_generation": ("gpt-4o", "deepseek-v3", "claude-3.5-sonnet"),
-        "data_analysis": ("deepseek-v3", "gpt-4o-mini", "qwen-max"),
-        "content_writing": ("gpt-4o", "claude-3.5-sonnet", "qwen-max"),
-        "translation": ("qwen-max", "gpt-4o-mini", "glm-4"),
-        "summarization": ("gpt-4o-mini", "claude-3-haiku", "deepseek-v3"),
-        "reasoning": ("gpt-4o", "deepseek-r1", "claude-3.5-sonnet"),
-        "customer_service": ("gpt-4o-mini", "moonshot-v1", "claude-3-haiku"),
-    },
-    "technology": {
-        "chat": ("gpt-4o-mini", "claude-3-haiku", "deepseek-v3"),
-        "code_generation": ("claude-3.5-sonnet", "gpt-4o", "deepseek-v3"),
-        "data_analysis": ("gpt-4o", "deepseek-r1", "deepseek-v3"),
-        "content_writing": ("claude-3.5-sonnet", "gpt-4o", "qwen-max"),
-        "translation": ("gpt-4o-mini", "qwen-max", "glm-4"),
-        "summarization": ("claude-3-haiku", "deepseek-v3", "gpt-4o-mini"),
-        "reasoning": ("deepseek-r1", "claude-3.5-sonnet", "gpt-4o"),
-        "customer_service": ("gpt-4o-mini", "claude-3-haiku", "moonshot-v1"),
-    },
-    "manufacturing": {
-        "chat": ("gpt-4o-mini", "qwen-max", "ernie-4.0"),
-        "code_generation": ("deepseek-v3", "gpt-4o", "claude-3.5-sonnet"),
-        "data_analysis": ("deepseek-v3", "gpt-4o", "qwen-max"),
-        "content_writing": ("qwen-max", "gpt-4o", "ernie-4.0"),
-        "translation": ("qwen-max", "glm-4", "gpt-4o-mini"),
-        "summarization": ("deepseek-v3", "gpt-4o-mini", "claude-3-haiku"),
-        "reasoning": ("deepseek-r1", "gpt-4o", "qwen-max"),
-        "customer_service": ("qwen-max", "gpt-4o-mini", "moonshot-v1"),
-    },
-    "media": {
-        "chat": ("gpt-4o-mini", "moonshot-v1", "claude-3-haiku"),
-        "code_generation": ("gpt-4o", "deepseek-v3", "claude-3.5-sonnet"),
-        "data_analysis": ("gpt-4o-mini", "deepseek-v3", "qwen-max"),
-        "content_writing": ("claude-3.5-sonnet", "gpt-4o", "moonshot-v1"),
-        "translation": ("gpt-4o-mini", "qwen-max", "glm-4"),
-        "summarization": ("claude-3-haiku", "gpt-4o-mini", "deepseek-v3"),
-        "reasoning": ("gpt-4o", "deepseek-r1", "claude-3.5-sonnet"),
-        "customer_service": ("moonshot-v1", "gpt-4o-mini", "claude-3-haiku"),
+    "default": {
+        "chat": ("gpt-4o-mini", "gpt-3.5-turbo", "deepseek-chat"),
+        "code_generation": ("deepseek-chat", "gpt-4o-mini", "gpt-4o"),
+        "summarization": ("deepseek-chat", "gpt-4o-mini", "gpt-3.5-turbo"),
     },
 }
 
@@ -216,9 +144,9 @@ def seed_database(db: Session):
         db.flush()
         provider_map[p["name"]] = provider.id
 
-    # Create models. OpenAI models go through the real provider; everything
-    # else stays mocked until Task 5+ wires the remaining providers.
-    real_provider_names = {"openai"}
+    # Create models. OpenAI + DeepSeek go through real providers; the rest
+    # stay mocked until later tasks wire them.
+    real_provider_names = {"openai", "deepseek"}
     model_map = {}
     for name, prov_name, quality, speed, cost_in, cost_out, latency, tps, ctx, caps in MODELS:
         model = Model(
@@ -238,7 +166,7 @@ def seed_database(db: Session):
         db.flush()
         model_map[name] = model.id
 
-    # Create routing rules (64 = 8 industries × 8 tasks)
+    # V1: 3 routing rules (default industry × 3 hard-default tasks).
     for industry in INDUSTRIES:
         for task_type in TASK_TYPES:
             models_tuple = ROUTING_LOGIC[industry][task_type]
