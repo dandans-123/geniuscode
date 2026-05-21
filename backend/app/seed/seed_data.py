@@ -25,9 +25,13 @@ PROVIDERS = [
 ]
 
 # Models: (name, provider_name, quality, speed, cost_in, cost_out, latency, tps, context, capabilities)
+# `gpt-3.5-turbo` is included so the Quickstart curl example (which still
+# references the cheapest OpenAI model) has a real route. Task 3 wires the
+# OpenAI provider; the rest stay mocked until Task 5+.
 MODELS = [
     ("gpt-4o", "openai", 0.95, 0.80, 0.005, 0.015, 800, 80, 128000, '["chat","code","analysis","vision"]'),
     ("gpt-4o-mini", "openai", 0.82, 0.92, 0.00015, 0.0006, 400, 120, 128000, '["chat","code","analysis"]'),
+    ("gpt-3.5-turbo", "openai", 0.70, 0.93, 0.0005, 0.0015, 350, 130, 16385, '["chat","code"]'),
     ("claude-3.5-sonnet", "anthropic", 0.96, 0.75, 0.003, 0.015, 900, 70, 200000, '["chat","code","analysis","vision"]'),
     ("claude-3-haiku", "anthropic", 0.78, 0.95, 0.00025, 0.00125, 300, 150, 200000, '["chat","code"]'),
     ("deepseek-v3", "deepseek", 0.88, 0.85, 0.0002, 0.0006, 600, 100, 64000, '["chat","code","analysis"]'),
@@ -212,7 +216,9 @@ def seed_database(db: Session):
         db.flush()
         provider_map[p["name"]] = provider.id
 
-    # Create models
+    # Create models. OpenAI models go through the real provider; everything
+    # else stays mocked until Task 5+ wires the remaining providers.
+    real_provider_names = {"openai"}
     model_map = {}
     for name, prov_name, quality, speed, cost_in, cost_out, latency, tps, ctx, caps in MODELS:
         model = Model(
@@ -226,7 +232,7 @@ def seed_database(db: Session):
             tokens_per_second=tps,
             max_context_length=ctx,
             capabilities=caps,
-            is_mock=True,
+            is_mock=prov_name not in real_provider_names,
         )
         db.add(model)
         db.flush()

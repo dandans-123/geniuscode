@@ -5,7 +5,7 @@ import json
 import random
 import time
 import uuid
-from dataclasses import dataclass
+from typing import AsyncIterator
 
 from app.schemas.chat import ChatMessage
 
@@ -166,3 +166,37 @@ async def generate_mock_stream(model_name: str, messages: list[ChatMessage]):
     }
     yield f"data: {json.dumps(final_chunk)}\n\n"
     yield "data: [DONE]\n\n"
+
+
+class MockProvider:
+    """`LLMProvider` adapter wrapping the legacy module-level mock helpers.
+
+    Kept so the dispatch layer can treat mock and real providers
+    uniformly. Module-level `generate_mock_response` / `generate_mock_stream`
+    remain for backward compatibility with the existing test suite.
+    """
+
+    name = "mock"
+
+    async def complete(
+        self,
+        model_name: str,
+        messages: list[ChatMessage],
+        *,
+        temperature: float = 0.7,
+        max_tokens: int | None = None,
+        top_p: float = 1.0,
+    ) -> dict:
+        # The mock helper is sync; wrap so callers can `await` uniformly.
+        return generate_mock_response(model_name, messages)
+
+    def stream(
+        self,
+        model_name: str,
+        messages: list[ChatMessage],
+        *,
+        temperature: float = 0.7,
+        max_tokens: int | None = None,
+        top_p: float = 1.0,
+    ) -> AsyncIterator[str]:
+        return generate_mock_stream(model_name, messages)
