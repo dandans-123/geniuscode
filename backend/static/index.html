@@ -436,7 +436,7 @@ footer.site-footer{background:var(--bg-soft);color:var(--g600);padding:56px 0 28
 <!-- NAV -->
 <nav>
   <div class="container">
-    <div class="nav-logo" onclick="showPage('landing')"><div class="dot">TR</div>ModelMux AI</div>
+    <div class="nav-logo" onclick="showPage('landing')"><div class="dot">MM</div>ModelMux</div>
     <ul class="nav-links">
       <li><a onclick="showPage('landing')" id="nav-landing" class="active">首页</a></li>
       <li><a onclick="showPage('recommend')" id="nav-recommend">任务配置</a></li>
@@ -451,109 +451,258 @@ footer.site-footer{background:var(--bg-soft);color:var(--g600);padding:56px 0 28
 <div class="page active" id="page-landing">
 
 <section class="hero">
-  <div class="particles"><i></i><i></i><i></i><i></i><i></i><i></i></div>
-  <div class="hero-grid"></div>
   <div class="container">
-    <div class="hero-badge"><span class="pulse"></span>ModelMux · 开发者最懂业务的 AI 路由层 / The AI routing layer that gets your business</div>
-    <h1>一行代码，<br>让每个请求<span class="gr">跑在对的模型上</span><br><small style="font-size:.5em;font-weight:500;opacity:.85;display:block;margin-top:.6em">One line of code. Every call on the right model.</small></h1>
-    <p class="hero-desc">OpenAI 兼容接口，按任务和预算自动路由到合适的模型，账单和质量都能追溯。<br><span style="opacity:.85">OpenAI-compatible API. Routes each call to the right model by task and budget — with auditable cost and quality.</span></p>
-    <div class="hero-actions">
-      <button class="btn btn-primary" onclick="showPage('recommend')">
-        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
-        免费接入 / Start free
-      </button>
-      <button class="btn btn-outline-w" onclick="showPage('chat')">看 5 分钟 Demo / See 5-min demo</button>
+    <div class="hero-left">
+      <div class="hero-eyebrow"><span class="dot"></span>ModelMux · 开发者最懂业务的 AI 路由层</div>
+      <h1>一行代码，<br>让每个请求<span class="accent">跑在对的模型上</span><span class="en">One line of code. Every call on the right model.</span></h1>
+      <p class="hero-desc">OpenAI 兼容接口，按任务和预算自动路由到合适的模型，账单和质量都能追溯。<span class="en">OpenAI-compatible API. Routes each call to the right model by task and budget — with auditable cost and quality.</span></p>
+      <div class="hero-actions">
+        <button class="btn btn-primary" onclick="showPage('recommend')">免费接入 / Start free
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+        </button>
+        <button class="btn btn-ghost" onclick="showPage('chat')">看 5 分钟 Demo</button>
+      </div>
+      <div class="hero-meta">
+        <span><b>$5</b> 免费路由额度</span>
+        <span><b>无需绑卡</b></span>
+        <span>OpenAI 兼容, 改 <b>2 行</b> 接入</span>
+      </div>
     </div>
-    <div class="hero-stats">
-      <div class="hero-stat"><div class="num">2<span>+</span></div><div class="label">V1 已接入 (OpenAI · DeepSeek)</div></div>
-      <div class="hero-stat"><div class="num">30-50<span>%</span></div><div class="label">典型场景降本区间</div></div>
-      <div class="hero-stat"><div class="num">[V1]<span></span></div><div class="label">真实可用率 (上线后填充)</div></div>
-      <div class="hero-stat"><div class="num">&lt;100<span>ms</span></div><div class="label">路由层延迟</div></div>
+    <div class="hero-right">
+      <div class="code-card">
+        <div class="code-card-head">
+          <div class="dots"><i></i><i></i><i></i></div>
+          <span class="file">quickstart.py</span>
+        </div>
+        <div class="code-tabs">
+          <button class="code-tab active" onclick="codeTab(0,this)">Python</button>
+          <button class="code-tab" onclick="codeTab(1,this)">Node</button>
+          <button class="code-tab" onclick="codeTab(2,this)">curl</button>
+          <button class="code-copy" onclick="copyCode()">Copy</button>
+        </div>
+        <div class="code-body">
+          <div class="code-pane active" id="cp-0"><pre><span class="k">from</span> <span class="v">openai</span> <span class="k">import</span> <span class="v">OpenAI</span>
+
+<span class="v">client</span> = <span class="f">OpenAI</span>(
+  <span class="v">api_key</span>=<span class="s">"sk-modelmux-..."</span>,
+  <span class="v">base_url</span>=<span class="s">"https://api.modelmux.ai/v1"</span>,
+)
+
+<span class="v">resp</span> = <span class="v">client</span>.<span class="v">chat</span>.<span class="v">completions</span>.<span class="f">create</span>(
+  <span class="v">model</span>=<span class="s">"gpt-4o-mini"</span>,
+  <span class="v">messages</span>=[{<span class="s">"role"</span>:<span class="s">"user"</span>,<span class="s">"content"</span>:<span class="s">"Hi"</span>}],
+)
+
+<span class="c"># 路由决策在响应头里</span>
+<span class="f">print</span>(<span class="v">resp</span>.<span class="v">headers</span>[<span class="s">"x-mm-picked"</span>])
+<span class="f">print</span>(<span class="v">resp</span>.<span class="v">headers</span>[<span class="s">"x-mm-cost-usd"</span>])</pre></div>
+          <div class="code-pane" id="cp-1"><pre><span class="k">import</span> <span class="v">OpenAI</span> <span class="k">from</span> <span class="s">"openai"</span>;
+
+<span class="k">const</span> <span class="v">client</span> = <span class="k">new</span> <span class="f">OpenAI</span>({
+  <span class="v">apiKey</span>: <span class="s">"sk-modelmux-..."</span>,
+  <span class="v">baseURL</span>: <span class="s">"https://api.modelmux.ai/v1"</span>,
+});
+
+<span class="k">const</span> <span class="v">resp</span> = <span class="k">await</span> <span class="v">client</span>.<span class="v">chat</span>.<span class="v">completions</span>.<span class="f">create</span>({
+  <span class="v">model</span>: <span class="s">"gpt-4o-mini"</span>,
+  <span class="v">messages</span>: [{ <span class="v">role</span>: <span class="s">"user"</span>, <span class="v">content</span>: <span class="s">"Hi"</span> }],
+});
+
+<span class="f">console</span>.<span class="f">log</span>(<span class="v">resp</span>.<span class="v">choices</span>[<span class="n">0</span>].<span class="v">message</span>.<span class="v">content</span>);</pre></div>
+          <div class="code-pane" id="cp-2"><pre><span class="f">curl</span> https://api.modelmux.ai/v1/chat/completions \
+  -H <span class="s">"Authorization: Bearer sk-modelmux-..."</span> \
+  -H <span class="s">"Content-Type: application/json"</span> \
+  -d <span class="s">'{"model":"gpt-4o-mini",
+       "messages":[{"role":"user","content":"Hi"}]}'</span></pre></div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- FEATURES -->
-<section class="section section-gray" id="features">
+<!-- TRUST BAR -->
+<section class="trust">
   <div class="container">
-    <div class="stitle fade-up">六大核心模块 / Six building blocks</div>
-    <div class="ssub fade-up">不只是 API 网关：路由、成本、质量、结算，开发者要的都在一层里。<br><span style="opacity:.8">More than a gateway: routing, cost, quality and billing — all in one layer you control.</span></div>
+    <div class="trust-label">已接入 / Powered by</div>
+    <div class="trust-row">
+      <span class="trust-item" style="color:#10A37F">OpenAI</span>
+      <span class="trust-item" style="color:#4D6BFE">DeepSeek</span>
+      <span class="trust-item" style="color:#D97706">Anthropic <small style="opacity:.6;font-weight:500;font-size:.72rem">(V2)</small></span>
+      <span class="trust-item" style="color:#009688">FastAPI</span>
+      <span class="trust-item" style="color:#3776AB">Python</span>
+      <span class="trust-item" style="color:#635BFF">Stripe</span>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES (3) -->
+<section class="section section-soft" id="features">
+  <div class="container">
+    <div class="stitle">三件事我们做对了 / Three things we got right</div>
+    <div class="ssub">不是开新框架, 是让你已有的 OpenAI 代码跑在路由层上。</div>
     <div class="feat-grid">
-      <div class="feat-card fade-up"><div class="icon" style="background:rgba(37,99,235,.1);color:var(--blue)"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div><h3>多模型网关</h3><p>统一 API 接入 200+ 模型，OpenAI 兼容格式，SDK 开箱即用，代码零改动。</p></div>
-      <div class="feat-card fade-up"><div class="icon" style="background:rgba(5,150,105,.1);color:var(--green)"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6m6 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0h6m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14"/></svg></div><h3>任务路由引擎</h3><p>根据任务类型、质量要求、成本预算和延迟目标，自动选择最优模型组合。</p></div>
-      <div class="feat-card fade-up"><div class="icon" style="background:rgba(217,119,6,.1);color:var(--orange)"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div><h3>AI 成本账本</h3><p>实时成本追踪、部门分账、预算管控、用量报表，每一笔调用清清楚楚。</p></div>
-      <div class="feat-card fade-up"><div class="icon" style="background:rgba(124,58,237,.1);color:var(--purple)"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg></div><h3>AI 质检器</h3><p>模型效果评测、幻觉率检测、行业适配评分，供应商优胜劣汰。</p></div>
-      <div class="feat-card fade-up"><div class="icon" style="background:rgba(219,39,119,.1);color:var(--pink)"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg></div><h3>Fallback 管理</h3><p>主备链路自动切换、故障秒级降级、多供应商冗余，99.9% 可用率。</p></div>
-      <div class="feat-card fade-up"><div class="icon" style="background:rgba(15,23,42,.08);color:var(--navy)"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg></div><h3>用量与结算中心</h3><p>统一计费、发票管理、供应商分成、白标分销后台。</p></div>
+      <div class="feat-card">
+        <div class="icon"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg></div>
+        <h3>OpenAI 兼容</h3>
+        <p>改 2 行代码 (base_url + key), SDK 不动, streaming + tool calling 全支持。从 OpenAI 直连切到 ModelMux 不重写业务。</p>
+      </div>
+      <div class="feat-card">
+        <div class="icon" style="background:rgba(5,150,105,.08);color:var(--green)"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6m6 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0h6m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14"/></svg></div>
+        <h3>智能路由</h3>
+        <p>按任务 / 预算 / 可用性自动选模型。响应头返回 <code>x-mm-picked</code> / <code>x-mm-cost</code>, 选了谁、花了多少, 你能审计。</p>
+      </div>
+      <div class="feat-card">
+        <div class="icon" style="background:rgba(217,119,6,.08);color:#D97706"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg></div>
+        <h3>透明账本</h3>
+        <p>token 级实时计费。upstream 挂了自动 fallback 到备用模型, 单次请求不漏单。月底统一结算, 一张账单。</p>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- SUPPLY TYPES -->
+<!-- HOW IT WORKS -->
 <section class="section">
   <div class="container">
-    <div class="stitle fade-up">四类能力供应品</div>
-    <div class="ssub fade-up">不是卖开源代码，而是经过封装、计量、评测和安全控制的标准化 AI 能力服务</div>
-    <div class="supply-row fade-up">
-      <div class="supply-card"><span class="s-emoji">&#x1F9E0;</span><h4>模型推理</h4><p>大模型 API 统一调用，按 token 计量</p><div class="s-ex">Qwen / DeepSeek / Llama / GLM / Yi ...</div></div>
-      <div class="supply-card"><span class="s-emoji">&#x1F527;</span><h4>功能工具</h4><p>一次搜索、翻译、OCR、PDF 解析</p><div class="s-ex">网页抓取 / 表格处理 / 代码执行 ...</div></div>
-      <div class="supply-card"><span class="s-emoji">&#x1F916;</span><h4>任务 Agent</h4><p>一次合同审查、客服会话、线索处理</p><div class="s-ex">客服 / 法务 / 销售 / 研究 Agent ...</div></div>
-      <div class="supply-card"><span class="s-emoji">&#x1F504;</span><h4>业务工作流</h4><p>一次完整流程、一个场景解决方案</p><div class="s-ex">知识库问答 / 内容生产 / 标书解析 ...</div></div>
+    <div class="stitle">3 步开始 / 3 steps to ship</div>
+    <div class="ssub">熟悉的 OpenAI 调用, 只换路径。</div>
+    <div class="how-row">
+      <div class="how-step">
+        <div class="num">1</div>
+        <h4>注册拿 API key</h4>
+        <p>邮箱注册 modelmux.ai, 控制台一键生成 key, 无需审核。</p>
+        <code>sk-modelmux-xxxx</code>
+      </div>
+      <div class="how-step">
+        <div class="num">2</div>
+        <h4>换 base_url</h4>
+        <p>OpenAI SDK 不动, 改两行: api_key 换我们的, base_url 指向 ModelMux。</p>
+        <code>https://api.modelmux.ai/v1</code>
+      </div>
+      <div class="how-step">
+        <div class="num">3</div>
+        <h4>看响应头</h4>
+        <p>每次请求返回路由决策、模型、成本。哪条规则把你路过去了, 一清二楚。</p>
+        <code>x-mm-picked: deepseek-chat</code>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- CAPABILITY MARKET -->
-<section class="section section-gray" id="capabilities">
+<!-- PRICING -->
+<section class="section section-soft">
   <div class="container">
-    <div class="stitle fade-up">能力市场 - 首批上架</div>
-    <div class="ssub fade-up">每个能力包都经过许可证审查、服务封装、质量评测和安全控制</div>
-    <div class="cap-grid">
-      <div class="cap-card fade-up"><div class="cap-icon" style="background:rgba(37,99,235,.1)">&#x1F4DA;</div><div><h4>企业知识库问答</h4><div class="cap-desc">上传文档构建专属知识库，AI 精准回答并引用来源</div><span class="cap-tag cap-tag-blue">RAG</span><span class="cap-tag cap-tag-green">按次计费</span></div></div>
-      <div class="cap-card fade-up"><div class="cap-icon" style="background:rgba(124,58,237,.1)">&#x1F4C4;</div><div><h4>合同 / PDF 解析</h4><div class="cap-desc">自动提取关键条款、风险点，生成结构化摘要</div><span class="cap-tag cap-tag-purple">Agent</span><span class="cap-tag cap-tag-green">按份计费</span></div></div>
-      <div class="cap-card fade-up"><div class="cap-icon" style="background:rgba(217,119,6,.1)">&#x1F4CB;</div><div><h4>标书智能分析</h4><div class="cap-desc">提取评分标准、资质要求、时间节点</div><span class="cap-tag cap-tag-purple">Workflow</span><span class="cap-tag cap-tag-green">按份计费</span></div></div>
-      <div class="cap-card fade-up"><div class="cap-icon" style="background:rgba(5,150,105,.1)">&#x1F4AC;</div><div><h4>智能客服知识库</h4><div class="cap-desc">自动解答常见问题，复杂问题转人工</div><span class="cap-tag cap-tag-blue">Agent</span><span class="cap-tag cap-tag-green">按会话计费</span></div></div>
-      <div class="cap-card fade-up"><div class="cap-icon" style="background:rgba(219,39,119,.1)">&#x1F4DD;</div><div><h4>营销内容生成</h4><div class="cap-desc">小红书/抖音/商品文案，多风格一键生成</div><span class="cap-tag cap-tag-blue">Workflow</span><span class="cap-tag cap-tag-green">按篇计费</span></div></div>
-      <div class="cap-card fade-up"><div class="cap-icon" style="background:rgba(124,58,237,.1)">&#x1F50D;</div><div><h4>销售线索清洗</h4><div class="cap-desc">自动搜索、补全、评分线索，提升转化率</div><span class="cap-tag cap-tag-purple">Agent</span><span class="cap-tag cap-tag-green">按百条计费</span></div></div>
-      <div class="cap-card fade-up"><div class="cap-icon" style="background:rgba(217,119,6,.1)">&#x1F3A4;</div><div><h4>会议纪要生成</h4><div class="cap-desc">语音转文字 + 提取决策、行动项、责任人</div><span class="cap-tag cap-tag-blue">Workflow</span><span class="cap-tag cap-tag-green">按次计费</span></div></div>
-      <div class="cap-card fade-up"><div class="cap-icon" style="background:rgba(5,150,105,.1)">&#x1F9FE;</div><div><h4>发票报销初审</h4><div class="cap-desc">OCR + 规则校验 + AI 审核合规性</div><span class="cap-tag cap-tag-purple">Workflow</span><span class="cap-tag cap-tag-green">按张计费</span></div></div>
+    <div class="stitle">定价 / Pricing</div>
+    <div class="ssub">透传上游成本 × 1.6 加价, 覆盖路由智能 / 服务器 / 故障转移。</div>
+    <div class="price-grid">
+      <div class="price-card">
+        <div class="tier">Free</div>
+        <div class="price">$5<small>路由额度</small></div>
+        <div class="sub">注册即送, 无需绑卡</div>
+        <ul>
+          <li>OpenAI + DeepSeek 全部模型</li>
+          <li>自动路由 + 手动指定都支持</li>
+          <li>用完再充, 无月费</li>
+        </ul>
+        <button class="price-cta" onclick="showPage('recommend')">免费开始</button>
+      </div>
+      <div class="price-card featured">
+        <div class="badge">V1 推荐</div>
+        <div class="tier">Pay-as-you-go</div>
+        <div class="price">×1.6<small>上游价</small></div>
+        <div class="sub">按 token 计费, 用多少付多少</div>
+        <ul>
+          <li>价格表完全透明 (含上游原价)</li>
+          <li>token 级实时账单</li>
+          <li>自动 fallback 不漏单</li>
+        </ul>
+        <button class="price-cta" onclick="showPage('recommend')">查看模型价格</button>
+      </div>
+      <div class="price-card">
+        <div class="tier">Enterprise</div>
+        <div class="price">联系<small>报价</small></div>
+        <div class="sub">>1M 调用/月, SLA, BYOK</div>
+        <ul>
+          <li>专属支持渠道</li>
+          <li>SSO / 团队账号 (V2)</li>
+          <li>定制路由规则</li>
+        </ul>
+        <button class="price-cta" onclick="showToast('企业版 V2 上线, 邮件 sales@modelmux.ai')">联系销售</button>
+      </div>
     </div>
+    <div class="price-note">汇率 USD → CNY 按月底美联储中间价。<a onclick="showToast('完整价格表 V1 文档站发布')">完整价格表 →</a></div>
   </div>
 </section>
 
-<!-- AUDIENCE -->
-<section class="section" id="audience">
+<!-- DOCS CROSS-LINK -->
+<section class="section">
   <div class="container">
-    <div class="stitle fade-up">为谁而建</div>
-    <div class="aud-tabs fade-up">
-      <div class="aud-tab active" onclick="switchAud(0,this)">企业客户</div>
-      <div class="aud-tab" onclick="switchAud(1,this)">AI 服务商</div>
-      <div class="aud-tab" onclick="switchAud(2,this)">投资人</div>
-      <div class="aud-tab" onclick="switchAud(3,this)">政府 / 产业方</div>
+    <div class="docs-link">
+      <div>
+        <h3>5 分钟跑通第一个真实调用</h3>
+        <p>Quickstart 给你 Python / Node / curl 三段代码 + 真实响应示例 + 错误码处理。</p>
+        <div class="docs-link-cols">
+          <a onclick="showToast('Quickstart V1 文档站发布')">Quickstart</a>
+          <a onclick="showToast('API Reference V1 文档站发布')">API Reference</a>
+          <a onclick="showToast('FAQ V1 文档站发布')">FAQ</a>
+          <a onclick="showToast('加入 Discord 内测群')">Discord</a>
+        </div>
+      </div>
+      <a class="docs-arrow" onclick="showToast('文档站 V1 发布')">看文档 →</a>
     </div>
-    <div class="aud-panel active" id="aud-0"><div class="aud-title">企业客户</div><div class="aud-sub">AI 应用公司、跨境电商、中小企业</div><div class="aud-quote">你只需要提交 AI 任务，我们帮你自动选择最合适的模型，降低成本 30-50%，并生成可追踪的用量和质量报告。</div></div>
-    <div class="aud-panel" id="aud-1"><div class="aud-title">AI 服务商 / Agency</div><div class="aud-sub">AI SaaS、代理商、系统集成商</div><div class="aud-quote">你继续服务客户，我们在后台帮你完成 AI 任务拆解、模型调用、成本控制和交付质检。白标分销后台，你的品牌你做主。</div></div>
-    <div class="aud-panel" id="aud-2"><div class="aud-title">投资人</div><div class="aud-sub">关注 AI Infra 赛道的投资机构</div><div class="aud-quote">我们不是做简单 API 转售，而是做 AI 服务时代的任务路由、成本治理和清结算基础设施。每一笔 AI 调用都经过我们的路由和结算。</div></div>
-    <div class="aud-panel" id="aud-3"><div class="aud-title">政府 / 产业方</div><div class="aud-sub">科技主管部门、产业园区、产业基金</div><div class="aud-quote">AI 能力调度与产业服务平台 —— 连接全国算力、模型和数据供给，帮助区域企业低成本用上 AI，推动产业智能化升级。</div></div>
   </div>
 </section>
 
 <!-- CTA -->
-<section class="cta-section">
-  <div class="container"><div class="cta-content fade-up">
-    <h2>开始使用 ModelMux AI</h2>
-    <p>加入试点计划，成为首批客户或能力供应商</p>
-    <div class="cta-actions">
-      <button class="btn btn-gold" onclick="showToast('试点申请即将开放')">申请企业试用</button>
-      <button class="btn btn-outline-w" onclick="showToast('供应商入驻即将开放')">成为能力供应商</button>
+<section class="section section-soft">
+  <div class="container" style="text-align:center;max-width:680px;margin:0 auto">
+    <h2 style="font-size:1.8rem;font-weight:700;color:var(--ink);margin-bottom:10px">现在就接入</h2>
+    <p style="font-size:1.05rem;color:var(--g600);margin-bottom:24px">前 100 名注册送 $5 路由额度, 无需绑卡, 不满意停掉就好。</p>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <button class="btn btn-primary" onclick="showPage('recommend')">免费接入</button>
+      <button class="btn btn-ghost" onclick="showToast('文档站 V1 发布')">看文档</button>
     </div>
-  </div></div>
+  </div>
 </section>
 
-<footer><div class="container"><div class="footer-inner">
-  <div class="nav-logo"><div class="dot">TR</div>ModelMux AI</div>
-  <div class="footer-right">&copy; 2026 ModelMux AI &middot; 让每个 AI 任务，自动找到最合适的模型</div>
-</div></div></footer>
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="nav-logo"><div class="dot">MM</div>ModelMux</div>
+        <p>开发者最懂业务的 AI 路由层。OpenAI 兼容, 接入只需改 base_url。</p>
+      </div>
+      <div class="footer-col">
+        <h5>Product</h5>
+        <ul>
+          <li><a onclick="showPage('recommend')">控制台</a></li>
+          <li><a onclick="showToast('价格页 V1 发布')">价格</a></li>
+          <li><a onclick="showPage('recommend')">模型列表</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Docs</h5>
+        <ul>
+          <li><a onclick="showToast('Quickstart V1 发布')">Quickstart</a></li>
+          <li><a onclick="showToast('API Reference V1 发布')">API Reference</a></li>
+          <li><a onclick="showToast('FAQ V1 发布')">FAQ</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Legal</h5>
+        <ul>
+          <li><a onclick="showToast('Privacy V1 发布')">Privacy</a></li>
+          <li><a onclick="showToast('AUP V1 发布')">AUP</a></li>
+          <li><a onclick="showToast('Status 页 V2 发布')">Status</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 ModelMux &middot; contact@modelmux.ai</span>
+      <span><a onclick="showToast('加入 Discord 内测群')">Discord</a> · <a onclick="showToast('GitHub repo 内测开放')">GitHub</a></span>
+    </div>
+  </div>
+</footer>
 </div>
 
 <!-- ══════════ PAGE: RECOMMEND ══════════ -->
@@ -1237,6 +1386,29 @@ function addMsg(txt,isUser,mi){
 function addTyping(){const c=document.getElementById('chat-msgs'),d=document.createElement('div');d.className='msg msg-ai';d.id='typing';d.innerHTML=`<div class="msg-avatar">MM</div><div class="typing"><span></span><span></span><span></span></div>`;c.appendChild(d);c.scrollTop=c.scrollHeight;}
 function rmTyping(){const e=document.getElementById('typing');if(e)e.remove();}
 function esc(t){const d=document.createElement('div');d.textContent=t;return d.innerHTML;}
+
+// ═══ HERO CODE TABS ═══
+function codeTab(i, btn){
+  document.querySelectorAll('.code-tab').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  document.querySelectorAll('.code-pane').forEach((p, j) => p.classList.toggle('active', j === i));
+  const file = ['quickstart.py', 'quickstart.js', 'quickstart.sh'][i] || 'quickstart.py';
+  const fileEl = document.querySelector('.code-card-head .file');
+  if (fileEl) fileEl.textContent = file;
+}
+function copyCode(){
+  const pane = document.querySelector('.code-pane.active pre');
+  if (!pane) return;
+  const txt = pane.textContent;
+  if (navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(txt).then(() => showToast('代码已复制'));
+  } else {
+    const ta = document.createElement('textarea');
+    ta.value = txt; document.body.appendChild(ta);
+    ta.select(); document.execCommand('copy'); ta.remove();
+    showToast('代码已复制');
+  }
+}
 
 // ═══ API CLIENT ═══
 function apiKey(){return localStorage.getItem('mm_api_key')||'';}
