@@ -1,0 +1,8 @@
+.env
+__pycache__/
+*.pyc
+backend/taskrouter.db
+backend/modelmux.db
+backend/uploads/
+backend/.venv/
+.pytest_cache/

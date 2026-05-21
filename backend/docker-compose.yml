@@ -1,0 +1,11 @@
+services:
+  taskrouter:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data
+    environment:
+      - DATABASE_URL=sqlite:///./data/taskrouter.db
+      - ADMIN_API_KEY=admin-secret-key-change-me
+    restart: unless-stopped
