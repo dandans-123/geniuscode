@@ -6,3 +6,6 @@ backend/modelmux.db
 backend/uploads/
 backend/.venv/
 .pytest_cache/
+backend/geniuscode.db
+.claude/
+.agents/
