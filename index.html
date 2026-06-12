@@ -41,7 +41,8 @@ html{scroll-behavior:smooth}
   /* Mono */
   --mono:"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
 }
-body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Inter","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;color:var(--ink);background:var(--bg);line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+html{overflow-x:hidden}
+body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Inter","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;color:var(--ink);background:var(--bg);line-height:1.6;overflow-x:hidden;max-width:100%;-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
 button{font-family:inherit}
 .container{max-width:1200px;margin:0 auto;padding:0 24px}
@@ -57,6 +58,10 @@ nav .container{display:flex;align-items:center;justify-content:space-between;hei
 .nav-cta{padding:9px 18px;background:var(--blue);color:#fff;border-radius:var(--r);font-size:.85rem;font-weight:600;border:none;cursor:pointer;transition:var(--t);min-height:40px}
 .nav-cta:hover{background:var(--blue-d)}
 .nav-burger{display:none;background:none;border:none;color:var(--ink);cursor:pointer;padding:8px;min-width:44px;min-height:44px;align-items:center;justify-content:center}
+.nav-burger .ico-close{display:none}
+nav.open .nav-burger .ico-open{display:none}
+nav.open .nav-burger .ico-close{display:block}
+.nav-menu{display:flex;align-items:center;gap:24px}
 /* PAGES */
 .page{display:none;min-height:100vh;padding-top:64px}
 .page.active{display:block}
@@ -292,8 +297,56 @@ footer.site-footer{background:var(--bg-soft);color:var(--g600);padding:56px 0 28
 .auth-alt a{color:var(--blue);font-weight:600;cursor:pointer}
 
 /* responsive */
-@media(max-width:1024px){.feat-grid,.supply-row,.prob-grid{grid-template-columns:repeat(2,1fr)}.topup-grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:768px){.hero h1{font-size:2.2rem}.hero-stats{flex-direction:column;gap:20px}.feat-grid,.cap-grid,.supply-row,.prob-grid,.price-grid,.topup-grid{grid-template-columns:1fr}.sel-panel{grid-template-columns:1fr}.mdl-table thead{display:none}.mdl-table td{display:block;border:none;padding:4px 18px}.mdl-table tbody tr{display:block;padding:12px 0;border-bottom:1px solid var(--g100)}}
+@media(max-width:1024px){.feat-grid,.supply-row,.prob-grid{grid-template-columns:repeat(2,1fr)}.topup-grid{grid-template-columns:repeat(2,1fr)}.hero .container{gap:32px}.hero h1{font-size:2.6rem}}
+
+/* ── mobile nav: hamburger ── */
+@media(max-width:860px){
+  .nav-burger{display:inline-flex}
+  .nav-menu{position:absolute;top:64px;left:0;right:0;flex-direction:column;align-items:stretch;gap:0;background:#fff;border-bottom:1px solid var(--border);box-shadow:var(--shadow-2);padding:8px 0 14px;display:none}
+  nav.open .nav-menu{display:flex}
+  .nav-menu .nav-links{flex-direction:column;gap:0;width:100%}
+  .nav-menu .nav-links a{display:block;padding:14px 24px;font-size:1rem}
+  .nav-menu .nav-links a.active{background:rgba(109,40,217,.06)}
+  .nav-menu .nav-cta{margin:12px 24px 4px;width:calc(100% - 48px);min-height:46px}
+}
+
+/* ── tablet / phone layout ── */
+@media(max-width:860px){
+  .hero .container{grid-template-columns:1fr;gap:28px}
+  .hero{padding:48px 0 36px}
+  .hero h1{font-size:2.3rem}
+  .how-row{grid-template-columns:1fr;gap:28px}
+  .how-step .num{top:-12px}
+  .footer-grid{grid-template-columns:1fr 1fr;gap:24px}
+  .footer-brand{grid-column:1/-1}
+  .docs-link{padding:28px 24px;flex-direction:column;align-items:flex-start;text-align:left}
+}
+@media(max-width:768px){
+  .page{overflow-x:hidden}
+  .rec-container{max-width:100vw!important}
+  .docs-code{overflow:hidden}
+  .hero-stats{flex-direction:column;gap:20px}
+  .feat-grid,.cap-grid,.supply-row,.prob-grid,.price-grid,.topup-grid{grid-template-columns:1fr}
+  .sel-panel{grid-template-columns:1fr}
+  .section{padding:52px 0}
+  .container{padding:0 18px}
+  .stitle{font-size:1.55rem}
+  .ssub{font-size:.92rem;margin-bottom:36px}
+  .hero h1{font-size:2.05rem}
+  .hero h1 .en{font-size:.95rem}
+  .rec-header h2{font-size:1.5rem}
+  .rec-container{padding:32px 18px}
+  /* models table → horizontal scroll (keeps all columns) */
+  .mdl-table-wrap{overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch}
+  .mdl-table{min-width:580px;font-size:.82rem}
+  .mdl-table thead th,.mdl-table td{padding:11px 14px}
+  .mdl-note{font-size:.78rem}
+}
+@media(max-width:480px){
+  .hero h1{font-size:1.85rem}
+  .footer-grid{grid-template-columns:1fr}
+  .auth-card{padding:28px 22px}
+}
 .fade-up{opacity:0;transform:translateY(24px);transition:opacity .5s,transform .5s}
 .fade-up.visible{opacity:1;transform:translateY(0)}
 #toast{position:fixed;bottom:40px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--navy);color:#fff;padding:14px 28px;border-radius:10px;font-size:.9rem;font-weight:500;z-index:200;box-shadow:0 8px 32px rgba(0,0,0,.2);transition:transform .4s ease,opacity .4s;opacity:0;pointer-events:none}
@@ -302,17 +355,23 @@ footer.site-footer{background:var(--bg-soft);color:var(--g600);padding:56px 0 28
 <body>
 
 <!-- NAV -->
-<nav>
+<nav id="nav">
   <div class="container">
     <div class="nav-logo" onclick="showPage('landing')"><div class="dot">GC</div>GeniusCode</div>
-    <ul class="nav-links">
-      <li><a onclick="showPage('landing')" id="nav-landing" class="active">首页</a></li>
-      <li><a onclick="showPage('models')" id="nav-models">模型 &amp; 价格</a></li>
-      <li><a onclick="showPage('topup')" id="nav-topup">充值</a></li>
-      <li><a onclick="showPage('recommend')" id="nav-recommend">选型助手</a></li>
-      <li><a onclick="showPage('docs')" id="nav-docs">文档</a></li>
-    </ul>
-    <button class="nav-cta" onclick="showPage('login')">登录 / 注册</button>
+    <button class="nav-burger" onclick="toggleNav()" aria-label="菜单">
+      <svg class="ico-open" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      <svg class="ico-close" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <div class="nav-menu" id="nav-menu">
+      <ul class="nav-links">
+        <li><a onclick="showPage('landing')" id="nav-landing" class="active">首页</a></li>
+        <li><a onclick="showPage('models')" id="nav-models">模型 &amp; 价格</a></li>
+        <li><a onclick="showPage('topup')" id="nav-topup">充值</a></li>
+        <li><a onclick="showPage('recommend')" id="nav-recommend">选型助手</a></li>
+        <li><a onclick="showPage('docs')" id="nav-docs">文档</a></li>
+      </ul>
+      <button class="nav-cta" onclick="showPage('login')">登录 / 注册</button>
+    </div>
   </div>
 </nav>
 
@@ -864,8 +923,13 @@ for(const i of INDS)for(const t of TASKS){
 // ═══ STATE ═══
 let selInd=null,selTask=null,combo=null,modelsRendered=false;
 
+// ═══ NAV (mobile burger) ═══
+function toggleNav(){document.getElementById('nav').classList.toggle('open');}
+function closeNav(){document.getElementById('nav').classList.remove('open');}
+
 // ═══ PAGE ═══
 function showPage(n){
+  closeNav();
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   const pg=document.getElementById('page-'+n);if(pg)pg.classList.add('active');
   document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));
@@ -884,12 +948,12 @@ function renderModels(){
     const qcls=m.q>=92?'q-hi':m.q>=86?'q-mid':'q-lo';
     return `<tr>
       <td><span class="mdl-name">${esc(m.name)}</span><span class="mdl-id">${id}</span></td>
-      <td>${esc(m.prov)}</td>
-      <td class="mdl-price">${esc(m.price)}</td>
-      <td>${esc(m.spd)}</td>
-      <td>${esc(m.lat)}</td>
-      <td><span class="mdl-q ${qcls}">${m.q}</span></td>
-      <td><span class="mdl-stat">可用</span></td>
+      <td data-label="供应商">${esc(m.prov)}</td>
+      <td class="mdl-price" data-label="价格">${esc(m.price)}</td>
+      <td data-label="速度">${esc(m.spd)}</td>
+      <td data-label="延迟">${esc(m.lat)}</td>
+      <td data-label="质量"><span class="mdl-q ${qcls}">${m.q}</span></td>
+      <td data-label="状态"><span class="mdl-stat">可用</span></td>
     </tr>`;
   }).join('');
 }
