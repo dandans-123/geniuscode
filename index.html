@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GeniusCode — 一个 Key，畅享所有大模型</title>
-<meta name="description" content="多模型 API 统一中转：OpenAI、DeepSeek、Claude、通义、Kimi、GLM 一份额度全模型通用，OpenAI 兼容、按量计费、改两行接入。">
+<meta name="description" content="多模型 API 统一中转：DeepSeek、通义千问、Kimi、GLM、MiniMax 等 30+ 模型，一份额度全模型通用，OpenAI 兼容、按量计费、改两行接入。">
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 <!-- Open Graph -->
 <meta property="og:type" content="website">
@@ -14,8 +14,8 @@
 <meta property="og:image" content="https://geniuscode.online/assets/og.png">
 <!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="GeniusCode — One key. Every model. One bill.">
-<meta name="twitter:description" content="OpenAI-compatible relay for every major LLM. Top up once, one balance across all — pay as you go.">
+<meta name="twitter:title" content="GeniusCode — 一个 Key，畅享所有大模型">
+<meta name="twitter:description" content="多模型 API 统一中转：一份额度全模型通用，OpenAI 兼容、按量计费、改两行接入。">
 <meta name="twitter:image" content="https://geniuscode.online/assets/og.png">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -29,7 +29,7 @@ html{scroll-behavior:smooth}
   --purple:#7c3aed;--orange:#d97706;--red:#dc2626;--pink:#db2777;
   /* Neutrals (violet-tinted slate) */
   --bg:#FFFFFF;--bg-soft:#F7F7FB;--border:#E7E5F0;--ink:#1A1530;
-  --g100:#F2F1F8;--g200:#E7E5F0;--g300:#CECBDF;--g400:#9690AE;
+  --g50:#FAFAFD;--g100:#F2F1F8;--g200:#E7E5F0;--g300:#CECBDF;--g400:#9690AE;
   --g500:#66617E;--g600:#474357;--g900:#1A1530;
   --navy:#1A1530;
   /* Geometry */
@@ -251,7 +251,7 @@ footer.site-footer{background:var(--bg-soft);color:var(--g600);padding:56px 0 28
 .faq-item .faq-a code{font-family:var(--mono);font-size:.82rem;background:var(--bg-soft);border:1px solid var(--border);padding:1px 6px;border-radius:var(--r-sm);color:var(--blue-d)}
 
 /* ══ MODELS page ══ */
-.topup-grid{grid-template-columns:repeat(4,1fr);max-width:1040px}
+.topup-grid{grid-template-columns:repeat(3,1fr);max-width:1000px}
 .mdl-table-wrap{background:#fff;border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--shadow-1)}
 .mdl-table{width:100%;border-collapse:collapse;font-size:.88rem}
 .mdl-table thead th{text-align:left;font-size:.72rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--g500);padding:14px 18px;background:var(--bg-soft);border-bottom:1px solid var(--border);white-space:nowrap}
@@ -269,6 +269,11 @@ footer.site-footer{background:var(--bg-soft);color:var(--g600);padding:56px 0 28
 .mdl-stat::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green)}
 .mdl-note{font-size:.82rem;color:var(--g500);margin-top:18px;text-align:center;line-height:1.6}
 .mdl-note a{color:var(--blue);font-weight:600;cursor:pointer}
+.mdl-group-title{font-size:1.1rem;font-weight:700;color:var(--ink);margin:28px 0 12px;display:flex;align-items:center;gap:10px}
+.mdl-group-title:first-child{margin-top:4px}
+.mdl-group-title span{font-size:.72rem;font-weight:700;color:var(--blue);background:rgba(109,40,217,.1);border-radius:999px;padding:2px 9px}
+.mdl-table-wrap+.mdl-group-title{margin-top:32px}
+.mdl-note-cell{color:var(--g500);font-size:.82rem;max-width:340px}
 /* ══ DOCS page ══ */
 .docs-code{background:#0F172A;border-radius:var(--r-lg);overflow:hidden;margin-bottom:18px;box-shadow:var(--shadow-2)}
 .docs-code-head{padding:9px 16px;background:#1E293B;border-bottom:1px solid #334155;color:#94A3B8;font-family:var(--mono);font-size:.74rem;font-weight:600}
@@ -366,7 +371,7 @@ footer.site-footer{background:var(--bg-soft);color:var(--g600);padding:56px 0 28
       <ul class="nav-links">
         <li><a onclick="showPage('landing')" id="nav-landing" class="active">首页</a></li>
         <li><a onclick="showPage('models')" id="nav-models">模型 &amp; 价格</a></li>
-        <li><a onclick="showPage('topup')" id="nav-topup">充值</a></li>
+        <li><a onclick="showPage('topup')" id="nav-topup">会员套餐</a></li>
         <li><a onclick="showPage('recommend')" id="nav-recommend">选型助手</a></li>
         <li><a onclick="showPage('docs')" id="nav-docs">文档</a></li>
       </ul>
@@ -382,16 +387,16 @@ footer.site-footer{background:var(--bg-soft);color:var(--g600);padding:56px 0 28
   <div class="container">
     <div class="hero-left">
       <div class="hero-eyebrow"><span class="dot"></span>GeniusCode · 多模型 API 中转 · 一份额度全模型通用</div>
-      <h1>一个 Key，<br><span class="accent">畅享所有大模型</span><span class="en">One key. Every model. One bill.</span></h1>
-      <p class="hero-desc">OpenAI、DeepSeek、Claude、通义、Kimi、GLM 统一接入。一次充值，全模型通用额度，按量计费，比官方直连更省心。<span class="en">OpenAI-compatible relay for every major model. Top up once, one balance across all — pay as you go.</span></p>
+      <h1>一个 Key，<br><span class="accent">畅享所有大模型</span></h1>
+      <p class="hero-desc">DeepSeek、通义千问、Kimi、GLM、MiniMax 等 30+ 模型统一接入。一次开通，全模型通用额度，OpenAI 兼容，按量计费，比逐家直连更省心。</p>
       <div class="hero-actions">
-        <button class="btn btn-primary" onclick="showPage('topup')">充值开始 / Start free
+        <button class="btn btn-primary" onclick="showPage('topup')">开通会员
           <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
         </button>
         <button class="btn btn-ghost" onclick="showPage('docs')">看接入文档</button>
       </div>
       <div class="hero-meta">
-        <span><b>¥10</b> 起充体验</span>
+        <span><b>免费</b> 注册试用</span>
         <span><b>一份额度</b> 全模型通用</span>
         <span>OpenAI 兼容, 改 <b>2 行</b> 接入</span>
       </div>
@@ -417,13 +422,13 @@ footer.site-footer{background:var(--bg-soft);color:var(--g600);padding:56px 0 28
 )
 
 <span class="v">resp</span> = <span class="v">client</span>.<span class="v">chat</span>.<span class="v">completions</span>.<span class="f">create</span>(
-  <span class="v">model</span>=<span class="s">"gpt-4o-mini"</span>,
+  <span class="v">model</span>=<span class="s">"deepseek-v3.2"</span>,
   <span class="v">messages</span>=[{<span class="s">"role"</span>:<span class="s">"user"</span>,<span class="s">"content"</span>:<span class="s">"Hi"</span>}],
 )
 
 <span class="c"># 路由决策在响应头里</span>
 <span class="f">print</span>(<span class="v">resp</span>.<span class="v">headers</span>[<span class="s">"x-gc-picked"</span>])
-<span class="f">print</span>(<span class="v">resp</span>.<span class="v">headers</span>[<span class="s">"x-gc-cost-usd"</span>])</pre></div>
+<span class="f">print</span>(<span class="v">resp</span>.<span class="v">headers</span>[<span class="s">"x-gc-cost"</span>])</pre></div>
           <div class="code-pane" id="cp-1"><pre><span class="k">import</span> <span class="v">OpenAI</span> <span class="k">from</span> <span class="s">"openai"</span>;
 
 <span class="k">const</span> <span class="v">client</span> = <span class="k">new</span> <span class="f">OpenAI</span>({
@@ -432,7 +437,7 @@ footer.site-footer{background:var(--bg-soft);color:var(--g600);padding:56px 0 28
 });
 
 <span class="k">const</span> <span class="v">resp</span> = <span class="k">await</span> <span class="v">client</span>.<span class="v">chat</span>.<span class="v">completions</span>.<span class="f">create</span>({
-  <span class="v">model</span>: <span class="s">"gpt-4o-mini"</span>,
+  <span class="v">model</span>: <span class="s">"deepseek-v3.2"</span>,
   <span class="v">messages</span>: [{ <span class="v">role</span>: <span class="s">"user"</span>, <span class="v">content</span>: <span class="s">"Hi"</span> }],
 });
 
@@ -440,7 +445,7 @@ footer.site-footer{background:var(--bg-soft);color:var(--g600);padding:56px 0 28
           <div class="code-pane" id="cp-2"><pre><span class="f">curl</span> https://api.geniuscode.online/v1/chat/completions \
   -H <span class="s">"Authorization: Bearer sk-geniuscode-..."</span> \
   -H <span class="s">"Content-Type: application/json"</span> \
-  -d <span class="s">'{"model":"gpt-4o-mini",
+  -d <span class="s">'{"model":"deepseek-v3.2",
        "messages":[{"role":"user","content":"Hi"}]}'</span></pre></div>
         </div>
       </div>
@@ -451,14 +456,14 @@ footer.site-footer{background:var(--bg-soft);color:var(--g600);padding:56px 0 28
 <!-- TRUST BAR -->
 <section class="trust">
   <div class="container">
-    <div class="trust-label">已接入 / Powered by</div>
+    <div class="trust-label">已接入厂商</div>
     <div class="trust-row">
-      <span class="trust-item" style="color:#10A37F">OpenAI</span>
       <span class="trust-item" style="color:#4D6BFE">DeepSeek</span>
-      <span class="trust-item" style="color:#D97706">Anthropic <small style="opacity:.6;font-weight:500;font-size:.72rem">(V2)</small></span>
-      <span class="trust-item" style="color:#009688">FastAPI</span>
-      <span class="trust-item" style="color:#3776AB">Python</span>
-      <span class="trust-item" style="color:#635BFF">Stripe</span>
+      <span class="trust-item" style="color:#615CED">通义千问</span>
+      <span class="trust-item" style="color:#1F6FEB">GLM</span>
+      <span class="trust-item" style="color:#111">Kimi</span>
+      <span class="trust-item" style="color:#FF5A5F">MiniMax</span>
+      <span class="trust-item" style="color:#10A37F">OpenAI</span>
     </div>
   </div>
 </section>
@@ -466,13 +471,13 @@ footer.site-footer{background:var(--bg-soft);color:var(--g600);padding:56px 0 28
 <!-- PROBLEMS (pain points) -->
 <section class="section" id="problems">
   <div class="container">
-    <div class="stitle">接多个模型，痛的从来不是调用 / The pain isn't the API call</div>
+    <div class="stitle">接多个模型，痛的从来不是调用</div>
     <div class="ssub">每多接一个供应商，就多一套 key、一份账单、一处故障点。这些重复劳动，本该交给路由层。</div>
     <div class="prob-grid">
       <div class="prob-card">
         <div class="pc-ico">🔑</div>
         <h3>多供应商各自为账</h3>
-        <p>OpenAI、DeepSeek、Anthropic 各一套 key、各一份账单、SDK 细节还各有差异。接入和对账，每家都要重来一遍。</p>
+        <p>DeepSeek、通义、GLM、Kimi 各一套 key、各一份账单，SDK 细节还各有差异。接入和对账，每家都要重来一遍。</p>
         <span class="pc-tag">一个 key 全搞定</span>
       </div>
       <div class="prob-card">
@@ -485,7 +490,7 @@ footer.site-footer{background:var(--bg-soft);color:var(--g600);padding:56px 0 28
         <div class="pc-ico">⚡</div>
         <h3>上游一抖，全线挂</h3>
         <p>单一供应商限流或宕机，你的线上请求直接 500。没有兜底链路，故障就是事故。</p>
-        <span class="pc-tag">自动 fallback</span>
+        <span class="pc-tag">自动故障转移</span>
       </div>
       <div class="prob-card">
         <div class="pc-ico">📊</div>
@@ -496,7 +501,7 @@ footer.site-footer{background:var(--bg-soft);color:var(--g600);padding:56px 0 28
       <div class="prob-card">
         <div class="pc-ico">🔄</div>
         <h3>切换成本高</h3>
-        <p>想从 GPT 换到更便宜的模型，要改 SDK、调提示词、重测一遍。换一次，痛一次。</p>
+        <p>想从一家换到更便宜的模型，要改 SDK、调提示词、重测一遍。换一次，痛一次。</p>
         <span class="pc-tag">改 2 行接入</span>
       </div>
       <div class="prob-card">
@@ -512,13 +517,13 @@ footer.site-footer{background:var(--bg-soft);color:var(--g600);padding:56px 0 28
 <!-- FEATURES (3) -->
 <section class="section section-soft" id="features">
   <div class="container">
-    <div class="stitle">三件事我们做对了 / Three things we got right</div>
+    <div class="stitle">三件事我们做对了</div>
     <div class="ssub">不是开新框架, 是让你已有的 OpenAI 代码跑在路由层上。</div>
     <div class="feat-grid">
       <div class="feat-card">
         <div class="icon"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg></div>
         <h3>OpenAI 兼容</h3>
-        <p>改 2 行代码 (base_url + key), SDK 不动, streaming + tool calling 全支持。从 OpenAI 直连切到 GeniusCode 不重写业务。</p>
+        <p>改 2 行代码 (base_url + key), SDK 不动, 流式、工具调用全支持。从 OpenAI 直连切到 GeniusCode 不重写业务。</p>
       </div>
       <div class="feat-card">
         <div class="icon" style="background:rgba(5,150,105,.08);color:var(--green)"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6m6 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0h6m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14"/></svg></div>
@@ -528,7 +533,7 @@ footer.site-footer{background:var(--bg-soft);color:var(--g600);padding:56px 0 28
       <div class="feat-card">
         <div class="icon" style="background:rgba(217,119,6,.08);color:#D97706"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg></div>
         <h3>透明账本</h3>
-        <p>token 级实时计费。upstream 挂了自动 fallback 到备用模型, 单次请求不漏单。月底统一结算, 一张账单。</p>
+        <p>token 级实时计费。上游挂了自动切换到备用模型, 单次请求不漏单。月底统一结算, 一张账单。</p>
       </div>
     </div>
   </div>
@@ -537,7 +542,7 @@ footer.site-footer{background:var(--bg-soft);color:var(--g600);padding:56px 0 28
 <!-- HOW IT WORKS -->
 <section class="section">
   <div class="container">
-    <div class="stitle">3 步开始 / 3 steps to ship</div>
+    <div class="stitle">3 步开始</div>
     <div class="ssub">熟悉的 OpenAI 调用, 只换路径。</div>
     <div class="how-row">
       <div class="how-step">
@@ -556,7 +561,7 @@ footer.site-footer{background:var(--bg-soft);color:var(--g600);padding:56px 0 28
         <div class="num">3</div>
         <h4>看响应头</h4>
         <p>每次请求返回路由决策、模型、成本。哪条规则把你路过去了, 一清二楚。</p>
-        <code>x-gc-picked: deepseek-chat</code>
+        <code>x-gc-picked: deepseek-v3.2</code>
       </div>
     </div>
   </div>
@@ -565,77 +570,77 @@ footer.site-footer{background:var(--bg-soft);color:var(--g600);padding:56px 0 28
 <!-- PRICING -->
 <section class="section section-soft">
   <div class="container">
-    <div class="stitle">定价 / Pricing</div>
-    <div class="ssub">透传上游成本 × 1.6 加价, 覆盖路由智能 / 服务器 / 故障转移。</div>
+    <div class="stitle">会员套餐</div>
+    <div class="ssub">一次开通，额度按量灵活计费、12 个月有效，全模型通用。注册先免费试用。</div>
     <div class="price-grid">
       <div class="price-card">
-        <div class="tier">Free</div>
-        <div class="price">$5<small>路由额度</small></div>
-        <div class="sub">注册即送, 无需绑卡</div>
+        <div class="tier">Starter</div>
+        <div class="price">¥399</div>
+        <div class="sub">含等值额度 · 个人开发者起步</div>
         <ul>
-          <li>OpenAI + DeepSeek 全部模型</li>
-          <li>自动路由 + 手动指定都支持</li>
-          <li>用完再充, 无月费</li>
+          <li>30+ 模型全部可用</li>
+          <li>按量灵活计费，额度 12 个月有效</li>
+          <li>自动路由 + 故障转移</li>
         </ul>
-        <button class="price-cta" onclick="showPage('topup')">免费开始</button>
+        <button class="price-cta" onclick="showPage('topup')">开通 Starter</button>
       </div>
       <div class="price-card featured">
-        <div class="badge">V1 推荐</div>
-        <div class="tier">Pay-as-you-go</div>
-        <div class="price">×1.6<small>上游价</small></div>
-        <div class="sub">按 token 计费, 用多少付多少</div>
+        <div class="badge">推荐</div>
+        <div class="tier">Pro</div>
+        <div class="price">¥699</div>
+        <div class="sub">含等值额度 · 全部常用功能</div>
         <ul>
-          <li>价格表完全透明 (含上游原价)</li>
-          <li>token 级实时账单</li>
-          <li>自动 fallback 不漏单</li>
+          <li>30+ 模型 + 更高并发</li>
+          <li>用量看板 + 预算告警</li>
+          <li>多 API key 管理</li>
         </ul>
-        <button class="price-cta" onclick="showPage('models')">查看模型价格</button>
+        <button class="price-cta" onclick="showPage('topup')">开通 Pro</button>
       </div>
       <div class="price-card">
-        <div class="tier">Enterprise</div>
-        <div class="price">联系<small>报价</small></div>
-        <div class="sub">>1M 调用/月, SLA, BYOK</div>
+        <div class="tier">Ultimate</div>
+        <div class="price">¥1799</div>
+        <div class="sub">含等值额度 · 大用量 / 高并发</div>
         <ul>
-          <li>专属支持渠道</li>
-          <li>SSO / 团队账号 (V2)</li>
-          <li>定制路由规则</li>
+          <li>最高并发 + 专属通道</li>
+          <li>对账明细导出</li>
+          <li>优先技术支持</li>
         </ul>
-        <button class="price-cta" onclick="showToast('企业版 V2 上线, 邮件 sales@geniuscode.online')">联系销售</button>
+        <button class="price-cta" onclick="showPage('topup')">开通 Ultimate</button>
       </div>
     </div>
-    <div class="price-note">汇率 USD → CNY 按月底美联储中间价。<a onclick="showToast('完整价格表 V1 文档站发布')">完整价格表 →</a></div>
+    <div class="price-note">额度全模型通用、12 个月内有效。<a onclick="showPage('models')">查看完整价格表 →</a> · <a onclick="showToast('企业版咨询请邮件 sales@geniuscode.online')">更大规模联系销售 →</a></div>
   </div>
 </section>
 
 <!-- FAQ -->
 <section class="section" id="faq">
   <div class="container">
-    <div class="stitle">常见问题 / FAQ</div>
+    <div class="stitle">常见问题</div>
     <div class="ssub">接入前最常被问到的几件事。还有疑问?进 Discord 直接问。</div>
     <div class="faq-wrap">
       <details class="faq-item">
         <summary>接入要改多少代码?<span class="q-ico">+</span></summary>
-        <div class="faq-a">两行。把 <code>api_key</code> 换成 GeniusCode 的，<code>base_url</code> 指向 <code>https://api.geniuscode.online/v1</code>。OpenAI SDK、streaming、tool calling 全部不用动，业务代码零改写。</div>
+        <div class="faq-a">两行。把 <code>api_key</code> 换成 GeniusCode 的，<code>base_url</code> 指向 <code>https://api.geniuscode.online/v1</code>。OpenAI SDK、流式、工具调用全部不用动，业务代码零改写。</div>
       </details>
       <details class="faq-item">
         <summary>路由是怎么决定用哪个模型的?<span class="q-ico">+</span></summary>
-        <div class="faq-a">按你配置的任务类型、预算上限和上游实时可用性综合打分选优。每次响应头都会带 <code>x-gc-picked</code>(这次选了谁)和 <code>x-gc-cost-usd</code>(花了多少)，决策可审计、可复盘。你也可以手动指定模型，绕过自动路由。</div>
+        <div class="faq-a">按你配置的任务类型、预算上限和上游实时可用性综合打分选优。每次响应头都会带 <code>x-gc-picked</code>(这次选了谁)和 <code>x-gc-cost</code>(花了多少)，决策可审计、可复盘。你也可以手动指定模型，绕过自动路由。</div>
       </details>
       <details class="faq-item">
         <summary>比直连上游贵吗?<span class="q-ico">+</span></summary>
-        <div class="faq-a">透传上游原价 ×1.6，覆盖路由智能、服务器和故障转移成本。价格表完全公开，含上游原价对照——你随时能算清楚加价加在哪。注册即送 $5 路由额度，无需绑卡。</div>
+        <div class="faq-a">按 token 实时计费，价格表完全公开，所有模型单价一目了然。无月费、不绑套餐，用多少付多少。注册即送体验额度，无需绑卡。</div>
       </details>
       <details class="faq-item">
         <summary>上游模型挂了会怎样?<span class="q-ico">+</span></summary>
-        <div class="faq-a">自动 fallback 到同任务的备用模型，单次请求不漏单，调用方无感知。fallback 链可在控制台按任务自定义，谁主谁备由你说了算。</div>
+        <div class="faq-a">自动切换到同任务的备用模型，单次请求不漏单，调用方无感知。备用链可在控制台按任务自定义，谁主谁备由你说了算。</div>
       </details>
       <details class="faq-item">
         <summary>我的数据安全吗?<span class="q-ico">+</span></summary>
-        <div class="faq-a">我们不存储 prompt / completion 正文，仅保留 token 计数与路由元数据用于计费和审计。企业版支持 BYOK(自带上游 key)和私有化部署。</div>
+        <div class="faq-a">我们不存储对话正文，仅保留 token 计数与路由元数据用于计费和审计。企业版支持自带模型额度与私有化部署。</div>
       </details>
       <details class="faq-item">
         <summary>支持哪些模型?<span class="q-ico">+</span></summary>
-        <div class="faq-a">当前已接入 OpenAI 全系 + DeepSeek 全系，Anthropic 接入中(V2)。新增模型即接即用，不用改你这边任何代码。</div>
+        <div class="faq-a">已接入 DeepSeek、通义千问、Kimi、GLM、MiniMax 等 30+ 主流模型（含推理、对话、代码专用）。新增模型即接即用，不用改你这边任何代码。完整清单见<a onclick="showPage('models')">模型 &amp; 价格</a>。</div>
       </details>
     </div>
   </div>
@@ -647,11 +652,10 @@ footer.site-footer{background:var(--bg-soft);color:var(--g600);padding:56px 0 28
     <div class="docs-link">
       <div>
         <h3>5 分钟跑通第一个真实调用</h3>
-        <p>Quickstart 给你 Python / Node / curl 三段代码 + 真实响应示例 + 错误码处理。</p>
+        <p>快速开始给你 Python / Node / curl 三段代码 + 真实响应示例 + 错误码处理。</p>
         <div class="docs-link-cols">
-          <a onclick="showToast('Quickstart V1 文档站发布')">Quickstart</a>
-          <a onclick="showToast('API Reference V1 文档站发布')">API Reference</a>
-          <a onclick="showToast('FAQ V1 文档站发布')">FAQ</a>
+          <a onclick="showPage('docs')">快速开始</a>
+          <a onclick="showToast('接口文档即将发布')">接口文档</a>
           <a onclick="showToast('加入 Discord 内测群')">Discord</a>
         </div>
       </div>
@@ -664,9 +668,9 @@ footer.site-footer{background:var(--bg-soft);color:var(--g600);padding:56px 0 28
 <section class="section">
   <div class="container" style="text-align:center;max-width:680px;margin:0 auto">
     <h2 style="font-size:1.8rem;font-weight:700;color:var(--ink);margin-bottom:10px">现在就接入</h2>
-    <p style="font-size:1.05rem;color:var(--g600);margin-bottom:24px">前 100 名注册送 $5 路由额度, 无需绑卡, 不满意停掉就好。</p>
+    <p style="font-size:1.05rem;color:var(--g600);margin-bottom:24px">前 100 名注册送 ¥20 体验额度, 无需绑卡, 不满意停掉就好。</p>
     <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
-      <button class="btn btn-primary" onclick="showPage('topup')">充值开始</button>
+      <button class="btn btn-primary" onclick="showPage('topup')">开通会员</button>
       <button class="btn btn-ghost" onclick="showPage('docs')">看文档</button>
     </div>
   </div>
@@ -681,27 +685,27 @@ footer.site-footer{background:var(--bg-soft);color:var(--g600);padding:56px 0 28
         <p>开发者最懂业务的 AI 路由层。OpenAI 兼容, 接入只需改 base_url。</p>
       </div>
       <div class="footer-col">
-        <h5>Product</h5>
+        <h5>产品</h5>
         <ul>
           <li><a onclick="showPage('login')">登录 / 注册</a></li>
-          <li><a onclick="showToast('价格页 V1 发布')">价格</a></li>
-          <li><a onclick="showPage('models')">模型列表</a></li>
+          <li><a onclick="showPage('models')">模型 &amp; 价格</a></li>
+          <li><a onclick="showPage('topup')">会员套餐</a></li>
         </ul>
       </div>
       <div class="footer-col">
-        <h5>Docs</h5>
+        <h5>文档</h5>
         <ul>
-          <li><a onclick="showToast('Quickstart V1 发布')">Quickstart</a></li>
-          <li><a onclick="showToast('API Reference V1 发布')">API Reference</a></li>
-          <li><a onclick="showToast('FAQ V1 发布')">FAQ</a></li>
+          <li><a onclick="showPage('docs')">快速开始</a></li>
+          <li><a onclick="showToast('接口文档即将发布')">接口文档</a></li>
+          <li><a onclick="showPage('recommend')">选型助手</a></li>
         </ul>
       </div>
       <div class="footer-col">
-        <h5>Legal</h5>
+        <h5>条款</h5>
         <ul>
-          <li><a onclick="showToast('Privacy V1 发布')">Privacy</a></li>
-          <li><a onclick="showToast('AUP V1 发布')">AUP</a></li>
-          <li><a onclick="showToast('Status 页 V2 发布')">Status</a></li>
+          <li><a onclick="showToast('隐私政策即将发布')">隐私政策</a></li>
+          <li><a onclick="showToast('使用条款即将发布')">使用条款</a></li>
+          <li><a onclick="showToast('服务状态页即将发布')">服务状态</a></li>
         </ul>
       </div>
     </div>
@@ -716,7 +720,7 @@ footer.site-footer{background:var(--bg-soft);color:var(--g600);padding:56px 0 28
 <!-- ══════════ PAGE: RECOMMEND ══════════ -->
 <div class="page" id="page-recommend">
   <div class="rec-container">
-    <div class="rec-header"><h2>选型助手</h2><p>选行业和任务，告诉你这一充值额度该花在哪些模型上——主力 / 备用 / 降本，一步到位</p></div>
+    <div class="rec-header"><h2>选型助手</h2><p>选行业和任务，告诉你这份额度该花在哪些模型上——主力 / 备用 / 降本，一步到位</p></div>
     <div class="sel-panel">
       <div class="sel-box"><h4>行业领域</h4><div class="sel-chips" id="ind-chips">
         <div class="sel-chip" data-v="finance" onclick="pickChip(this,'ind')">金融</div>
@@ -748,7 +752,7 @@ footer.site-footer{background:var(--bg-soft);color:var(--g600);padding:56px 0 28
         <div class="combo-header"><div class="left"><h3 id="combo-title"></h3><p id="combo-sub"></p></div><div class="combo-score"><div class="sc"><div class="v" id="sc-q">--</div><div class="l">质量</div></div><div class="sc"><div class="v" id="sc-s">--</div><div class="l">速度</div></div><div class="sc"><div class="v" id="sc-c">--</div><div class="l">成本</div></div></div></div>
         <div class="model-cards" id="model-cards"></div>
         <div class="combo-reason"><h4>推荐理由</h4><p id="combo-why"></p></div>
-        <div class="combo-action"><div class="price">预估成本: <b id="combo-price">--</b> / 万次调用</div><div style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn btn-ghost" onclick="showPage('docs')">查看接入代码</button><button class="btn btn-primary" onclick="showPage('topup')"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>充值开始</button></div></div>
+        <div class="combo-action"><div class="price">预估成本: <b id="combo-price">--</b> / 万次调用</div><div style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn btn-ghost" onclick="showPage('docs')">查看接入代码</button><button class="btn btn-primary" onclick="showPage('topup')"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>开通会员</button></div></div>
       </div>
     </div>
   </div>
@@ -757,53 +761,41 @@ footer.site-footer{background:var(--bg-soft);color:var(--g600);padding:56px 0 28
 <!-- ══════════ PAGE: MODELS ══════════ -->
 <div class="page" id="page-models">
   <div class="rec-container" style="max-width:1080px">
-    <div class="rec-header"><h2>模型 &amp; 价格</h2><p>一份额度，所有模型通用。价格透传上游 ×1.6，已含智能路由与故障转移，按 token 实时计费。</p></div>
-    <div class="mdl-table-wrap">
-      <table class="mdl-table">
-        <thead><tr><th>模型</th><th>供应商</th><th>价格 (¥/1K tok)</th><th>速度</th><th>延迟</th><th>质量</th><th>状态</th></tr></thead>
-        <tbody id="mdl-tbody"></tbody>
-      </table>
-    </div>
-    <div class="mdl-note">价格为综合参考单价，输入 / 输出分别计费，最终以控制台为准。充值额度全模型通用、12 个月内有效。<a onclick="showPage('topup')">去充值 →</a></div>
+    <div class="rec-header"><h2>模型 &amp; 价格</h2><p>一份额度,所有模型通用。输入 / 输出按 token 实时计费,已含智能路由与故障转移,价格公开透明。</p></div>
+    <div id="mdl-groups"></div>
+    <div class="mdl-note">价格为综合参考单价(¥ / 1M token),输入 / 输出分别计费,最终以控制台为准。额度全模型通用、12 个月内有效。<a onclick="showPage('topup')">查看会员套餐 →</a></div>
   </div>
 </div>
 
 <!-- ══════════ PAGE: TOPUP ══════════ -->
 <div class="page" id="page-topup">
   <div class="rec-container" style="max-width:1080px">
-    <div class="rec-header"><h2>充值</h2><p>预充值制，全模型通用额度。充得多送得多，无月费，余额 12 个月内有效。</p></div>
+    <div class="rec-header"><h2>会员套餐</h2><p>一次开通，额度按量灵活计费、12 个月有效，全模型通用。注册先免费试用，无需绑卡。</p></div>
     <div class="price-grid topup-grid">
       <div class="price-card">
-        <div class="tier">体验</div>
-        <div class="price">¥10<small>到账 ¥10</small></div>
-        <div class="sub">先跑通，再决定</div>
-        <ul><li>全模型通用额度</li><li>OpenAI 兼容接入</li><li>无需绑卡</li></ul>
-        <button class="price-cta" onclick="showPage('login')">立即充值</button>
-      </div>
-      <div class="price-card">
-        <div class="tier">开发者</div>
-        <div class="price">¥50<small>到账 ¥55</small></div>
-        <div class="sub">赠 10% · 适合个人项目</div>
-        <ul><li>全模型通用额度</li><li>自动 fallback 不漏单</li><li>token 级账单</li></ul>
-        <button class="price-cta" onclick="showPage('login')">立即充值</button>
+        <div class="tier">Starter</div>
+        <div class="price">¥399</div>
+        <div class="sub">含等值额度 · 个人开发者起步</div>
+        <ul><li>30+ 模型全部可用</li><li>按量灵活计费，12 个月有效</li><li>自动路由 + 故障转移</li></ul>
+        <button class="price-cta" onclick="showPage('login')">立即开通</button>
       </div>
       <div class="price-card featured">
-        <div class="badge">最划算</div>
-        <div class="tier">团队</div>
-        <div class="price">¥200<small>到账 ¥240</small></div>
-        <div class="sub">赠 20% · 适合小团队上线</div>
-        <ul><li>全模型通用额度</li><li>多 API key 管理</li><li>用量看板 + 预算告警</li></ul>
-        <button class="price-cta" onclick="showPage('login')">立即充值</button>
+        <div class="badge">推荐</div>
+        <div class="tier">Pro</div>
+        <div class="price">¥699</div>
+        <div class="sub">含等值额度 · 全部常用功能</div>
+        <ul><li>30+ 模型 + 更高并发</li><li>用量看板 + 预算告警</li><li>多 API key 管理</li></ul>
+        <button class="price-cta" onclick="showPage('login')">立即开通</button>
       </div>
       <div class="price-card">
-        <div class="tier">规模</div>
-        <div class="price">¥1000<small>到账 ¥1250</small></div>
-        <div class="sub">赠 25% · 高频生产</div>
-        <ul><li>全模型通用额度</li><li>专属上游通道</li><li>对账明细导出</li></ul>
-        <button class="price-cta" onclick="showPage('login')">立即充值</button>
+        <div class="tier">Ultimate</div>
+        <div class="price">¥1799</div>
+        <div class="sub">含等值额度 · 大用量 / 高并发</div>
+        <ul><li>最高并发 + 专属通道</li><li>对账明细导出</li><li>优先技术支持</li></ul>
+        <button class="price-cta" onclick="showPage('login')">立即开通</button>
       </div>
     </div>
-    <div class="price-note">企业 / BYOK / 私有部署需求? <a onclick="showToast('企业版 V2 上线, 邮件 sales@geniuscode.online')">联系销售 →</a></div>
+    <div class="price-note">注册即送体验额度，无需绑卡。更大规模 / 私有部署需求? <a onclick="showToast('企业版咨询请邮件 sales@geniuscode.online')">联系销售 →</a></div>
   </div>
 </div>
 
@@ -814,7 +806,7 @@ footer.site-footer{background:var(--bg-soft);color:var(--g600);padding:56px 0 28
     <div class="how-row" style="margin-bottom:36px">
       <div class="how-step"><div class="num">1</div><h4>注册拿 key</h4><p>邮箱注册，控制台一键生成 API key，无需审核。</p><code>sk-geniuscode-xxxx</code></div>
       <div class="how-step"><div class="num">2</div><h4>换 base_url</h4><p>OpenAI SDK 不动，api_key 换我们的，base_url 指过来。</p><code>https://api.geniuscode.online/v1</code></div>
-      <div class="how-step"><div class="num">3</div><h4>充值即用</h4><p>额度全模型通用，响应头返回所选模型与成本。</p><code>x-gc-picked / x-gc-cost-usd</code></div>
+      <div class="how-step"><div class="num">3</div><h4>开通即用</h4><p>额度全模型通用，响应头返回所选模型与成本。</p><code>x-gc-picked / x-gc-cost</code></div>
     </div>
     <div class="docs-code">
       <div class="docs-code-head">Python</div>
@@ -826,7 +818,7 @@ client = OpenAI(
 )
 
 resp = client.chat.completions.create(
-    model="gpt-4o-mini",
+    model="deepseek-v3.2",
     messages=[{"role": "user", "content": "Hi"}],
 )
 print(resp.choices[0].message.content)</pre>
@@ -836,19 +828,19 @@ print(resp.choices[0].message.content)</pre>
       <pre>curl https://api.geniuscode.online/v1/chat/completions \
   -H "Authorization: Bearer sk-geniuscode-..." \
   -H "Content-Type: application/json" \
-  -d '{"model":"gpt-4o-mini",
+  -d '{"model":"deepseek-v3.2",
        "messages":[{"role":"user","content":"Hi"}]}'</pre>
     </div>
     <div class="docs-err">
       <h4>常见错误码</h4>
       <ul>
         <li><code>401</code> key 无效或已停用 — 检查 Authorization 头</li>
-        <li><code>402</code> 余额不足 — 去 <a onclick="showPage('topup')">充值</a></li>
+        <li><code>402</code> 余额不足 — 去 <a onclick="showPage('topup')">开通会员</a></li>
         <li><code>429</code> 触发上游限流 — 已自动重试 / 降级，仍失败请稍后再试</li>
-        <li><code>503</code> 上游不可用 — 路由已尝试 fallback，可手动指定备用模型</li>
+        <li><code>503</code> 上游不可用 — 路由已尝试故障转移，可手动指定备用模型</li>
       </ul>
     </div>
-    <div style="text-align:center;margin-top:32px"><button class="btn btn-primary" onclick="showPage('topup')">充值并开始 →</button></div>
+    <div style="text-align:center;margin-top:32px"><button class="btn btn-primary" onclick="showPage('topup')">开通并开始 →</button></div>
   </div>
 </div>
 
@@ -879,45 +871,65 @@ print(resp.choices[0].message.content)</pre>
 
 <script>
 // ═══ DATA ═══
+// ═══ 模型库(数据照搬 aicodewith /zh/models;价格为综合参考单价 ¥/1M token,最终以控制台为准) ═══
 const MDB={
-  'claude-3.5-sonnet':{name:'Claude 3.5 Sonnet',prov:'Anthropic',spd:'62 tok/s',lat:'320ms',price:'¥0.04/1K',q:95},
-  'gpt-4o':{name:'GPT-4o',prov:'OpenAI',spd:'78 tok/s',lat:'280ms',price:'¥0.03/1K',q:93},
-  'gpt-4o-mini':{name:'GPT-4o Mini',prov:'OpenAI',spd:'120 tok/s',lat:'150ms',price:'¥0.002/1K',q:82},
-  'deepseek-chat':{name:'DeepSeek Chat',prov:'DeepSeek',spd:'95 tok/s',lat:'200ms',price:'¥0.008/1K',q:90},
-  'deepseek-reasoner':{name:'DeepSeek Reasoner',prov:'DeepSeek',spd:'60 tok/s',lat:'1200ms',price:'¥0.014/1K',q:92},
-  'qwen-max':{name:'Qwen-Max',prov:'Alibaba',spd:'85 tok/s',lat:'240ms',price:'¥0.012/1K',q:89},
-  'qwen-turbo':{name:'Qwen-Turbo',prov:'Alibaba',spd:'130 tok/s',lat:'120ms',price:'¥0.002/1K',q:80},
-  'ernie-4':{name:'ERNIE 4.0',prov:'Baidu',spd:'70 tok/s',lat:'350ms',price:'¥0.02/1K',q:87},
-  'glm-4':{name:'GLM-4',prov:'Zhipu',spd:'75 tok/s',lat:'300ms',price:'¥0.015/1K',q:86},
-  'moonshot-v1':{name:'Moonshot-128K',prov:'Moonshot',spd:'68 tok/s',lat:'380ms',price:'¥0.018/1K',q:85},
+  // —— 推理模型 ——
+  'deepseek-r1-0528':{name:'DeepSeek R1 0528',prov:'DeepSeek',in:'¥4',out:'¥16',ctx:'—',g:'reason',note:'编程、审美设计与代码补全表现出色'},
+  'kimi-k2-thinking':{name:'Kimi K2 Thinking',prov:'Moonshot',in:'¥4',out:'¥16',ctx:'256K',g:'reason',note:'万亿参数 MoE,32B 激活'},
+  'qwq-32b':{name:'QwQ 32B',prov:'阿里',in:'¥2',out:'¥6',ctx:'—',g:'reason',note:'中型推理,对标 DeepSeek R1'},
+  'qwen3-235b-thinking':{name:'Qwen3 235B A22B Thinking 2507',prov:'阿里',in:'¥2',out:'¥20',ctx:'262K',g:'reason',note:'22B 激活,最长 81920 token 输出'},
+  'qwen3-30b-thinking':{name:'Qwen3 30B A3B Thinking 2507',prov:'阿里',in:'¥0.7',out:'¥2.8',ctx:'—',g:'reason',note:'30B MoE,多步推理'},
+  'qwen3-next-80b-thinking':{name:'Qwen3 Next 80B A3B Thinking',prov:'阿里',in:'¥1',out:'¥10',ctx:'—',g:'reason',note:'推理优先对话模型'},
+  // —— 对话 / 通用 ——
+  'deepseek-v3.2':{name:'DeepSeek V3.2',prov:'DeepSeek',in:'¥2',out:'¥3',ctx:'—',g:'chat',note:'高计算效率,推理与代理性能均衡'},
+  'deepseek-v4-flash':{name:'DeepSeek V4 Flash',prov:'DeepSeek',in:'¥1',out:'¥2',ctx:'1M',g:'chat',note:'MoE,超快推理'},
+  'deepseek-v4-pro':{name:'DeepSeek V4 Pro',prov:'DeepSeek',in:'¥12',out:'¥24',ctx:'1M',g:'chat',note:'1.6 万亿参数,强编码'},
+  'glm-4.6':{name:'GLM 4.6',prov:'智谱',in:'¥2',out:'¥8',ctx:'200K',g:'chat',note:'编码增强,200K 上下文'},
+  'glm-4.7':{name:'GLM 4.7',prov:'智谱',in:'¥2',out:'¥8',ctx:'—',g:'chat',note:'最新旗舰,编程提升'},
+  'glm-5':{name:'GLM 5',prov:'智谱',in:'¥4',out:'¥18',ctx:'—',g:'chat',note:'全面革新编程、多步推理与复杂任务'},
+  'glm-5.1':{name:'GLM 5.1',prov:'智谱',in:'¥6',out:'¥24',ctx:'—',g:'chat',note:'长任务,8+ 小时自主执行'},
+  'kimi-k2':{name:'Kimi K2',prov:'Moonshot',in:'¥4',out:'¥16',ctx:'—',g:'chat',note:'1T 参数,32B 激活 MoE'},
+  'kimi-k2.5':{name:'Kimi K2.5',prov:'Moonshot',in:'¥4',out:'¥21',ctx:'—',g:'chat',note:'多智能体协作机制'},
+  'mimo-v2-flash':{name:'MiMo V2 Flash',prov:'小米',in:'¥0.7',out:'¥2.1',ctx:'—',g:'chat',note:'309B 总,15B 激活 MoE'},
+  'minimax-m2.1':{name:'MiniMax M2.1',prov:'MiniMax',in:'¥2.1',out:'¥8.4',ctx:'—',g:'chat',note:'多语言编程'},
+  'minimax-m2.5':{name:'MiniMax M2.5',prov:'MiniMax',in:'¥2.1',out:'¥8.4',ctx:'—',g:'chat',note:'SWE-Bench Verified 80.2%,提速 37%'},
+  'minimax-m2.7':{name:'MiniMax M2.7',prov:'MiniMax',in:'¥2.1',out:'¥8.4',ctx:'—',g:'chat',note:'多智能体,SWE-Pro 56.2%'},
+  'qwen2.5-7b':{name:'Qwen2.5 7B Instruct',prov:'阿里',in:'¥0.5',out:'¥1',ctx:'—',g:'chat',note:'轻量,29+ 语言'},
+  'qwen2.5-32b':{name:'Qwen2.5 32B Instruct',prov:'阿里',in:'¥2',out:'¥6',ctx:'—',g:'chat',note:'32B,推理较强'},
+  'qwen2.5-72b':{name:'Qwen2.5 72B Instruct',prov:'阿里',in:'¥4',out:'¥12',ctx:'128K',g:'chat',note:'8K 输出,29+ 语言'},
+  'qwen3-14b':{name:'Qwen3 14B',prov:'阿里',in:'¥1',out:'¥4',ctx:'—',g:'chat',note:'最新 dense 模型'},
+  'qwen3-30b-instruct':{name:'Qwen3 30B A3B Instruct 2507',prov:'阿里',in:'¥0.7',out:'¥2.8',ctx:'—',g:'chat',note:'30.5B,3.3B 激活'},
+  'qwen3-32b':{name:'Qwen3 32B',prov:'阿里',in:'¥2',out:'¥8',ctx:'—',g:'chat',note:'支持思考 / 非思考模式'},
+  'qwen3-235b':{name:'Qwen3 235B A22B',prov:'阿里',in:'¥2',out:'¥8',ctx:'—',g:'chat',note:'MoE,22B 激活'},
+  'qwen3-235b-instruct':{name:'Qwen3 235B A22B Instruct 2507',prov:'阿里',in:'¥2',out:'¥8',ctx:'—',g:'chat',note:'指令微调,通用文本生成'},
+  'qwen3-next-80b-instruct':{name:'Qwen3 Next 80B A3B Instruct',prov:'阿里',in:'¥1',out:'¥4',ctx:'—',g:'chat',note:'对话优化,无思考链'},
+  'qwen3.5-397b':{name:'Qwen3.5 397B A17B',prov:'阿里',in:'¥1.2',out:'¥7.2',ctx:'—',g:'chat',note:'397B 总,17B 激活,提速约 19x'},
+  'longcat-flash-chat':{name:'LongCat Flash Chat',prov:'美团',in:'¥1',out:'¥5',ctx:'—',g:'chat',note:'560B 参数,18.6–31.3B 激活'},
+  // —— 专用模型 ——
+  'gpt-image-2':{name:'GPT Image 2',prov:'OpenAI',in:'$0.04/次',out:'按次',ctx:'—',g:'spec',note:'图像生成;或 $5 / $30 每 1M token'},
+  'qwen3-coder':{name:'Qwen3 Coder',prov:'阿里',in:'¥6',out:'¥24',ctx:'—',g:'spec',note:'480B 总,35B 激活,代码专用'},
+  'qwen3-coder-next':{name:'Qwen3 Coder Next',prov:'阿里',in:'¥4',out:'¥16',ctx:'—',g:'spec',note:'最新代码模型,侧重最佳实践'},
 };
-const C={
-  finance_chat:{t:'金融智能客服',s:'合规敏感 · 低幻觉',sc:[96,88,72],p:'¥3.2',m:[{id:'claude-3.5-sonnet',role:'主力模型',rc:'role-primary',w:'幻觉率最低'},{id:'gpt-4o',role:'备用模型',rc:'role-fallback',w:'主力不可用时切换'},{id:'qwen-turbo',role:'快速响应',rc:'role-specialist',w:'简单查询降本 80%'}],why:'金融客服对准确性要求极高。Claude 3.5 幻觉率 < 2%，处理复杂金融问题；简单查询走 Qwen-Turbo 快速响应。'},
-  finance_analysis:{t:'金融数据分析',s:'数值精准 · 深度推理',sc:[94,82,68],p:'¥4.5',m:[{id:'gpt-4o',role:'主力模型',rc:'role-primary',w:'数值推理最强'},{id:'claude-3.5-sonnet',role:'备用模型',rc:'role-fallback',w:'长文档分析'},{id:'deepseek-chat',role:'代码生成',rc:'role-specialist',w:'Python 分析脚本'}],why:'金融数据分析需要精确的数值推理。GPT-4o 数学评测最优；代码生成自动路由到 DeepSeek Chat。'},
-  medical_chat:{t:'医疗智能问诊',s:'医学知识 · 安全可控',sc:[97,80,75],p:'¥4.0',m:[{id:'gpt-4o',role:'主力模型',rc:'role-primary',w:'医学推理基准表现稳定 [V1 上线后填充分数]'},{id:'claude-3.5-sonnet',role:'备用模型',rc:'role-fallback',w:'医学对话能力强'},{id:'ernie-4',role:'中医知识',rc:'role-specialist',w:'中文医学语料丰富'}],why:'医疗场景安全性最高。GPT-4o 在 USMLE 类基准上表现稳定 [V1 上线后填充分数]；中医问题路由到 ERNIE 4.0。'},
-  legal_chat:{t:'法律智能咨询',s:'法条引用 · 逻辑严谨',sc:[94,84,73],p:'¥3.6',m:[{id:'claude-3.5-sonnet',role:'主力模型',rc:'role-primary',w:'逻辑推理强'},{id:'glm-4',role:'备用模型',rc:'role-fallback',w:'中文法律术语好'},{id:'qwen-turbo',role:'快速检索',rc:'role-specialist',w:'简单法条查询'}],why:'法律咨询需要严谨推理和法条引用。Claude 3.5 逻辑一致性最优；中国法律走 GLM-4。'},
-  ecommerce_chat:{t:'电商智能客服',s:'高并发 · 快速响应 · 成本优先',sc:[85,96,92],p:'¥0.8',m:[{id:'qwen-turbo',role:'主力模型',rc:'role-primary',w:'性价比最高'},{id:'gpt-4o-mini',role:'备用模型',rc:'role-fallback',w:'高峰分流'},{id:'claude-3.5-sonnet',role:'复杂问题',rc:'role-specialist',w:'投诉退换升级处理'}],why:'电商客服 80% 是简单咨询，走 Qwen-Turbo 成本极低；复杂投诉自动升级到 Claude 3.5。'},
-  ecommerce_writing:{t:'电商内容生成',s:'商品描述 · 营销文案',sc:[88,92,85],p:'¥1.2',m:[{id:'deepseek-chat',role:'主力模型',rc:'role-primary',w:'中文创意性价比高'},{id:'gpt-4o-mini',role:'批量生成',rc:'role-specialist',w:'SKU 批量极低成本'},{id:'claude-3.5-sonnet',role:'高端文案',rc:'role-fallback',w:'品牌大促文案'}],why:'日常商品描述走 DeepSeek Chat；批量 SKU 走 GPT-4o Mini；品牌文案走 Claude 3.5。'},
-  crossborder_translation:{t:'跨境多语言翻译',s:'多语种 · 电商术语 · 本地化',sc:[92,90,78],p:'¥2.0',m:[{id:'gpt-4o',role:'主力模型',rc:'role-primary',w:'多语种翻译最佳'},{id:'deepseek-chat',role:'中英互译',rc:'role-specialist',w:'中英性价比高'},{id:'qwen-turbo',role:'批量翻译',rc:'role-fallback',w:'短文本批量'}],why:'跨境涉及英/日/韩/西/阿多语种。GPT-4o 质量最佳；高频中英走 DeepSeek 降本。'},
-  crossborder_chat:{t:'跨境客服',s:'多语言 · 时区覆盖',sc:[90,92,82],p:'¥1.5',m:[{id:'gpt-4o-mini',role:'主力模型',rc:'role-primary',w:'多语种快速低成本'},{id:'gpt-4o',role:'复杂问题',rc:'role-specialist',w:'纠纷索赔升级'},{id:'qwen-turbo',role:'中文客服',rc:'role-fallback',w:'国内买家中文'}],why:'跨境客服 7x24 多语言。GPT-4o Mini 多语种便宜；复杂纠纷升级到 GPT-4o。'},
-  education_chat:{t:'教育智能辅导',s:'知识讲解 · 因材施教',sc:[91,88,80],p:'¥2.2',m:[{id:'gpt-4o',role:'主力模型',rc:'role-primary',w:'教学解释清晰'},{id:'deepseek-chat',role:'理科解题',rc:'role-specialist',w:'数学物理推理优'},{id:'qwen-turbo',role:'基础问答',rc:'role-fallback',w:'简单知识点'}],why:'教育需清晰讲解和准确推理。GPT-4o 教学评测最佳；理科走 DeepSeek Chat。'},
+const MGROUPS=[['reason','推理模型'],['chat','对话与通用'],['spec','专用模型']];
+// 行业 × 任务。组合由任务类型驱动(真实可路由),行业仅作标签。
+const IN={finance:'金融',medical:'医疗',legal:'法律',ecommerce:'电商',crossborder:'跨境出海',education:'教育',manufacture:'制造',government:'政务'};
+const TN={chat:'智能客服',writing:'内容生成',code:'代码开发',analysis:'数据分析',translation:'翻译',summary:'文档摘要',rag:'知识问答',agent:'Agent 工作流'};
+// 每个任务一套真实模型组合(主力 / 备用 / 降本)。分数为相对定位参考,非基准跑分。
+const TASKDEF={
+  chat:{sc:[88,92,90],p:'约 ¥6',m:[{id:'deepseek-v3.2',role:'主力模型',rc:'role-primary',w:'高效率,综合均衡'},{id:'glm-4.7',role:'备用模型',rc:'role-fallback',w:'主力限流时切换'},{id:'qwen3-30b-instruct',role:'降本快线',rc:'role-specialist',w:'简单咨询低成本'}],why:'客服多为高频简单咨询,主力走 DeepSeek V3.2 性价比高;复杂问题切 GLM 4.7;轻量问题下沉到 Qwen3 30B 降本。'},
+  writing:{sc:[90,88,84],p:'约 ¥9',m:[{id:'glm-4.7',role:'主力模型',rc:'role-primary',w:'中文创作流畅'},{id:'deepseek-v3.2',role:'备用模型',rc:'role-fallback',w:'高性价比生成'},{id:'qwen3-30b-instruct',role:'批量降本',rc:'role-specialist',w:'批量文案低成本'}],why:'内容生成主力用 GLM 4.7;走量文案下沉 Qwen3 30B;品牌级内容回切主力。'},
+  code:{sc:[94,86,76],p:'约 ¥20',m:[{id:'deepseek-v4-pro',role:'主力模型',rc:'role-primary',w:'1.6 万亿参数,强编码'},{id:'qwen3-coder',role:'代码专用',rc:'role-specialist',w:'480B 代码专用'},{id:'deepseek-v4-flash',role:'快速补全',rc:'role-fallback',w:'1M 上下文,超快'}],why:'复杂工程走 DeepSeek V4 Pro;代码专项交给 Qwen3 Coder;补全 / 长仓库走 V4 Flash(1M 上下文)。'},
+  analysis:{sc:[95,78,70],p:'约 ¥16',m:[{id:'deepseek-r1-0528',role:'主力模型',rc:'role-primary',w:'深度推理'},{id:'qwen3-235b-thinking',role:'长链推理',rc:'role-fallback',w:'262K 上下文'},{id:'qwq-32b',role:'降本快线',rc:'role-specialist',w:'中型推理降本'}],why:'数据分析需深度推理,主力 DeepSeek R1;超长材料走 Qwen3 235B Thinking(262K);批量轻分析下沉 QwQ 32B。'},
+  translation:{sc:[91,90,82],p:'约 ¥10',m:[{id:'qwen3-235b-instruct',role:'主力模型',rc:'role-primary',w:'多语种质量好'},{id:'deepseek-v3.2',role:'中英互译',rc:'role-fallback',w:'中英性价比高'},{id:'qwen2.5-72b',role:'批量降本',rc:'role-specialist',w:'29+ 语言批量'}],why:'多语种主力 Qwen3 235B Instruct;高频中英走 DeepSeek V3.2 降本;批量短文本走 Qwen2.5 72B。'},
+  summary:{sc:[90,90,80],p:'约 ¥8',m:[{id:'deepseek-v4-flash',role:'主力模型',rc:'role-primary',w:'1M 上下文,一次吃下'},{id:'kimi-k2-thinking',role:'精度备用',rc:'role-fallback',w:'256K,精度优先'},{id:'qwen3-30b-instruct',role:'短文降本',rc:'role-specialist',w:'短文档低成本'}],why:'长文档走 DeepSeek V4 Flash(1M 上下文)一次性处理;精度要求高切 Kimi K2 Thinking;短文档下沉 Qwen3 30B。'},
+  rag:{sc:[92,84,80],p:'约 ¥9',m:[{id:'glm-4.6',role:'主力模型',rc:'role-primary',w:'200K 上下文,检索强'},{id:'deepseek-v3.2',role:'备用模型',rc:'role-fallback',w:'综合推理'},{id:'qwen3-32b',role:'降本快线',rc:'role-specialist',w:'简单问答降本'}],why:'知识问答主力 GLM 4.6(200K 上下文,适合长文档检索);复杂推理切 DeepSeek V3.2;简单检索走 Qwen3 32B。'},
+  agent:{sc:[94,82,72],p:'约 ¥18',m:[{id:'glm-5.1',role:'主力模型',rc:'role-primary',w:'8+ 小时长任务自主'},{id:'minimax-m2.7',role:'备用模型',rc:'role-fallback',w:'多智能体,SWE-Pro 56.2%'},{id:'deepseek-v4-flash',role:'执行层',rc:'role-specialist',w:'步骤下发降本'}],why:'Agent 工作流需长程自主与工具调用,主力 GLM 5.1;多智能体协作切 MiniMax M2.7;执行步骤下发 DeepSeek V4 Flash 降本。'},
 };
-
-// Fill defaults for missing combos
-const INDS=['finance','medical','legal','ecommerce','crossborder','education','manufacture','government'];
-const TASKS=['chat','writing','code','analysis','translation','summary','rag','agent'];
-const IN={finance:'金融',medical:'医疗',legal:'法律',ecommerce:'电商',crossborder:'跨境',education:'教育',manufacture:'制造',government:'政务'};
-const TN={chat:'智能对话',writing:'内容生成',code:'代码开发',analysis:'数据分析',translation:'翻译',summary:'文档摘要',rag:'知识问答',agent:'Agent 工作流'};
+const INDS=Object.keys(IN), TASKS=Object.keys(TN);
+const C={};
 for(const i of INDS)for(const t of TASKS){
-  const k=i+'_'+t;if(C[k])continue;
-  let m=[{id:'gpt-4o',role:'主力模型',rc:'role-primary',w:'综合能力最强'},{id:'deepseek-chat',role:'备用模型',rc:'role-fallback',w:'性价比最优'},{id:'qwen-turbo',role:'快速响应',rc:'role-specialist',w:'简单任务降本'}];
-  let sc=[90,90,80],p='¥2.5',w='通用场景采用「强模型 + 高性价比 + 轻量快速」三角组合，根据请求复杂度自动路由。';
-  if(t==='code'){m=[{id:'deepseek-chat',role:'主力模型',rc:'role-primary',w:'代码任务表现优异 [V1 上线后填 HumanEval 实测]'},{id:'claude-3.5-sonnet',role:'备用模型',rc:'role-fallback',w:'复杂架构设计'},{id:'gpt-4o-mini',role:'快速补全',rc:'role-specialist',w:'简单代码'}];sc=[92,90,75];p='¥2.0';w='代码场景首选 DeepSeek Chat（HumanEval 表现优异，分数 [V1 上线后填充]）；复杂设计走 Claude 3.5；简单补全走 GPT-4o Mini。';}
-  if(t==='agent'){m=[{id:'claude-3.5-sonnet',role:'主力模型',rc:'role-primary',w:'Tool Use 表现稳定 [V1 上线后填实测]'},{id:'gpt-4o',role:'备用模型',rc:'role-fallback',w:'Function Calling 强'},{id:'deepseek-chat',role:'执行层',rc:'role-specialist',w:'具体任务执行降本'}];sc=[94,85,72];p='¥3.5';w='Agent 工作流需要强大的工具调用和多步推理。Claude 3.5 在 Tool Use 类基准上表现稳定 [V1 上线后填分数]；执行步骤下发给 DeepSeek Chat。';}
-  if(t==='translation'){m[0]={id:'gpt-4o',role:'主力模型',rc:'role-primary',w:'多语种最优'};p='¥1.8';w='翻译任务 GPT-4o 多语种质量最佳，中英高频走 DeepSeek Chat 降本。';}
-  if(t==='summary'){m=[{id:'moonshot-v1',role:'主力模型',rc:'role-primary',w:'128K 超长上下文'},{id:'claude-3.5-sonnet',role:'备用模型',rc:'role-fallback',w:'精度要求高时切换'},{id:'qwen-turbo',role:'快速摘要',rc:'role-specialist',w:'短文档'}];sc=[92,90,65];p='¥2.8';w='长文档走 Moonshot 128K 一次性处理；短文档走 Qwen-Turbo 节省成本。';}
-  if(t==='rag'){m=[{id:'claude-3.5-sonnet',role:'主力模型',rc:'role-primary',w:'RAG 引用准确率最高'},{id:'gpt-4o',role:'备用模型',rc:'role-fallback',w:'复杂推理'},{id:'qwen-max',role:'中文检索',rc:'role-specialist',w:'中文文献理解强'}];sc=[95,83,70];p='¥3.5';w='知识问答需精确引用。Claude 3.5 引用忠实度 > 97%，减少幻觉风险。';}
-  C[k]={t:IN[i]+TN[t],s:'基于场景智能匹配',sc,p,m,why:w};
+  const d=TASKDEF[t];
+  C[i+'_'+t]={t:IN[i]+' · '+TN[t],s:'按任务 / 预算自动路由',sc:d.sc,p:d.p,m:d.m,why:d.why};
 }
 
 // ═══ STATE ═══
@@ -939,22 +951,24 @@ function showPage(n){
   if(n==='models'&&!modelsRendered){renderModels();modelsRendered=true;}
 }
 
-// ═══ MODELS & PRICE TABLE ═══
+// ═══ MODELS & PRICE TABLE(分组渲染) ═══
 function renderModels(){
-  const tb=document.getElementById('mdl-tbody');if(!tb)return;
-  // group MDB rows by provider, keep stable order
-  const rows=Object.entries(MDB);
-  tb.innerHTML=rows.map(([id,m])=>{
-    const qcls=m.q>=92?'q-hi':m.q>=86?'q-mid':'q-lo';
-    return `<tr>
-      <td><span class="mdl-name">${esc(m.name)}</span><span class="mdl-id">${id}</span></td>
+  const box=document.getElementById('mdl-groups');if(!box)return;
+  box.innerHTML=MGROUPS.map(([g,label])=>{
+    const rows=Object.entries(MDB).filter(([,m])=>m.g===g);
+    if(!rows.length)return '';
+    const body=rows.map(([id,m])=>`<tr>
+      <td><span class="mdl-name">${esc(m.name)}</span><span class="mdl-id">${esc(id)}</span></td>
       <td data-label="供应商">${esc(m.prov)}</td>
-      <td class="mdl-price" data-label="价格">${esc(m.price)}</td>
-      <td data-label="速度">${esc(m.spd)}</td>
-      <td data-label="延迟">${esc(m.lat)}</td>
-      <td data-label="质量"><span class="mdl-q ${qcls}">${m.q}</span></td>
-      <td data-label="状态"><span class="mdl-stat">可用</span></td>
-    </tr>`;
+      <td class="mdl-price" data-label="输入">${esc(m.in)}</td>
+      <td class="mdl-price" data-label="输出">${esc(m.out)}</td>
+      <td data-label="上下文">${esc(m.ctx)}</td>
+      <td class="mdl-note-cell" data-label="说明">${esc(m.note)}</td>
+    </tr>`).join('');
+    return `<h3 class="mdl-group-title">${esc(label)}<span>${rows.length}</span></h3>
+      <div class="mdl-table-wrap"><table class="mdl-table">
+      <thead><tr><th>模型</th><th>供应商</th><th>输入 ¥/1M</th><th>输出 ¥/1M</th><th>上下文</th><th>说明</th></tr></thead>
+      <tbody>${body}</tbody></table></div>`;
   }).join('');
 }
 
@@ -977,7 +991,7 @@ function showCombo(){
   document.getElementById('combo-why').textContent=combo.why;
   document.getElementById('combo-price').textContent=combo.p;
   const mc=document.getElementById('model-cards');mc.innerHTML='';
-  combo.m.forEach(m=>{const info=MDB[m.id];mc.innerHTML+=`<div class="model-card"><span class="role-tag ${m.rc}">${m.role}</span><div class="mname">${info.name}</div><div class="mprov">${info.prov}</div><div class="mstats"><span class="mstat">速度 <b>${info.spd}</b></span><span class="mstat">延迟 <b>${info.lat}</b></span><span class="mstat">${info.price}</span></div><div style="margin-top:8px;font-size:.78rem;color:var(--g500)">${m.w}</div></div>`;});
+  combo.m.forEach(m=>{const info=MDB[m.id];if(!info)return;mc.innerHTML+=`<div class="model-card"><span class="role-tag ${m.rc}">${m.role}</span><div class="mname">${esc(info.name)}</div><div class="mprov">${esc(info.prov)}</div><div class="mstats"><span class="mstat">输入 <b>${esc(info.in)}</b></span><span class="mstat">输出 <b>${esc(info.out)}</b></span>${info.ctx&&info.ctx!=='—'?`<span class="mstat">上下文 <b>${esc(info.ctx)}</b></span>`:''}</div><div style="margin-top:8px;font-size:.78rem;color:var(--g500)">${esc(m.w)}</div></div>`;});
   document.getElementById('rec-result').scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 
