@@ -9,3 +9,4 @@ backend/.venv/
 backend/geniuscode.db
 .claude/
 .agents/
+index.html.bak-*

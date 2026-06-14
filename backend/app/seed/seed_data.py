@@ -14,47 +14,67 @@ from app.models.budget import Budget
 from app.models.knowledge_base import KnowledgeBase, Document
 
 
+# 唯一上游 = aicodewith（OpenAI 兼容中转）。所有模型都转发到这里。
+# base_url 以 aicodewith 控制台/接入文档为准；key 走 AICODEWITH_API_KEY 环境变量。
 PROVIDERS = [
-    {"name": "openai", "base_url": "https://api.openai.com/v1", "api_key_env_var": "OPENAI_API_KEY"},
-    {"name": "anthropic", "base_url": "https://api.anthropic.com/v1", "api_key_env_var": "ANTHROPIC_API_KEY"},
-    {"name": "deepseek", "base_url": "https://api.deepseek.com/v1", "api_key_env_var": "DEEPSEEK_API_KEY"},
-    {"name": "alibaba", "base_url": "https://dashscope.aliyuncs.com/api/v1", "api_key_env_var": "ALIBABA_API_KEY"},
-    {"name": "baidu", "base_url": "https://aip.baidubce.com/rpc/2.0", "api_key_env_var": "BAIDU_API_KEY"},
-    {"name": "zhipu", "base_url": "https://open.bigmodel.cn/api/paas/v4", "api_key_env_var": "ZHIPU_API_KEY"},
-    {"name": "moonshot", "base_url": "https://api.moonshot.cn/v1", "api_key_env_var": "MOONSHOT_API_KEY"},
+    {"name": "aicodewith", "base_url": "https://api.aicodewith.com/v1", "api_key_env_var": "AICODEWITH_API_KEY"},
 ]
 
-# Models: (name, provider_name, quality, speed, cost_in, cost_out, latency, tps, context, capabilities)
-# `gpt-3.5-turbo` is included so the Quickstart curl example (which still
-# references the cheapest OpenAI model) has a real route. Task 3 wires the
-# OpenAI provider; the rest stay mocked until Task 5+.
+# 模型清单照搬 aicodewith /zh/models（与前端 MDB 的 id 一一对齐）。
+# 字段：(name, provider, quality, speed, cost_in, cost_out, latency, tps, context, capabilities)
+#   cost_in / cost_out 单位为 ¥ / 1K token（= aicodewith 的 ¥/1M ÷ 1000）。
+#   quality/speed/latency/tps 为相对参考值，非基准跑分。
+# ⚠️ name 直接透传给 aicodewith 作为上游 `model` 字段——接入时务必与 aicodewith
+#    实际接受的模型 id 字符串核对（控制台/文档），不一致就在这里改这一列即可。
 MODELS = [
-    ("gpt-4o", "openai", 0.95, 0.80, 0.005, 0.015, 800, 80, 128000, '["chat","code","analysis","vision"]'),
-    ("gpt-4o-mini", "openai", 0.82, 0.92, 0.00015, 0.0006, 400, 120, 128000, '["chat","code","analysis"]'),
-    ("gpt-3.5-turbo", "openai", 0.70, 0.93, 0.0005, 0.0015, 350, 130, 16385, '["chat","code"]'),
-    ("claude-3.5-sonnet", "anthropic", 0.96, 0.75, 0.003, 0.015, 900, 70, 200000, '["chat","code","analysis","vision"]'),
-    ("claude-3-haiku", "anthropic", 0.78, 0.95, 0.00025, 0.00125, 300, 150, 200000, '["chat","code"]'),
-    # DeepSeek model names must match the API's accepted `model` field.
-    ("deepseek-chat", "deepseek", 0.88, 0.85, 0.0002, 0.0006, 600, 100, 64000, '["chat","code","analysis"]'),
-    ("deepseek-reasoner", "deepseek", 0.92, 0.60, 0.0004, 0.0016, 1200, 50, 64000, '["chat","code","reasoning"]'),
-    ("qwen-max", "alibaba", 0.85, 0.82, 0.0004, 0.0012, 700, 90, 32000, '["chat","code","analysis"]'),
-    ("ernie-4.0", "baidu", 0.83, 0.78, 0.0008, 0.002, 650, 85, 8000, '["chat","analysis"]'),
-    ("glm-4", "zhipu", 0.80, 0.88, 0.0003, 0.001, 500, 95, 128000, '["chat","code"]'),
-    ("moonshot-v1", "moonshot", 0.79, 0.90, 0.00025, 0.001, 450, 110, 128000, '["chat","code","analysis"]'),
+    # —— 推理模型 ——
+    ("deepseek-r1-0528", "aicodewith", 0.92, 0.60, 0.004, 0.016, 1200, 50, 65536, '["chat","code","reasoning"]'),
+    ("kimi-k2-thinking", "aicodewith", 0.91, 0.62, 0.004, 0.016, 1100, 55, 256000, '["chat","reasoning"]'),
+    ("qwq-32b", "aicodewith", 0.85, 0.70, 0.002, 0.006, 900, 70, 32768, '["chat","reasoning"]'),
+    ("qwen3-235b-thinking", "aicodewith", 0.93, 0.60, 0.002, 0.020, 1200, 50, 262000, '["chat","reasoning"]'),
+    ("qwen3-30b-thinking", "aicodewith", 0.84, 0.72, 0.0007, 0.0028, 800, 75, 65536, '["chat","reasoning"]'),
+    ("qwen3-next-80b-thinking", "aicodewith", 0.86, 0.68, 0.001, 0.010, 900, 65, 65536, '["chat","reasoning"]'),
+    # —— 对话 / 通用 ——
+    ("deepseek-v3.2", "aicodewith", 0.88, 0.85, 0.002, 0.003, 600, 100, 65536, '["chat","code","analysis"]'),
+    ("deepseek-v4-flash", "aicodewith", 0.86, 0.95, 0.001, 0.002, 350, 130, 1000000, '["chat","code"]'),
+    ("deepseek-v4-pro", "aicodewith", 0.95, 0.70, 0.012, 0.024, 900, 70, 1000000, '["chat","code","analysis"]'),
+    ("glm-4.6", "aicodewith", 0.88, 0.82, 0.002, 0.008, 600, 90, 200000, '["chat","code"]'),
+    ("glm-4.7", "aicodewith", 0.90, 0.82, 0.002, 0.008, 600, 90, 200000, '["chat","code"]'),
+    ("glm-5", "aicodewith", 0.93, 0.75, 0.004, 0.018, 800, 70, 200000, '["chat","code","analysis"]'),
+    ("glm-5.1", "aicodewith", 0.94, 0.70, 0.006, 0.024, 900, 65, 200000, '["chat","code","analysis","agent"]'),
+    ("kimi-k2", "aicodewith", 0.89, 0.80, 0.004, 0.016, 600, 90, 131072, '["chat","code"]'),
+    ("kimi-k2.5", "aicodewith", 0.90, 0.78, 0.004, 0.021, 650, 85, 131072, '["chat","code","agent"]'),
+    ("mimo-v2-flash", "aicodewith", 0.80, 0.95, 0.0007, 0.0021, 350, 130, 65536, '["chat","code"]'),
+    ("minimax-m2.1", "aicodewith", 0.86, 0.82, 0.0021, 0.0084, 600, 90, 65536, '["chat","code"]'),
+    ("minimax-m2.5", "aicodewith", 0.88, 0.83, 0.0021, 0.0084, 580, 92, 65536, '["chat","code"]'),
+    ("minimax-m2.7", "aicodewith", 0.90, 0.83, 0.0021, 0.0084, 580, 92, 65536, '["chat","code","agent"]'),
+    ("qwen2.5-7b", "aicodewith", 0.72, 0.95, 0.0005, 0.001, 300, 140, 32768, '["chat"]'),
+    ("qwen2.5-32b", "aicodewith", 0.80, 0.85, 0.002, 0.006, 500, 95, 32768, '["chat","code"]'),
+    ("qwen2.5-72b", "aicodewith", 0.84, 0.78, 0.004, 0.012, 650, 85, 128000, '["chat","code","analysis"]'),
+    ("qwen3-14b", "aicodewith", 0.82, 0.88, 0.001, 0.004, 450, 110, 65536, '["chat","code"]'),
+    ("qwen3-30b-instruct", "aicodewith", 0.83, 0.85, 0.0007, 0.0028, 500, 100, 65536, '["chat","code"]'),
+    ("qwen3-32b", "aicodewith", 0.85, 0.82, 0.002, 0.008, 550, 95, 65536, '["chat","code"]'),
+    ("qwen3-235b", "aicodewith", 0.90, 0.72, 0.002, 0.008, 700, 70, 65536, '["chat","code","analysis"]'),
+    ("qwen3-235b-instruct", "aicodewith", 0.90, 0.75, 0.002, 0.008, 680, 75, 65536, '["chat","code","analysis"]'),
+    ("qwen3-next-80b-instruct", "aicodewith", 0.86, 0.85, 0.001, 0.004, 500, 100, 65536, '["chat","code"]'),
+    ("qwen3.5-397b", "aicodewith", 0.91, 0.90, 0.0012, 0.0072, 450, 120, 65536, '["chat","code","analysis"]'),
+    ("longcat-flash-chat", "aicodewith", 0.85, 0.88, 0.001, 0.005, 450, 110, 65536, '["chat","code"]'),
+    # —— 专用模型 ——
+    ("gpt-image-2", "aicodewith", 0.90, 0.70, 0.0, 0.0, 3000, 0, 0, '["image"]'),
+    ("qwen3-coder", "aicodewith", 0.90, 0.78, 0.006, 0.024, 700, 80, 65536, '["code"]'),
+    ("qwen3-coder-next", "aicodewith", 0.89, 0.82, 0.004, 0.016, 600, 90, 65536, '["code"]'),
 ]
 
-# V1 routing: 3 hard defaults (chat / code_generation / summarization). Other
-# task_types fall through to the model the caller explicitly passes — no
-# behind-the-scenes routing magic until we have real usage data to back it.
-# Schema kept (primary / fallback / specialist) for forward compatibility.
+# V1 routing: 3 hard defaults (chat / code_generation / summarization)，全部指向
+# 真实的 aicodewith 模型 id。其余 task_type 走调用方显式传入的 model，不做隐式路由。
 INDUSTRIES = ["default"]
 TASK_TYPES = ["chat", "code_generation", "summarization"]
 
 ROUTING_LOGIC = {
     "default": {
-        "chat": ("gpt-4o-mini", "gpt-3.5-turbo", "deepseek-chat"),
-        "code_generation": ("deepseek-chat", "gpt-4o-mini", "gpt-4o"),
-        "summarization": ("deepseek-chat", "gpt-4o-mini", "gpt-3.5-turbo"),
+        "chat": ("deepseek-v3.2", "glm-4.7", "qwen3-30b-instruct"),
+        "code_generation": ("deepseek-v4-pro", "qwen3-coder", "deepseek-v4-flash"),
+        "summarization": ("deepseek-v4-flash", "kimi-k2-thinking", "qwen3-30b-instruct"),
     },
 }
 
@@ -144,9 +164,9 @@ def seed_database(db: Session):
         db.flush()
         provider_map[p["name"]] = provider.id
 
-    # Create models. OpenAI + DeepSeek go through real providers; the rest
-    # stay mocked until later tasks wire them.
-    real_provider_names = {"openai", "deepseek"}
+    # 全部模型走真实上游 aicodewith（is_mock=False）。若 AICODEWITH_API_KEY 未配置，
+    # provider 会在调用时 fail-fast 报 missing_api_key，而不是静默返回假数据。
+    real_provider_names = {"aicodewith", "openai", "deepseek"}
     model_map = {}
     for name, prov_name, quality, speed, cost_in, cost_out, latency, tps, ctx, caps in MODELS:
         model = Model(
@@ -194,9 +214,9 @@ def seed_database(db: Session):
 
     # Create default API key
     api_key = ApiKey(
-        key="sk-modelmux-dev-000000000000000000000000",
+        key="sk-geniuscode-dev-000000000000000000000000",
         name="Development Key",
-        owner_email="dev@modelmux.ai",
+        owner_email="dev@geniuscode.online",
         is_active=True,
         rate_limit_rpm=60,
         rate_limit_tpm=100000,

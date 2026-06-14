@@ -17,6 +17,7 @@ from app.schemas.chat import ChatCompletionRequest
 from app.services.routing_engine import route_request
 from app.services.mock_provider import estimate_tokens
 from app.services.billing_engine import calculate_cost, check_budget, record_usage_cost
+from app.services.membership import check_user_credit, deduct_user_credit
 from app.services.circuit_breaker import circuit_breaker
 from app.services.provider_base import ProviderError
 from app.services.provider_registry import get_provider_for_model
@@ -58,6 +59,8 @@ def _record_usage(
     db.add(usage)
     if status == "success" and cost > 0:
         record_usage_cost(db, api_key_id, cost)
+        # 会员 ¥额度扣费（dev key 无 user，不扣）
+        deduct_user_credit(db, api_key_id, cost)
     db.commit()
 
 
@@ -107,6 +110,8 @@ async def chat_completions(
     est_prompt_tokens = estimate_tokens(prompt_text)
     est_cost = calculate_cost(model, est_prompt_tokens, est_prompt_tokens)  # rough estimate
     check_budget(db, api_key.id, est_cost)
+    # 会员余额前置校验（额度不足 → 402）
+    check_user_credit(db, api_key)
 
     # Stream mode
     if request.stream:

@@ -51,20 +51,20 @@ def test_latency_optimized_strategy(db):
 
 
 def test_model_override(db):
-    decision = route_request(db, model_override="gpt-4o")
-    assert decision.model_name == "gpt-4o"
+    decision = route_request(db, model_override="deepseek-v3.2")
+    assert decision.model_name == "deepseek-v3.2"
     assert decision.strategy_used == "override"
 
 
 def test_industry_task_routing(db):
-    decision = route_request(db, industry="finance", task_type="data_analysis")
-    assert "rule:finance/data_analysis" in decision.strategy_used
+    decision = route_request(db, industry="default", task_type="chat")
+    assert "rule:default/chat" in decision.strategy_used
     assert decision.model_id > 0
     assert len(decision.fallback_chain) > 0
 
 
 def test_fallback_chain(db):
-    decision = route_request(db, industry="technology", task_type="code_generation")
+    decision = route_request(db, industry="default", task_type="code_generation")
     assert len(decision.fallback_chain) > 0
 
     fallback = try_fallback(db, decision.fallback_chain)
@@ -73,7 +73,7 @@ def test_fallback_chain(db):
 
 
 def test_circuit_breaker_trip(db):
-    decision = route_request(db, model_override="gpt-4o")
+    decision = route_request(db, model_override="deepseek-v3.2")
     provider_id = decision.provider_id
 
     # Trip the circuit breaker

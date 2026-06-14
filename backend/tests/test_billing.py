@@ -30,14 +30,14 @@ def db():
 
 
 def test_calculate_cost(db):
-    model = db.query(Model).filter(Model.name == "gpt-4o").first()
+    model = db.query(Model).filter(Model.name == "deepseek-v3.2").first()
     cost = calculate_cost(model, prompt_tokens=1000, completion_tokens=500)
     expected = (1000 / 1000) * model.cost_per_1k_input + (500 / 1000) * model.cost_per_1k_output
     assert abs(cost - expected) < 0.000001
 
 
 def test_calculate_cost_zero_tokens(db):
-    model = db.query(Model).filter(Model.name == "gpt-4o").first()
+    model = db.query(Model).filter(Model.name == "deepseek-v3.2").first()
     cost = calculate_cost(model, prompt_tokens=0, completion_tokens=0)
     assert cost == 0.0
 

@@ -24,11 +24,11 @@ def test_chat_completions_with_model(client, auth_headers):
     response = client.post(
         "/v1/chat/completions",
         headers=auth_headers,
-        json={"model": "deepseek-chat", "messages": [{"role": "user", "content": "Hello"}]},
+        json={"model": "deepseek-v3.2", "messages": [{"role": "user", "content": "Hello"}]},
     )
     assert response.status_code == 200
     data = response.json()
-    assert data["model"] == "deepseek-chat"
+    assert data["model"] == "deepseek-v3.2"
 
 
 def test_chat_completions_with_routing_headers(client, auth_headers):
@@ -79,7 +79,7 @@ def test_chat_completions_invalid_key(client):
 
 
 def test_chat_completions_model_override_header(client, auth_headers):
-    headers = {**auth_headers, "X-Model-Override": "claude-3-haiku"}
+    headers = {**auth_headers, "X-Model-Override": "kimi-k2"}
     response = client.post(
         "/v1/chat/completions",
         headers=headers,
@@ -87,4 +87,4 @@ def test_chat_completions_model_override_header(client, auth_headers):
     )
     assert response.status_code == 200
     data = response.json()
-    assert data["model"] == "claude-3-haiku"
+    assert data["model"] == "kimi-k2"
