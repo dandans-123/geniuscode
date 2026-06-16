@@ -300,6 +300,23 @@ footer.site-footer{background:var(--bg-soft);color:var(--g600);padding:56px 0 28
 .auth-submit:hover{filter:brightness(1.06);box-shadow:0 8px 20px rgba(109,40,217,.25)}
 .auth-alt{text-align:center;font-size:.84rem;color:var(--g500);margin-top:18px}
 .auth-alt a{color:var(--blue);font-weight:600;cursor:pointer}
+.auth-msg{font-size:.82rem;color:var(--red);margin-top:12px;min-height:18px;line-height:1.5}
+/* ══ ACCOUNT page ══ */
+.acc-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px}
+.acc-card{background:#fff;border:1px solid var(--border);border-radius:var(--r-lg);padding:22px 24px;box-shadow:var(--shadow-1)}
+.acc-card h4{font-size:.92rem;font-weight:700;color:var(--ink);margin-bottom:12px}
+.acc-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--g100);font-size:.9rem}
+.acc-row:last-child{border-bottom:none}
+.acc-row span{color:var(--g500)}.acc-row b{color:var(--ink);font-weight:600}
+.acc-key{font-family:var(--mono);font-size:.8rem;background:var(--bg-soft);border:1px solid var(--border);border-radius:var(--r);padding:11px 12px;color:var(--blue-d);word-break:break-all;line-height:1.5}
+.acc-actions{display:flex;gap:8px;margin-top:10px}
+.acc-actions .btn{padding:8px 14px;min-height:36px;font-size:.82rem}
+.acc-hint{font-size:.78rem;color:var(--g500);margin-top:12px;line-height:1.6}
+.acc-hint code{font-family:var(--mono);font-size:.74rem;background:var(--bg-soft);border:1px solid var(--border);padding:1px 6px;border-radius:var(--r-sm);color:var(--blue-d)}
+.acc-buy{background:#fff;border:1px solid var(--border);border-radius:var(--r-lg);padding:22px 24px;box-shadow:var(--shadow-1)}
+.acc-buy h4{font-size:.92rem;font-weight:700;color:var(--ink);margin-bottom:14px}
+.acc-buy-row{display:flex;gap:10px;flex-wrap:wrap}
+@media(max-width:640px){.acc-grid{grid-template-columns:1fr}.acc-buy-row{flex-direction:column}.acc-buy-row .btn{width:100%}}
 
 /* responsive */
 @media(max-width:1024px){.feat-grid,.supply-row,.prob-grid{grid-template-columns:repeat(2,1fr)}.topup-grid{grid-template-columns:repeat(2,1fr)}.hero .container{gap:32px}.hero h1{font-size:2.6rem}}
@@ -375,7 +392,7 @@ footer.site-footer{background:var(--bg-soft);color:var(--g600);padding:56px 0 28
         <li><a onclick="showPage('recommend')" id="nav-recommend">选型助手</a></li>
         <li><a onclick="showPage('docs')" id="nav-docs">文档</a></li>
       </ul>
-      <button class="nav-cta" onclick="showPage('login')">登录 / 注册</button>
+      <button class="nav-cta" id="nav-cta-btn" onclick="showPage('login')">登录 / 注册</button>
     </div>
   </div>
 </nav>
@@ -582,7 +599,7 @@ footer.site-footer{background:var(--bg-soft);color:var(--g600);padding:56px 0 28
           <li>按量灵活计费，额度 12 个月有效</li>
           <li>自动路由 + 故障转移</li>
         </ul>
-        <button class="price-cta" onclick="showPage('topup')">开通 Starter</button>
+        <button class="price-cta" onclick="buyMembership('starter')">开通 Starter</button>
       </div>
       <div class="price-card featured">
         <div class="badge">推荐</div>
@@ -594,7 +611,7 @@ footer.site-footer{background:var(--bg-soft);color:var(--g600);padding:56px 0 28
           <li>用量看板 + 预算告警</li>
           <li>多 API key 管理</li>
         </ul>
-        <button class="price-cta" onclick="showPage('topup')">开通 Pro</button>
+        <button class="price-cta" onclick="buyMembership('pro')">开通 Pro</button>
       </div>
       <div class="price-card">
         <div class="tier">Ultimate</div>
@@ -605,7 +622,7 @@ footer.site-footer{background:var(--bg-soft);color:var(--g600);padding:56px 0 28
           <li>对账明细导出</li>
           <li>优先技术支持</li>
         </ul>
-        <button class="price-cta" onclick="showPage('topup')">开通 Ultimate</button>
+        <button class="price-cta" onclick="buyMembership('ultimate')">开通 Ultimate</button>
       </div>
     </div>
     <div class="price-note">额度全模型通用、12 个月内有效。<a onclick="showPage('models')">查看完整价格表 →</a> · <a onclick="showToast('企业版咨询请邮件 sales@geniuscode.online')">更大规模联系销售 →</a></div>
@@ -777,7 +794,7 @@ footer.site-footer{background:var(--bg-soft);color:var(--g600);padding:56px 0 28
         <div class="price">¥399</div>
         <div class="sub">含等值额度 · 个人开发者起步</div>
         <ul><li>30+ 模型全部可用</li><li>按量灵活计费，12 个月有效</li><li>自动路由 + 故障转移</li></ul>
-        <button class="price-cta" onclick="showPage('login')">立即开通</button>
+        <button class="price-cta" onclick="buyMembership('starter')">立即开通</button>
       </div>
       <div class="price-card featured">
         <div class="badge">推荐</div>
@@ -785,14 +802,14 @@ footer.site-footer{background:var(--bg-soft);color:var(--g600);padding:56px 0 28
         <div class="price">¥699</div>
         <div class="sub">含等值额度 · 全部常用功能</div>
         <ul><li>30+ 模型 + 更高并发</li><li>用量看板 + 预算告警</li><li>多 API key 管理</li></ul>
-        <button class="price-cta" onclick="showPage('login')">立即开通</button>
+        <button class="price-cta" onclick="buyMembership('pro')">立即开通</button>
       </div>
       <div class="price-card">
         <div class="tier">Ultimate</div>
         <div class="price">¥1799</div>
         <div class="sub">含等值额度 · 大用量 / 高并发</div>
         <ul><li>最高并发 + 专属通道</li><li>对账明细导出</li><li>优先技术支持</li></ul>
-        <button class="price-cta" onclick="showPage('login')">立即开通</button>
+        <button class="price-cta" onclick="buyMembership('ultimate')">立即开通</button>
       </div>
     </div>
     <div class="price-note">注册即送体验额度，无需绑卡。更大规模 / 私有部署需求? <a onclick="showToast('企业版咨询请邮件 sales@geniuscode.online')">联系销售 →</a></div>
@@ -854,16 +871,47 @@ print(resp.choices[0].message.content)</pre>
         <button class="auth-tab" id="atab-reg" onclick="authTab('reg')">注册</button>
       </div>
       <label>邮箱</label>
-      <input type="email" id="auth-email" placeholder="you@example.com">
+      <input type="email" id="auth-email" placeholder="you@example.com" autocomplete="email">
       <label>密码</label>
-      <input type="password" id="auth-pass" placeholder="••••••••">
-      <div id="auth-reg-extra" style="display:none">
-        <label>邀请码 (可选)</label>
-        <input type="text" placeholder="选填">
-      </div>
-      <button class="auth-submit" id="auth-submit" onclick="showToast('后台 V1 上线后开放注册 / 登录')">获取 API Key</button>
+      <input type="password" id="auth-pass" placeholder="至少 6 位" autocomplete="current-password">
+      <div id="auth-msg" class="auth-msg"></div>
+      <button class="auth-submit" id="auth-submit" onclick="submitAuth()">登录</button>
       <div class="auth-alt" id="auth-alt">还没有账号? <a onclick="authTab('reg')">免费注册 →</a></div>
     </div>
+  </div>
+</div>
+
+<!-- ══════════ PAGE: ACCOUNT ══════════ -->
+<div class="page" id="page-account">
+  <div class="rec-container" style="max-width:780px">
+    <div class="rec-header"><h2>我的账户</h2><p>API Key、额度与会员套餐</p></div>
+    <div class="acc-grid">
+      <div class="acc-card">
+        <div class="acc-row"><span>邮箱</span><b id="acc-email">—</b></div>
+        <div class="acc-row"><span>会员等级</span><b id="acc-tier">—</b></div>
+        <div class="acc-row"><span>剩余额度</span><b id="acc-balance" style="color:var(--blue)">—</b></div>
+        <div class="acc-row"><span>有效期</span><b id="acc-expire">—</b></div>
+      </div>
+      <div class="acc-card">
+        <h4>API Key</h4>
+        <div class="acc-key" id="acc-key">—</div>
+        <div class="acc-actions">
+          <button class="btn btn-ghost" onclick="copyAccKey()">复制 Key</button>
+          <button class="btn btn-ghost" onclick="refreshAccount()">刷新</button>
+        </div>
+        <div class="acc-hint">base_url：<code>https://api.geniuscode.online/v1</code> · OpenAI 兼容，改两行接入</div>
+      </div>
+    </div>
+    <div class="acc-buy">
+      <h4>开通 / 续费会员</h4>
+      <div class="acc-buy-row">
+        <button class="btn btn-ghost" onclick="buyMembership('starter')">Starter ¥399</button>
+        <button class="btn btn-primary" onclick="buyMembership('pro')">Pro ¥699</button>
+        <button class="btn btn-ghost" onclick="buyMembership('ultimate')">Ultimate ¥1799</button>
+      </div>
+      <div class="acc-hint">开通即按等值额度入账、12 个月有效。支付对接中，当前为内测开通。</div>
+    </div>
+    <div style="margin-top:26px;text-align:center"><a onclick="gcLogout()" style="color:var(--g500);cursor:pointer;font-size:.85rem">退出登录</a></div>
   </div>
 </div>
 
@@ -941,6 +989,7 @@ function closeNav(){document.getElementById('nav').classList.remove('open');}
 
 // ═══ PAGE ═══
 function showPage(n){
+  if(n==='account'&&!gcToken()){n='login';}
   closeNav();
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   const pg=document.getElementById('page-'+n);if(pg)pg.classList.add('active');
@@ -949,6 +998,7 @@ function showPage(n){
   if(n!=='landing')window.scrollTo(0,0);
   if(n==='landing'){window.scrollTo(0,0);initFade();}
   if(n==='models'&&!modelsRendered){renderModels();modelsRendered=true;}
+  if(n==='account'){renderAccount();refreshAccount();}
 }
 
 // ═══ MODELS & PRICE TABLE(分组渲染) ═══
@@ -1020,23 +1070,97 @@ function copyCode(){
   }
 }
 
-// ═══ AUTH (placeholder) ═══
+// ═══ AUTH (接后端 /auth/*) ═══
+// API 地址:本地开发→同机 8000;线上(Pages/正式域名)→ api.geniuscode.online
+const API_BASE=(function(){const h=location.hostname;if(h==='localhost'||h==='127.0.0.1')return 'http://127.0.0.1:8000';if(location.port==='8000')return '';return 'https://api.geniuscode.online';})();
+const TIER_CN={free:'体验',starter:'Starter',pro:'Pro',ultimate:'Ultimate'};
+let authMode='login';
+
+function gcToken(){return localStorage.getItem('gc_token');}
+function gcAccount(){try{return JSON.parse(localStorage.getItem('gc_account')||'null');}catch(e){return null;}}
+function gcSetAuth(token,acc){localStorage.setItem('gc_token',token);localStorage.setItem('gc_account',JSON.stringify(acc));}
+function gcClear(){localStorage.removeItem('gc_token');localStorage.removeItem('gc_account');}
+
+async function gcApi(path,opts){
+  opts=opts||{};
+  const headers=Object.assign({'Content-Type':'application/json'},opts.headers||{});
+  const t=gcToken();if(t&&opts.auth)headers['Authorization']='Bearer '+t;
+  const r=await fetch(API_BASE+path,{method:opts.method||'GET',headers,body:opts.body?JSON.stringify(opts.body):undefined});
+  let data=null;try{data=await r.json();}catch(e){}
+  if(!r.ok)throw new Error((data&&data.detail)||('请求失败 ('+r.status+')'));
+  return data;
+}
+
 function authTab(t){
-  const login=t==='login';
+  authMode=t==='login'?'login':'reg';
+  const login=authMode==='login';
   document.getElementById('atab-login').classList.toggle('active',login);
   document.getElementById('atab-reg').classList.toggle('active',!login);
-  document.getElementById('auth-reg-extra').style.display=login?'none':'block';
-  document.getElementById('auth-submit').textContent=login?'登录':'获取 API Key';
+  document.getElementById('auth-submit').textContent=login?'登录':'注册并获取 API Key';
+  document.getElementById('auth-pass').setAttribute('autocomplete',login?'current-password':'new-password');
+  const msg=document.getElementById('auth-msg');if(msg)msg.textContent='';
   document.getElementById('auth-alt').innerHTML=login
     ?'还没有账号? <a onclick="authTab(\'reg\')">免费注册 →</a>'
     :'已有账号? <a onclick="authTab(\'login\')">去登录 →</a>';
 }
 
+async function submitAuth(){
+  const email=(document.getElementById('auth-email').value||'').trim();
+  const pass=document.getElementById('auth-pass').value||'';
+  const msg=document.getElementById('auth-msg');
+  if(!email||!pass){msg.textContent='请填写邮箱和密码';return;}
+  const btn=document.getElementById('auth-submit');const old=btn.textContent;btn.disabled=true;btn.textContent='处理中…';msg.textContent='';
+  try{
+    const res=await gcApi(authMode==='login'?'/auth/login':'/auth/register',{method:'POST',body:{email,password:pass}});
+    gcSetAuth(res.access_token,res.account);
+    renderNavAuth();
+    showToast(authMode==='login'?'登录成功':'注册成功，已送体验额度');
+    showPage('account');
+  }catch(e){msg.textContent=e.message;}
+  finally{btn.disabled=false;btn.textContent=old;}
+}
+
+function renderNavAuth(){
+  const acc=gcAccount();const cta=document.getElementById('nav-cta-btn');if(!cta)return;
+  if(acc){cta.textContent='我的账户';cta.onclick=function(){showPage('account');};}
+  else{cta.textContent='登录 / 注册';cta.onclick=function(){showPage('login');};}
+}
+
+function renderAccount(){
+  const acc=gcAccount();if(!acc)return;
+  document.getElementById('acc-email').textContent=acc.email||'—';
+  document.getElementById('acc-tier').textContent=TIER_CN[acc.membership_tier]||acc.membership_tier||'—';
+  document.getElementById('acc-balance').textContent='¥'+Number(acc.credit_balance_cny||0).toFixed(2);
+  document.getElementById('acc-expire').textContent=acc.membership_expires_at?('额度有效期至 '+acc.membership_expires_at):'注册体验额度';
+  document.getElementById('acc-key').textContent=acc.api_key||'—';
+}
+
+async function refreshAccount(){
+  if(!gcToken())return;
+  try{const acc=await gcApi('/auth/account',{auth:true});localStorage.setItem('gc_account',JSON.stringify(acc));renderAccount();renderNavAuth();}
+  catch(e){if(/40\d|登录/.test(e.message)){gcClear();renderNavAuth();showPage('login');}}
+}
+
+async function buyMembership(tier){
+  if(!gcToken()){showToast('请先登录');showPage('login');return;}
+  try{const acc=await gcApi('/auth/membership/purchase',{method:'POST',auth:true,body:{tier}});localStorage.setItem('gc_account',JSON.stringify(acc));renderAccount();renderNavAuth();showToast('开通成功：'+(TIER_CN[tier]||tier));showPage('account');}
+  catch(e){showToast(e.message);}
+}
+
+function copyAccKey(){
+  const k=(gcAccount()||{}).api_key;if(!k){showToast('暂无 Key');return;}
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(k).then(()=>showToast('API Key 已复制'));}
+  else{const ta=document.createElement('textarea');ta.value=k;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();showToast('API Key 已复制');}
+}
+
+function gcLogout(){gcClear();renderNavAuth();showToast('已退出登录');showPage('landing');}
+
 // ═══ UTILS ═══
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.style.transform='translateX(-50%) translateY(0)';t.style.opacity='1';setTimeout(()=>{t.style.transform='translateX(-50%) translateY(100px)';t.style.opacity='0'},2000);}
 function initFade(){const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')})},{threshold:0.1});document.querySelectorAll('.fade-up').forEach(el=>obs.observe(el));}
 // deep-link / refresh support: open the page named in the URL hash
-(function(){const valid=['landing','models','topup','recommend','docs','login'];const h=(location.hash||'').replace('#','');if(valid.includes(h)&&h!=='landing')showPage(h);})();
+renderNavAuth();
+(function(){const valid=['landing','models','topup','recommend','docs','login','account'];const h=(location.hash||'').replace('#','');if(valid.includes(h)&&h!=='landing')showPage(h);})();
 initFade();
 </script>
 </body>
