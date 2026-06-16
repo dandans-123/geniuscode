@@ -23,6 +23,7 @@ TIERS = {
 }
 
 CREDIT_VALIDITY_DAYS = 365
+MIN_TOPUP_CNY = 50.0  # 单次续充下限（小额受支付手续费拖累）
 
 
 def purchase_membership(db: Session, user: User, tier: str) -> User:
@@ -37,6 +38,19 @@ def purchase_membership(db: Session, user: User, tier: str) -> User:
     # TODO(支付): 接入真实支付后，仅在收到「支付成功」回调时执行下面的入账。
     user.membership_tier = tier
     user.credit_balance_cny = round(user.credit_balance_cny + cfg["credit_cny"], 2)
+    user.membership_expires_at = date.today() + timedelta(days=CREDIT_VALIDITY_DAYS)
+    db.commit()
+    db.refresh(user)
+    return user
+
+
+def topup_credit(db: Session, user: User, amount_cny: float) -> User:
+    """任意额度续充（桩支付）。入账 + 把额度有效期顺延 12 个月，不改会员等级。"""
+    if amount_cny is None or amount_cny < MIN_TOPUP_CNY:
+        raise HTTPException(status_code=400, detail=f"单次续充不低于 ¥{MIN_TOPUP_CNY:.0f}")
+    if amount_cny > 100000:
+        raise HTTPException(status_code=400, detail="单次续充金额过大")
+    user.credit_balance_cny = round(user.credit_balance_cny + amount_cny, 2)
     user.membership_expires_at = date.today() + timedelta(days=CREDIT_VALIDITY_DAYS)
     db.commit()
     db.refresh(user)

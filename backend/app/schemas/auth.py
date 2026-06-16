@@ -19,6 +19,10 @@ class PurchaseIn(BaseModel):
     tier: str  # starter / pro / ultimate
 
 
+class TopupIn(BaseModel):
+    amount_cny: float
+
+
 class AccountOut(BaseModel):
     email: str
     membership_tier: str

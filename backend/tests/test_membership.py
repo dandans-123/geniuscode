@@ -91,6 +91,49 @@ def test_chat_deducts_member_credit(client):
     assert after <= before
 
 
+def test_topup_adds_credit(client):
+    token = _register(client, email="ivy@example.com").json()["access_token"]
+    h = {"Authorization": f"Bearer {token}"}
+    r = client.post("/auth/topup", json={"amount_cny": 100}, headers=h)
+    assert r.status_code == 200
+    acc = r.json()
+    assert acc["credit_balance_cny"] == 20.0 + 100.0
+    assert acc["membership_expires_at"] is not None
+
+
+def test_topup_below_min_rejected(client):
+    token = _register(client, email="jack@example.com").json()["access_token"]
+    r = client.post("/auth/topup", json={"amount_cny": 10},
+                    headers={"Authorization": f"Bearer {token}"})
+    assert r.status_code == 400
+
+
+def test_usage_empty_then_after_chat(client):
+    reg = _register(client, email="kate@example.com").json()
+    token = reg["access_token"]
+    api_key = reg["account"]["api_key"]
+    h = {"Authorization": f"Bearer {token}"}
+
+    empty = client.get("/auth/usage", headers=h).json()
+    assert empty["total_calls"] == 0
+
+    client.post(
+        "/v1/chat/completions",
+        headers={"Authorization": f"Bearer {api_key}"},
+        json={"model": "deepseek-v3.2", "messages": [{"role": "user", "content": "hi"}]},
+    )
+
+    u = client.get("/auth/usage", headers=h).json()
+    assert u["total_calls"] >= 1
+    assert u["total_tokens"] > 0
+    assert len(u["recent"]) >= 1
+    assert u["recent"][0]["model"] == "deepseek-v3.2"
+
+
+def test_usage_requires_token(client):
+    assert client.get("/auth/usage").status_code == 401
+
+
 def test_chat_blocked_when_no_credit(client, db_session):
     from app.models.user import User
 

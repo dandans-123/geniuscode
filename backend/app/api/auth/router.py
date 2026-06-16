@@ -1,12 +1,16 @@
 from __future__ import annotations
 
 from fastapi import APIRouter, Depends
+from sqlalchemy import func
 from sqlalchemy.orm import Session
 
 from app.dependencies import get_db, get_current_user
+from app.models.api_key import ApiKey
+from app.models.model import Model
+from app.models.usage_record import UsageRecord
 from app.models.user import User
-from app.schemas.auth import AccountOut, AuthOut, LoginIn, PurchaseIn, RegisterIn
-from app.services.membership import TIERS, purchase_membership
+from app.schemas.auth import AccountOut, AuthOut, LoginIn, PurchaseIn, RegisterIn, TopupIn
+from app.services.membership import TIERS, purchase_membership, topup_credit
 from app.services.security import create_token
 from app.services.user_service import authenticate, get_user_api_key, register_user
 
@@ -54,3 +58,75 @@ def membership_purchase(
 ):
     purchase_membership(db, user, body.tier)
     return _account(db, user)
+
+
+@router.post("/topup", response_model=AccountOut)
+def topup(
+    body: TopupIn,
+    user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    topup_credit(db, user, body.amount_cny)
+    return _account(db, user)
+
+
+@router.get("/usage")
+def usage(user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    """当前用户的用量汇总：总调用 / 总 token / 总花费(¥) + 按模型 + 最近 10 条。"""
+    key_ids = [k.id for k in db.query(ApiKey).filter(ApiKey.user_id == user.id).all()]
+    if not key_ids:
+        return {"total_calls": 0, "total_tokens": 0, "total_cost_cny": 0.0, "by_model": [], "recent": []}
+
+    calls, tokens, cost = (
+        db.query(
+            func.count(UsageRecord.id),
+            func.coalesce(func.sum(UsageRecord.total_tokens), 0),
+            func.coalesce(func.sum(UsageRecord.cost_usd), 0.0),
+        )
+        .filter(UsageRecord.api_key_id.in_(key_ids))
+        .one()
+    )
+
+    name_map = {m.id: m.name for m in db.query(Model).all()}
+
+    by_model_rows = (
+        db.query(
+            UsageRecord.model_id,
+            func.count(UsageRecord.id),
+            func.coalesce(func.sum(UsageRecord.cost_usd), 0.0),
+        )
+        .filter(UsageRecord.api_key_id.in_(key_ids))
+        .group_by(UsageRecord.model_id)
+        .all()
+    )
+    by_model = [
+        {"model": name_map.get(mid, str(mid)), "calls": c, "cost_cny": round(co, 6)}
+        for mid, c, co in sorted(by_model_rows, key=lambda r: r[2], reverse=True)
+    ]
+
+    recent_rows = (
+        db.query(UsageRecord)
+        .filter(UsageRecord.api_key_id.in_(key_ids))
+        .order_by(UsageRecord.created_at.desc())
+        .limit(10)
+        .all()
+    )
+    recent = [
+        {
+            "model": name_map.get(r.model_id, str(r.model_id)),
+            "tokens": r.total_tokens,
+            "cost_cny": round(r.cost_usd, 6),
+            "status": r.status,
+            "latency_ms": r.latency_ms,
+            "created_at": r.created_at.isoformat() if r.created_at else None,
+        }
+        for r in recent_rows
+    ]
+
+    return {
+        "total_calls": calls,
+        "total_tokens": int(tokens),
+        "total_cost_cny": round(cost, 4),
+        "by_model": by_model,
+        "recent": recent,
+    }
