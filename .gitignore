@@ -10,3 +10,4 @@ backend/geniuscode.db
 .claude/
 .agents/
 index.html.bak-*
+deploy/data/

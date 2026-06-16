@@ -1,0 +1,29 @@
+services:
+  app:
+    build: ../backend
+    expose:
+      - "8000"
+    volumes:
+      - ./data:/app/data          # SQLite + 持久化数据
+    env_file:
+      - .env
+    restart: unless-stopped
+
+  caddy:
+    image: caddy:2
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      - DOMAIN=${DOMAIN}          # 由同目录 .env 注入，Caddyfile 用它申请证书
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data          # Let's Encrypt 证书持久化（勿删，否则反复签发会触发限流）
+      - caddy_config:/config
+    depends_on:
+      - app
+    restart: unless-stopped
+
+volumes:
+  caddy_data:
+  caddy_config:

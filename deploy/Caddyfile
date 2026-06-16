@@ -1,0 +1,6 @@
+# 自动申请 / 续期 Let's Encrypt 证书（需 80/443 放行 + 域名 A 记录已指向本机）
+{$DOMAIN} {
+	encode zstd gzip
+	# 反代到 app 容器；Caddy 对 text/event-stream 自动流式刷新，SSE 正常
+	reverse_proxy app:8000
+}

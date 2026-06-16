@@ -1,11 +1,12 @@
 services:
-  modelmux:
+  app:
     build: .
     ports:
       - "8000:8000"
     volumes:
       - ./data:/app/data
     environment:
-      - DATABASE_URL=sqlite:///./data/modelmux.db
+      - DATABASE_URL=sqlite:////app/data/geniuscode.db
       - ADMIN_API_KEY=admin-secret-key-change-me
     restart: unless-stopped
+# 注：这是本地/单机开发用的简化版。生产部署（自动 HTTPS + 域名）见 ../deploy/。
