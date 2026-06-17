@@ -63,6 +63,8 @@ MODELS = [
     ("gpt-image-2", "aicodewith", 0.90, 0.70, 0.0, 0.0, 3000, 0, 0, '["image"]'),
     ("qwen3-coder", "aicodewith", 0.90, 0.78, 0.006, 0.024, 700, 80, 65536, '["code"]'),
     ("qwen3-coder-next", "aicodewith", 0.89, 0.82, 0.004, 0.016, 600, 90, 65536, '["code"]'),
+    # Claude Code 透传计费用(Anthropic 格式 /v1/messages)。单价为占位混合价,接入后按实际改。
+    ("claude-code", "aicodewith", 0.96, 0.70, 0.02, 0.08, 900, 60, 200000, '["chat","code","agent"]'),
 ]
 
 # V1 routing: 3 hard defaults (chat / code_generation / summarization)，全部指向

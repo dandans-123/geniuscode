@@ -14,7 +14,9 @@ class Settings(BaseSettings):
     # ── 上游：aicodewith（GeniusCode 的唯一供货上游，OpenAI 兼容中转）──
     # 所有模型都转发到这里。base_url / key 以 aicodewith 控制台文档为准。
     AICODEWITH_API_KEY: Optional[str] = None
-    AICODEWITH_BASE_URL: str = "https://api.aicodewith.com/v1"  # 占位，接入时按实际改
+    AICODEWITH_BASE_URL: str = "https://api.aicodewith.com/v1"  # OpenAI 兼容端点，占位
+    # Anthropic 格式端点(供 Claude Code /v1/messages 透传)。以 aicodewith 文档为准。
+    AICODEWITH_ANTHROPIC_BASE_URL: str = "https://api.aicodewith.com"
     AICODEWITH_TIMEOUT_SECONDS: float = 60.0
 
     # 上游 key 未配置时回落到 mock（本地开发/演示用）。生产环境应配好 key，
