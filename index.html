@@ -52,6 +52,7 @@ nav .container{display:flex;align-items:center;justify-content:space-between;hei
 .nav-logo{display:flex;align-items:center;gap:10px;font-size:1.05rem;font-weight:700;color:var(--ink);cursor:pointer;letter-spacing:-0.01em}
 .nav-logo svg{display:block}
 .nav-logo .dot{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--blue),var(--cyan));color:#fff;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:800;letter-spacing:.02em;flex-shrink:0}
+.logo-mark{width:26px;height:26px;flex-shrink:0;color:#15294E;display:block}
 .nav-links{display:flex;gap:28px;list-style:none}
 .nav-links a{color:var(--g600);font-size:.9rem;font-weight:500;transition:var(--t);cursor:pointer;padding:6px 0}
 .nav-links a:hover,.nav-links a.active{color:var(--blue)}
@@ -396,7 +397,7 @@ footer.site-footer{background:var(--bg-soft);color:var(--g600);padding:56px 0 28
 <!-- NAV -->
 <nav id="nav">
   <div class="container">
-    <div class="nav-logo" onclick="showPage('landing')"><div class="dot">GC</div>GeniusCode</div>
+    <div class="nav-logo" onclick="showPage('landing')"><svg class="logo-mark" viewBox="0 0 48 48" fill="none" aria-hidden="true"><path d="M40 18 A17 17 0 1 1 40 30" stroke="currentColor" stroke-width="7" stroke-linecap="round"/><path d="M40 24 H24" stroke="currentColor" stroke-width="7" stroke-linecap="round"/></svg>GeniusCode</div>
     <button class="nav-burger" onclick="toggleNav()" aria-label="菜单">
       <svg class="ico-open" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
       <svg class="ico-close" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>
@@ -715,7 +716,7 @@ footer.site-footer{background:var(--bg-soft);color:var(--g600);padding:56px 0 28
   <div class="container">
     <div class="footer-grid">
       <div class="footer-brand">
-        <div class="nav-logo"><div class="dot">GC</div>GeniusCode</div>
+        <div class="nav-logo"><svg class="logo-mark" viewBox="0 0 48 48" fill="none" aria-hidden="true"><path d="M40 18 A17 17 0 1 1 40 30" stroke="currentColor" stroke-width="7" stroke-linecap="round"/><path d="M40 24 H24" stroke="currentColor" stroke-width="7" stroke-linecap="round"/></svg>GeniusCode</div>
         <p>开发者最懂业务的 AI 路由层。OpenAI 兼容, 接入只需改 base_url。</p>
       </div>
       <div class="footer-col">
@@ -921,7 +922,7 @@ llm = ChatOpenAI(
 <div class="page" id="page-login">
   <div class="auth-wrap">
     <div class="auth-card">
-      <div class="auth-logo"><div class="dot">GC</div>GeniusCode</div>
+      <div class="auth-logo"><svg class="logo-mark" viewBox="0 0 48 48" fill="none" aria-hidden="true"><path d="M40 18 A17 17 0 1 1 40 30" stroke="currentColor" stroke-width="7" stroke-linecap="round"/><path d="M40 24 H24" stroke="currentColor" stroke-width="7" stroke-linecap="round"/></svg>GeniusCode</div>
       <div class="auth-tabs">
         <button class="auth-tab active" id="atab-login" onclick="authTab('login')">登录</button>
         <button class="auth-tab" id="atab-reg" onclick="authTab('reg')">注册</button>
