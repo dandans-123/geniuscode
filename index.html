@@ -1200,7 +1200,7 @@ function copyCode(){
 
 // ═══ AUTH (接后端 /auth/*) ═══
 // API 地址:本地开发→同机 8000;线上(Pages/正式域名)→ api.geniuscode.online
-const API_BASE=(function(){const h=location.hostname;if(h==='localhost'||h==='127.0.0.1')return 'http://127.0.0.1:8000';if(location.port==='8000')return '';return 'https://api.geniuscode.online';})();
+const API_BASE=(function(){const h=location.hostname;if(h==='localhost'||h==='127.0.0.1')return 'http://127.0.0.1:8000';if(h.endsWith('github.io'))return 'https://api.geniuscode.online';return '';})();
 const TIER_CN={free:'体验',starter:'Starter',pro:'Pro',ultimate:'Ultimate'};
 let authMode='login';
 
