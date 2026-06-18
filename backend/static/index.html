@@ -302,6 +302,11 @@ footer.site-footer{background:var(--bg-soft);color:var(--g600);padding:56px 0 28
 .auth-alt{text-align:center;font-size:.84rem;color:var(--g500);margin-top:18px}
 .auth-alt a{color:var(--blue);font-weight:600;cursor:pointer}
 .auth-msg{font-size:.82rem;color:var(--red);margin-top:12px;min-height:18px;line-height:1.5}
+.auth-code-line{display:flex;gap:8px}
+.auth-code-line input{flex:1}
+.auth-send-code{flex-shrink:0;padding:0 14px;border:1.5px solid var(--blue);background:#fff;color:var(--blue);border-radius:9px;font-size:.82rem;font-weight:600;cursor:pointer;white-space:nowrap;min-height:46px}
+.auth-send-code:hover:not(:disabled){background:rgba(109,40,217,.06)}
+.auth-send-code:disabled{border-color:var(--g300);color:var(--g400);cursor:not-allowed}
 /* ══ ACCOUNT page ══ */
 .acc-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px}
 .acc-card{background:#fff;border:1px solid var(--border);border-radius:var(--r-lg);padding:22px 24px;box-shadow:var(--shadow-1)}
@@ -937,6 +942,13 @@ llm = ChatOpenAI(
       <input type="email" id="auth-email" placeholder="you@example.com" autocomplete="email">
       <label>密码</label>
       <input type="password" id="auth-pass" placeholder="至少 6 位" autocomplete="current-password">
+      <div id="auth-code-row" style="display:none">
+        <label>邮箱验证码</label>
+        <div class="auth-code-line">
+          <input type="text" id="auth-code" placeholder="6 位验证码" maxlength="6" inputmode="numeric" autocomplete="one-time-code">
+          <button type="button" class="auth-send-code" id="auth-send-code" onclick="sendCode()">发送验证码</button>
+        </div>
+      </div>
       <div id="auth-msg" class="auth-msg"></div>
       <button class="auth-submit" id="auth-submit" onclick="submitAuth()">登录</button>
       <div class="auth-alt" id="auth-alt">还没有账号? <a onclick="authTab('reg')">免费注册 →</a></div>
@@ -1226,6 +1238,7 @@ function authTab(t){
   document.getElementById('atab-reg').classList.toggle('active',!login);
   document.getElementById('auth-submit').textContent=login?'登录':'注册并获取 API Key';
   document.getElementById('auth-pass').setAttribute('autocomplete',login?'current-password':'new-password');
+  document.getElementById('auth-code-row').style.display=login?'none':'block';
   const msg=document.getElementById('auth-msg');if(msg)msg.textContent='';
   document.getElementById('auth-alt').innerHTML=login
     ?'还没有账号? <a onclick="authTab(\'reg\')">免费注册 →</a>'
@@ -1237,9 +1250,14 @@ async function submitAuth(){
   const pass=document.getElementById('auth-pass').value||'';
   const msg=document.getElementById('auth-msg');
   if(!email||!pass){msg.textContent='请填写邮箱和密码';return;}
+  const body={email,password:pass};
+  if(authMode==='reg'){
+    body.code=(document.getElementById('auth-code').value||'').trim();
+    if(!body.code){msg.textContent='请填写邮箱验证码';return;}
+  }
   const btn=document.getElementById('auth-submit');const old=btn.textContent;btn.disabled=true;btn.textContent='处理中…';msg.textContent='';
   try{
-    const res=await gcApi(authMode==='login'?'/auth/login':'/auth/register',{method:'POST',body:{email,password:pass}});
+    const res=await gcApi(authMode==='login'?'/auth/login':'/auth/register',{method:'POST',body});
     gcSetAuth(res.access_token,res.account);
     renderNavAuth();
     showToast(authMode==='login'?'登录成功':'注册成功，已送体验额度');
@@ -1248,6 +1266,26 @@ async function submitAuth(){
   finally{btn.disabled=false;btn.textContent=old;}
 }
 
+let codeTimer=null;
+async function sendCode(){
+  const email=(document.getElementById('auth-email').value||'').trim();
+  const msg=document.getElementById('auth-msg');
+  if(!email){msg.textContent='请先填写邮箱';return;}
+  const btn=document.getElementById('auth-send-code');const old=btn.textContent;
+  btn.disabled=true;btn.textContent='发送中…';msg.textContent='';
+  try{
+    const r=await gcApi('/auth/send-code',{method:'POST',body:{email}});
+    if(r.dev_mode&&r.code){document.getElementById('auth-code').value=r.code;showToast('开发模式:验证码已自动填入 '+r.code);}
+    else{showToast('验证码已发送到邮箱,请查收');}
+    let s=60;btn.textContent=s+'s';
+    clearInterval(codeTimer);
+    codeTimer=setInterval(()=>{s--;if(s<=0){clearInterval(codeTimer);btn.disabled=false;btn.textContent=old;}else{btn.textContent=s+'s';}},1000);
+  }catch(e){
+    btn.disabled=false;btn.textContent=old;
+    msg.textContent=e.message;
+    if(/已注册/.test(e.message))authTab('login');
+  }
+}
 function renderNavAuth(){
   const acc=gcAccount();const cta=document.getElementById('nav-cta-btn');if(!cta)return;
   if(acc){cta.textContent='我的账户';cta.onclick=function(){showPage('account');};}

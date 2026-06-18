@@ -2,7 +2,8 @@ from __future__ import annotations
 
 
 def _register(client, email="alice@example.com", password="secret123"):
-    return client.post("/auth/register", json={"email": email, "password": password})
+    code = client.post("/auth/send-code", json={"email": email}).json()["code"]
+    return client.post("/auth/register", json={"email": email, "password": password, "code": code})
 
 
 def test_register_grants_free_credit_and_key(client):
@@ -19,9 +20,25 @@ def test_register_grants_free_credit_and_key(client):
 
 
 def test_register_duplicate_email(client):
-    _register(client)
-    r = _register(client)
+    _register(client, email="dup@example.com")
+    # 已注册邮箱再发码 → 409(引导登录)
+    r = client.post("/auth/send-code", json={"email": "dup@example.com"})
     assert r.status_code == 409
+
+
+def test_send_code_dev_returns_code(client):
+    r = client.post("/auth/send-code", json={"email": "newcode@example.com"})
+    assert r.status_code == 200
+    assert r.json().get("dev_mode") is True
+    assert len(r.json()["code"]) == 6
+
+
+def test_register_requires_valid_code(client):
+    client.post("/auth/send-code", json={"email": "needcode@example.com"})
+    # 无 code
+    assert client.post("/auth/register", json={"email": "needcode@example.com", "password": "secret123"}).status_code == 400
+    # 错误 code
+    assert client.post("/auth/register", json={"email": "needcode@example.com", "password": "secret123", "code": "000000"}).status_code == 400
 
 
 def test_register_weak_password(client):

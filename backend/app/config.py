@@ -23,6 +23,16 @@ class Settings(BaseSettings):
     # 或显式设为 False 让缺 key 直接 fail-fast，避免静默返回假数据。
     MOCK_WHEN_NO_UPSTREAM_KEY: bool = True
 
+    # ── 邮箱验证(SMTP)──
+    # 未配置(SMTP_HOST 为空)时,注册走开发模式:验证码直接在接口返回、不发邮件。
+    # 配好后即真实发信。Gmail 示例:HOST=smtp.gmail.com PORT=587 USER=你的gmail PASSWORD=应用专用密码
+    SMTP_HOST: str = ""
+    SMTP_PORT: int = 587
+    SMTP_USER: str = ""
+    SMTP_PASSWORD: str = ""
+    SMTP_FROM: str = ""           # 发件人地址,留空则用 SMTP_USER
+    EMAIL_CODE_TTL_MIN: int = 10  # 验证码有效期(分钟)
+
     # ── 会员制 / 用户登录态 ──
     JWT_SECRET: str = "geniuscode-dev-jwt-secret-change-me"  # 生产务必改
     TOKEN_TTL_HOURS: int = 720          # 控制台登录态有效期（30 天）

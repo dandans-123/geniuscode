@@ -8,6 +8,11 @@ from pydantic import BaseModel
 class RegisterIn(BaseModel):
     email: str
     password: str
+    code: str = ""  # 邮箱验证码
+
+
+class SendCodeIn(BaseModel):
+    email: str
 
 
 class LoginIn(BaseModel):

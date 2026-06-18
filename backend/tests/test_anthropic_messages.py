@@ -2,7 +2,8 @@ from __future__ import annotations
 
 
 def _member_key(client, email):
-    r = client.post("/auth/register", json={"email": email, "password": "secret123"})
+    code = client.post("/auth/send-code", json={"email": email}).json()["code"]
+    r = client.post("/auth/register", json={"email": email, "password": "secret123", "code": code})
     return r.json()["account"]["api_key"]
 
 

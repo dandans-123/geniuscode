@@ -9,7 +9,8 @@ from app.models.api_key import ApiKey
 from app.models.model import Model
 from app.models.usage_record import UsageRecord
 from app.models.user import User
-from app.schemas.auth import AccountOut, AuthOut, LoginIn, PurchaseIn, RegisterIn, TopupIn
+from app.schemas.auth import AccountOut, AuthOut, LoginIn, PurchaseIn, RegisterIn, SendCodeIn, TopupIn
+from app.services.email_service import issue_code, verify_code
 from app.services.membership import TIERS, purchase_membership, topup_credit
 from app.services.security import create_token
 from app.services.user_service import authenticate, get_user_api_key, register_user
@@ -28,8 +29,18 @@ def _account(db: Session, user: User) -> AccountOut:
     )
 
 
+@router.post("/send-code")
+def send_code(body: SendCodeIn, db: Session = Depends(get_db)):
+    """发送注册邮箱验证码。已配 SMTP → 发邮件;未配 → 开发模式直接回传 code。"""
+    code, dev_mode = issue_code(db, body.email)
+    if dev_mode:
+        return {"sent": True, "dev_mode": True, "code": code}
+    return {"sent": True}
+
+
 @router.post("/register", response_model=AuthOut)
 def register(body: RegisterIn, db: Session = Depends(get_db)):
+    verify_code(db, body.email, body.code)  # 邮箱验证码校验,不通过抛 400
     user, _ = register_user(db, body.email, body.password)
     return AuthOut(access_token=create_token(user.id), account=_account(db, user))
 
