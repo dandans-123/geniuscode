@@ -34,6 +34,17 @@ class AccountOut(BaseModel):
     credit_balance_cny: float
     membership_expires_at: Optional[str] = None
     api_key: Optional[str] = None
+    is_admin: bool = False
+
+
+class GroupIn(BaseModel):
+    name: str
+    description: str = ""
+    platform: str = "aicodewith"
+    rate_multiplier: float = 1.0
+    rpm: int = 0
+    visibility: str = "public"
+    billing_type: str = "standard"
 
 
 class AuthOut(BaseModel):

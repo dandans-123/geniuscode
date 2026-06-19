@@ -5,11 +5,17 @@ from typing import Generator
 from fastapi import Depends, Header, HTTPException
 from sqlalchemy.orm import Session
 
+from app.config import settings
 from app.database import SessionLocal
 from app.models.api_key import ApiKey
 from app.models.user import User
 from app.services.auth_service import verify_api_key, verify_admin_key
 from app.services.security import decode_token
+
+
+def is_admin_email(email: str) -> bool:
+    admins = [e.strip().lower() for e in settings.ADMIN_EMAILS.split(",") if e.strip()]
+    return (email or "").strip().lower() in admins
 
 
 def get_db() -> Generator:
@@ -40,4 +46,10 @@ def get_current_user(
     user = db.query(User).filter(User.id == user_id).first()
     if not user or not user.is_active:
         raise HTTPException(status_code=401, detail="账户不存在或已停用")
+    return user
+
+
+def get_current_admin(user: User = Depends(get_current_user)) -> User:
+    if not is_admin_email(user.email):
+        raise HTTPException(status_code=403, detail="需要管理员权限")
     return user

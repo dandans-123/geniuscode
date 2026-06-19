@@ -340,6 +340,49 @@ footer.site-footer{background:var(--bg-soft);color:var(--g600);padding:56px 0 28
 .legal p{font-size:.9rem;color:var(--g600);line-height:1.75;margin-bottom:4px}
 .legal p b{color:var(--ink)}
 .legal a{color:var(--blue)}
+/* ══ CONSOLE(控制台)══ */
+.console-wrap{display:flex;min-height:calc(100vh - 64px)}
+.console-side{width:228px;flex-shrink:0;background:#fff;border-right:1px solid var(--border);display:flex;flex-direction:column;padding:20px 0}
+.console-brand{display:flex;align-items:center;gap:8px;font-weight:800;color:var(--ink);font-size:1.05rem;padding:0 20px 18px;cursor:pointer}
+.console-brand .logo-mark{width:24px;height:24px}
+.console-nav{display:flex;flex-direction:column;gap:2px;padding:0 10px;flex:1}
+.console-nav a{padding:11px 14px;border-radius:8px;font-size:.9rem;color:var(--g600);font-weight:500;cursor:pointer;transition:var(--t)}
+.console-nav a:hover{background:var(--bg-soft);color:var(--ink)}
+.console-nav a.active{background:rgba(109,40,217,.08);color:var(--blue);font-weight:700}
+.console-foot{padding:14px 20px 0;border-top:1px solid var(--g100);margin:0 10px;font-size:.8rem;color:var(--g500);line-height:1.9}
+.console-foot b{color:var(--blue);font-weight:700}
+.console-foot a{color:var(--g500);cursor:pointer}.console-foot a:hover{color:var(--blue)}
+.console-main{flex:1;padding:28px 32px;background:var(--bg-soft);min-width:0}
+.console-top{display:flex;justify-content:flex-end;color:var(--g500);font-size:.85rem;margin-bottom:8px}
+.cv{display:none}.cv.active{display:block}
+.cv-title{font-size:1.3rem;font-weight:700;color:var(--ink);margin-bottom:18px}
+.cv-title-btn{float:right;padding:8px 16px;min-height:auto;font-size:.82rem}
+.c-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px}
+.c-card{background:#fff;border:1px solid var(--border);border-radius:var(--r-lg);padding:18px 20px;box-shadow:var(--shadow-1)}
+.cc-l{font-size:.8rem;color:var(--g500);margin-bottom:8px}
+.cc-v{font-size:1.5rem;font-weight:800;color:var(--ink);letter-spacing:-0.01em}
+.c-panel{background:#fff;border:1px solid var(--border);border-radius:var(--r-lg);padding:22px 24px;box-shadow:var(--shadow-1);margin-bottom:16px}
+.c-panel h4{font-size:.95rem;font-weight:700;color:var(--ink);margin-bottom:14px}
+.c-bymodel .bm{display:flex;align-items:center;gap:10px;padding:7px 0;font-size:.85rem}
+.c-bymodel .bm-n{width:210px;font-family:var(--mono);font-size:.76rem;color:var(--ink);flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.c-bymodel .bm-bar{flex:1;height:8px;background:var(--g100);border-radius:999px;overflow:hidden}
+.c-bymodel .bm-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--blue),var(--cyan))}
+.c-bymodel .bm-v{width:96px;text-align:right;color:var(--g500);font-size:.76rem;flex-shrink:0}
+.c-filters{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.c-filters input,.c-filters select{padding:9px 12px;border:1.5px solid var(--g200);border-radius:var(--r);font-size:.88rem;font-family:inherit;outline:none;background:#fff}
+.c-filters input{flex:1;min-width:180px}
+.c-filters input:focus,.c-filters select:focus{border-color:var(--blue)}
+.c-mtable{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;font-size:.86rem;margin-bottom:8px}
+.c-mtable th{text-align:left;font-size:.7rem;text-transform:uppercase;letter-spacing:.04em;color:var(--g500);padding:10px 14px;background:var(--bg-soft);border-bottom:1px solid var(--border)}
+.c-mtable td{padding:10px 14px;border-bottom:1px solid var(--g100);color:var(--g600);vertical-align:middle}
+.c-mtable tr:last-child td{border-bottom:none}
+.c-mtable tbody tr{cursor:pointer}
+.c-mtable tbody tr:hover{background:rgba(109,40,217,.03)}
+.c-mtable .mn{font-weight:700;color:var(--ink)}
+.c-mtable .mid{font-family:var(--mono);font-size:.72rem;color:var(--g400)}
+.c-mgroup{font-size:.8rem;font-weight:700;color:var(--blue);margin:16px 0 8px}
+.c-mgroup:first-child{margin-top:0}
+@media(max-width:860px){.console-wrap{flex-direction:column}.console-side{width:auto}.console-nav{flex-direction:row;flex-wrap:wrap;flex:none}.console-foot{display:none}.c-cards{grid-template-columns:repeat(2,1fr)}.console-main{padding:20px 16px}.c-bymodel .bm-n{width:130px}}
 
 /* responsive */
 @media(max-width:1024px){.feat-grid,.supply-row,.prob-grid{grid-template-columns:repeat(2,1fr)}.topup-grid{grid-template-columns:repeat(2,1fr)}.hero .container{gap:32px}.hero h1{font-size:2.6rem}}
@@ -1008,6 +1051,85 @@ llm = ChatOpenAI(
   </div>
 </div>
 
+<!-- ══════════ PAGE: 控制台(企业版) ══════════ -->
+<div class="page" id="page-console">
+  <div class="console-wrap">
+    <aside class="console-side">
+      <div class="console-brand" onclick="showPage('landing')"><svg class="logo-mark" viewBox="0 0 48 48" fill="none" aria-hidden="true"><path d="M40 18 A17 17 0 1 1 40 30" stroke="currentColor" stroke-width="7" stroke-linecap="round"/><path d="M40 24 H24" stroke="currentColor" stroke-width="7" stroke-linecap="round"/></svg>GeniusCode</div>
+      <nav class="console-nav">
+        <a data-cv="dash" class="active" onclick="setCV('dash')">仪表盘</a>
+        <a data-cv="models" onclick="setCV('models')">模型 &amp; 价格</a>
+        <a data-cv="key" onclick="setCV('key')">API 密钥</a>
+        <a data-cv="usage" onclick="setCV('usage')">用量记录</a>
+        <a data-cv="billing" onclick="setCV('billing')">充值会员</a>
+        <a data-cv="groups" id="cv-nav-groups" style="display:none" onclick="setCV('groups')">分组管理</a>
+      </nav>
+      <div class="console-foot">
+        <div>余额 <b id="c-balance">¥0.00</b></div>
+        <a onclick="gcLogout()">退出登录</a> · <a onclick="showPage('landing')">返回首页</a>
+      </div>
+    </aside>
+    <main class="console-main">
+      <div class="console-top"><span id="c-user">—</span></div>
+
+      <section class="cv active" data-view="dash">
+        <h3 class="cv-title">仪表盘</h3>
+        <div class="c-cards">
+          <div class="c-card"><div class="cc-l">余额</div><div class="cc-v" id="c-d-balance">—</div></div>
+          <div class="c-card"><div class="cc-l">会员等级</div><div class="cc-v" id="c-d-tier">—</div></div>
+          <div class="c-card"><div class="cc-l">累计调用</div><div class="cc-v" id="c-d-calls">—</div></div>
+          <div class="c-card"><div class="cc-l">累计消费</div><div class="cc-v" id="c-d-cost">—</div></div>
+        </div>
+        <div class="c-panel"><h4>模型用量分布</h4><div id="c-d-bymodel" class="c-bymodel"><div class="acc-hint">还没有调用数据</div></div></div>
+      </section>
+
+      <section class="cv" data-view="models">
+        <h3 class="cv-title">模型 &amp; 价格</h3>
+        <div class="c-filters">
+          <input id="c-m-search" placeholder="搜索模型 / 供应商…" oninput="renderConsoleModels()">
+          <select id="c-m-group" onchange="renderConsoleModels()"><option value="">全部分组</option><option value="reason">推理模型</option><option value="chat">对话与通用</option><option value="spec">专用模型</option></select>
+        </div>
+        <div id="c-models"></div>
+        <div class="acc-hint">点任意行复制模型 id;价格为 ¥ / 1M token,输入·输出分别计费。</div>
+      </section>
+
+      <section class="cv" data-view="key">
+        <h3 class="cv-title">API 密钥</h3>
+        <div class="c-panel">
+          <div class="acc-key" id="c-key">—</div>
+          <div class="acc-actions"><button class="btn btn-ghost" onclick="copyAccKey()">复制 Key</button><button class="btn btn-ghost" onclick="refreshConsole()">刷新</button></div>
+          <div class="acc-hint">OpenAI 兼容 base_url:<code>https://api.geniuscode.online/v1</code><br>Claude Code:<code>ANTHROPIC_BASE_URL=https://api.geniuscode.online</code> · 更多见 <a onclick="showPage('docs')">接入文档</a></div>
+        </div>
+      </section>
+
+      <section class="cv" data-view="usage">
+        <h3 class="cv-title">用量记录</h3>
+        <div class="c-panel"><div class="usage-recent" id="c-usage"><div class="acc-hint">暂无记录</div></div></div>
+      </section>
+
+      <section class="cv" data-view="billing">
+        <h3 class="cv-title">充值会员</h3>
+        <div class="c-panel">
+          <h4>开通 / 续费会员</h4>
+          <div class="acc-buy-row">
+            <button class="btn btn-ghost" onclick="buyMembership('starter')">Starter ¥399</button>
+            <button class="btn btn-primary" onclick="buyMembership('pro')">Pro ¥699</button>
+            <button class="btn btn-ghost" onclick="buyMembership('ultimate')">Ultimate ¥1799</button>
+          </div>
+          <div class="acc-topup"><span>额度续充</span><input type="number" id="c-topup" min="50" step="50" value="100" placeholder="≥50"><button class="btn btn-ghost" onclick="doTopup()">续充(¥)</button></div>
+          <div class="acc-hint">开通即按等值额度入账、12 个月有效,用完随时续充。支付对接中,当前内测开通。</div>
+        </div>
+      </section>
+
+      <section class="cv" data-view="groups">
+        <h3 class="cv-title">分组管理 <button class="btn btn-primary cv-title-btn" onclick="newGroup()">+ 创建分组</button></h3>
+        <div class="acc-hint" style="margin-top:0;margin-bottom:14px">服务套餐 / 费率分组(VIP、免费试用等)。本期为管理配置,计费强制生效为二期。</div>
+        <div id="c-groups"></div>
+      </section>
+    </main>
+  </div>
+</div>
+
 <!-- ══════════ 法务页 ══════════ -->
 <div class="page" id="page-privacy">
   <div class="rec-container legal" style="max-width:820px">
@@ -1129,7 +1251,7 @@ function closeNav(){document.getElementById('nav').classList.remove('open');}
 
 // ═══ PAGE ═══
 function showPage(n){
-  if(n==='account'&&!gcToken()){n='login';}
+  if((n==='account'||n==='console')&&!gcToken()){n='login';}
   closeNav();
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   const pg=document.getElementById('page-'+n);if(pg)pg.classList.add('active');
@@ -1139,6 +1261,7 @@ function showPage(n){
   if(n==='landing'){window.scrollTo(0,0);initFade();}
   if(n==='models'&&!modelsRendered){renderModels();modelsRendered=true;}
   if(n==='account'){renderAccount();refreshAccount();renderUsage();}
+  if(n==='console'){renderConsole();refreshConsole();}
 }
 
 // ═══ MODELS & PRICE TABLE(分组渲染) ═══
@@ -1261,7 +1384,7 @@ async function submitAuth(){
     gcSetAuth(res.access_token,res.account);
     renderNavAuth();
     showToast(authMode==='login'?'登录成功':'注册成功，已送体验额度');
-    showPage('account');
+    showPage('console');
   }catch(e){msg.textContent=e.message;}
   finally{btn.disabled=false;btn.textContent=old;}
 }
@@ -1288,7 +1411,7 @@ async function sendCode(){
 }
 function renderNavAuth(){
   const acc=gcAccount();const cta=document.getElementById('nav-cta-btn');if(!cta)return;
-  if(acc){cta.textContent='我的账户';cta.onclick=function(){showPage('account');};}
+  if(acc){cta.textContent='控制台';cta.onclick=function(){showPage('console');};}
   else{cta.textContent='登录 / 注册';cta.onclick=function(){showPage('login');};}
 }
 
@@ -1309,7 +1432,7 @@ async function refreshAccount(){
 
 async function buyMembership(tier){
   if(!gcToken()){showToast('请先登录');showPage('login');return;}
-  try{const acc=await gcApi('/auth/membership/purchase',{method:'POST',auth:true,body:{tier}});localStorage.setItem('gc_account',JSON.stringify(acc));renderAccount();renderNavAuth();showToast('开通成功：'+(TIER_CN[tier]||tier));showPage('account');}
+  try{const acc=await gcApi('/auth/membership/purchase',{method:'POST',auth:true,body:{tier}});localStorage.setItem('gc_account',JSON.stringify(acc));afterAccountChange();showToast('开通成功：'+(TIER_CN[tier]||tier));showPage('console');}
   catch(e){showToast(e.message);}
 }
 
@@ -1337,9 +1460,89 @@ async function renderUsage(){
 }
 async function doTopup(){
   if(!gcToken()){showPage('login');return;}
-  const v=parseFloat(document.getElementById('topup-amount').value);
+  const el=document.getElementById('c-topup')||document.getElementById('topup-amount');
+  const v=parseFloat(el&&el.value);
   if(!v||v<50){showToast('单次续充不低于 ¥50');return;}
-  try{const acc=await gcApi('/auth/topup',{method:'POST',auth:true,body:{amount_cny:v}});localStorage.setItem('gc_account',JSON.stringify(acc));renderAccount();renderNavAuth();showToast('续充成功 ¥'+v.toFixed(0));}
+  try{const acc=await gcApi('/auth/topup',{method:'POST',auth:true,body:{amount_cny:v}});localStorage.setItem('gc_account',JSON.stringify(acc));afterAccountChange();showToast('续充成功 ¥'+v.toFixed(0));}
+  catch(e){showToast(e.message);}
+}
+
+// ═══ CONSOLE(控制台)═══
+const PLAT_CN={aicodewith:'aicodewith',anthropic:'Anthropic',openai:'OpenAI',google:'Google'};
+function afterAccountChange(){
+  renderNavAuth();
+  const con=document.getElementById('page-console');
+  if(con&&con.classList.contains('active'))renderConsole();
+  const acp=document.getElementById('page-account');
+  if(acp&&acp.classList.contains('active'))renderAccount();
+}
+function setCV(name){
+  document.querySelectorAll('#page-console .cv').forEach(s=>s.classList.toggle('active',s.dataset.view===name));
+  document.querySelectorAll('.console-nav a').forEach(a=>a.classList.toggle('active',a.dataset.cv===name));
+}
+function renderConsole(){
+  const acc=gcAccount();if(!acc)return;
+  document.getElementById('c-user').textContent=acc.email;
+  const bal='¥'+Number(acc.credit_balance_cny||0).toFixed(2);
+  document.getElementById('c-balance').textContent=bal;
+  document.getElementById('c-d-balance').textContent=bal;
+  document.getElementById('c-d-tier').textContent=TIER_CN[acc.membership_tier]||acc.membership_tier||'—';
+  document.getElementById('c-key').textContent=acc.api_key||'—';
+  document.getElementById('cv-nav-groups').style.display=acc.is_admin?'block':'none';
+  renderConsoleModels();
+  renderConsoleUsage();
+  if(acc.is_admin)loadGroups();
+}
+async function refreshConsole(){
+  if(!gcToken())return;
+  try{const acc=await gcApi('/auth/account',{auth:true});localStorage.setItem('gc_account',JSON.stringify(acc));}
+  catch(e){if(/40\d|登录/.test(e.message)){gcLogout();return;}}
+  renderNavAuth();renderConsole();
+}
+async function renderConsoleUsage(){
+  try{
+    const u=await gcApi('/auth/usage',{auth:true});
+    document.getElementById('c-d-calls').textContent=fmtNum(u.total_calls||0);
+    document.getElementById('c-d-cost').textContent='¥'+Number(u.total_cost_cny||0).toFixed(2);
+    const rec=u.recent||[];
+    document.getElementById('c-usage').innerHTML=rec.length?rec.map(r=>`<div class="ur"><span class="um">${esc(r.model)}</span><span>${fmtNum(r.tokens)} tok · ¥${Number(r.cost_cny||0).toFixed(4)} · ${r.status==='success'?'成功':'失败'} · ${((r.created_at||'').replace('T',' ').slice(5,16))}</span></div>`).join(''):'<div class="acc-hint">暂无记录</div>';
+    const bm=u.by_model||[];const mx=Math.max(1,...bm.map(m=>m.calls));
+    document.getElementById('c-d-bymodel').innerHTML=bm.length?bm.map(m=>`<div class="bm"><span class="bm-n">${esc(m.model)}</span><span class="bm-bar"><i style="width:${Math.round(m.calls/mx*100)}%"></i></span><span class="bm-v">${m.calls} 次 · ¥${Number(m.cost_cny||0).toFixed(2)}</span></div>`).join(''):'<div class="acc-hint">还没有调用数据</div>';
+  }catch(e){}
+}
+function renderConsoleModels(){
+  const q=(document.getElementById('c-m-search').value||'').toLowerCase().trim();
+  const gf=document.getElementById('c-m-group').value;
+  let html='';
+  MGROUPS.forEach(([gid,label])=>{
+    if(gf&&gf!==gid)return;
+    const rows=Object.entries(MDB).filter(([id,m])=>m.g===gid&&(!q||id.toLowerCase().includes(q)||m.name.toLowerCase().includes(q)||m.prov.toLowerCase().includes(q)));
+    if(!rows.length)return;
+    html+=`<div class="c-mgroup">${esc(label)} · ${rows.length}</div><table class="c-mtable"><thead><tr><th>模型</th><th>供应商</th><th>输入 ¥/1M</th><th>输出 ¥/1M</th><th>上下文</th></tr></thead><tbody>`+
+      rows.map(([id,m])=>`<tr onclick="copyModelId('${id}')"><td><span class="mn">${esc(m.name)}</span><br><span class="mid">${esc(id)}</span></td><td>${esc(m.prov)}</td><td class="mdl-price">${esc(m.in)}</td><td class="mdl-price">${esc(m.out)}</td><td>${esc(m.ctx)}</td></tr>`).join('')+'</tbody></table>';
+  });
+  document.getElementById('c-models').innerHTML=html||'<div class="acc-hint">没有匹配的模型</div>';
+}
+function copyModelId(id){if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(id).then(()=>showToast('已复制模型 id:'+id));}else{showToast(id);}}
+async function loadGroups(){
+  try{const r=await gcApi('/auth/groups',{auth:true});renderGroups(r.groups||[]);}
+  catch(e){document.getElementById('c-groups').innerHTML='<div class="acc-hint">'+esc(e.message)+'</div>';}
+}
+function renderGroups(groups){
+  const box=document.getElementById('c-groups');
+  if(!groups.length){box.innerHTML='<div class="acc-hint">还没有分组,点右上「创建分组」。</div>';return;}
+  box.innerHTML='<table class="c-mtable"><thead><tr><th>名称</th><th>平台</th><th>费率倍数</th><th>RPM</th><th>可见</th><th>计费</th><th>操作</th></tr></thead><tbody>'+
+    groups.map(g=>`<tr><td><span class="mn">${esc(g.name)}</span>${g.description?'<br><span class="mid">'+esc(g.description)+'</span>':''}</td><td>${esc(PLAT_CN[g.platform]||g.platform)}</td><td>${g.rate_multiplier}x</td><td>${g.rpm||'不限'}</td><td>${g.visibility==='private'?'专属':'公开'}</td><td>${g.billing_type==='subscription'?'订阅':'余额'}</td><td><a onclick="deleteGroup(${g.id})" style="color:var(--red);cursor:pointer">删除</a></td></tr>`).join('')+'</tbody></table>';
+}
+async function newGroup(){
+  const name=prompt('分组名称(如 VIP专线 / 免费试用)');if(!name)return;
+  const rate=parseFloat(prompt('费率倍数(1.0=原价,1.5/2.0=加价,0.8=补贴)','1.0')||'1');
+  try{await gcApi('/auth/groups',{method:'POST',auth:true,body:{name:name.trim(),rate_multiplier:isNaN(rate)?1:rate,platform:'aicodewith',rpm:0,visibility:'public',billing_type:'standard'}});showToast('已创建分组');loadGroups();}
+  catch(e){showToast(e.message);}
+}
+async function deleteGroup(id){
+  if(!confirm('确认删除该分组?'))return;
+  try{await gcApi('/auth/groups/'+id,{method:'DELETE',auth:true});showToast('已删除');loadGroups();}
   catch(e){showToast(e.message);}
 }
 function gcLogout(){gcClear();renderNavAuth();showToast('已退出登录');showPage('landing');}
@@ -1349,7 +1552,7 @@ function showToast(msg){const t=document.getElementById('toast');t.textContent=m
 function initFade(){const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')})},{threshold:0.1});document.querySelectorAll('.fade-up').forEach(el=>obs.observe(el));}
 // deep-link / refresh support: open the page named in the URL hash
 renderNavAuth();
-(function(){const valid=['landing','models','topup','recommend','docs','login','account','privacy','terms','refund'];const h=(location.hash||'').replace('#','');if(valid.includes(h)&&h!=='landing')showPage(h);})();
+(function(){const valid=['landing','models','topup','recommend','docs','login','account','console','privacy','terms','refund'];const h=(location.hash||'').replace('#','');if(valid.includes(h)&&h!=='landing')showPage(h);})();
 initFade();
 </script>
 </body>

@@ -7,8 +7,9 @@ from app.models.budget import Budget
 from app.models.knowledge_base import KnowledgeBase, Document, KBSubscription
 from app.models.user import User
 from app.models.email_code import EmailCode
+from app.models.group import Group
 
 __all__ = [
     "Provider", "Model", "RoutingRule", "ApiKey", "UsageRecord", "Budget",
-    "KnowledgeBase", "Document", "KBSubscription", "User", "EmailCode",
+    "KnowledgeBase", "Document", "KBSubscription", "User", "EmailCode", "Group",
 ]

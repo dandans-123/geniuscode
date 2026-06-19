@@ -34,6 +34,8 @@ class Settings(BaseSettings):
     EMAIL_CODE_TTL_MIN: int = 10  # 验证码有效期(分钟)
 
     # ── 会员制 / 用户登录态 ──
+    # 管理员邮箱(逗号分隔)。这些账号登录后可访问分组管理等运营功能。
+    ADMIN_EMAILS: str = "liuchulong163@gmail.com"
     JWT_SECRET: str = "geniuscode-dev-jwt-secret-change-me"  # 生产务必改
     TOKEN_TTL_HOURS: int = 720          # 控制台登录态有效期（30 天）
     FREE_TRIAL_CREDIT_CNY: float = 20.0  # 注册即送体验额度（¥）

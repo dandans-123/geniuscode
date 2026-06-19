@@ -8,7 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import settings
 from app.database import engine, SessionLocal, Base
-from app.models import Provider, Model, RoutingRule, ApiKey, UsageRecord, Budget, KnowledgeBase, Document, KBSubscription, User, EmailCode
+from app.models import Provider, Model, RoutingRule, ApiKey, UsageRecord, Budget, KnowledgeBase, Document, KBSubscription, User, EmailCode, Group
 from app.seed.seed_data import seed_database
 from app.api.v1.router import router as v1_router
 from app.api.admin.router import router as admin_router

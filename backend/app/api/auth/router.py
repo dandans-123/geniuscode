@@ -4,12 +4,15 @@ from fastapi import APIRouter, Depends
 from sqlalchemy import func
 from sqlalchemy.orm import Session
 
-from app.dependencies import get_db, get_current_user
+from fastapi import HTTPException
+
+from app.dependencies import get_db, get_current_user, get_current_admin, is_admin_email
 from app.models.api_key import ApiKey
+from app.models.group import Group
 from app.models.model import Model
 from app.models.usage_record import UsageRecord
 from app.models.user import User
-from app.schemas.auth import AccountOut, AuthOut, LoginIn, PurchaseIn, RegisterIn, SendCodeIn, TopupIn
+from app.schemas.auth import AccountOut, AuthOut, GroupIn, LoginIn, PurchaseIn, RegisterIn, SendCodeIn, TopupIn
 from app.services.email_service import issue_code, verify_code
 from app.services.membership import TIERS, purchase_membership, topup_credit
 from app.services.security import create_token
@@ -26,7 +29,17 @@ def _account(db: Session, user: User) -> AccountOut:
         credit_balance_cny=round(user.credit_balance_cny, 2),
         membership_expires_at=user.membership_expires_at.isoformat() if user.membership_expires_at else None,
         api_key=key.key if key else None,
+        is_admin=is_admin_email(user.email),
     )
+
+
+def _group_dict(g: Group) -> dict:
+    return {
+        "id": g.id, "name": g.name, "description": g.description, "platform": g.platform,
+        "rate_multiplier": g.rate_multiplier, "rpm": g.rpm, "visibility": g.visibility,
+        "billing_type": g.billing_type, "is_active": g.is_active,
+        "created_at": g.created_at.isoformat() if g.created_at else None,
+    }
 
 
 @router.post("/send-code")
@@ -141,3 +154,51 @@ def usage(user: User = Depends(get_current_user), db: Session = Depends(get_db))
         "by_model": by_model,
         "recent": recent,
     }
+
+
+# ── 分组管理(仅管理员)──
+@router.get("/groups")
+def list_groups(admin: User = Depends(get_current_admin), db: Session = Depends(get_db)):
+    return {"groups": [_group_dict(g) for g in db.query(Group).order_by(Group.id.asc()).all()]}
+
+
+@router.post("/groups")
+def create_group(body: GroupIn, admin: User = Depends(get_current_admin), db: Session = Depends(get_db)):
+    if not (body.name or "").strip():
+        raise HTTPException(status_code=400, detail="分组名称必填")
+    g = Group(
+        name=body.name.strip(), description=body.description, platform=body.platform,
+        rate_multiplier=body.rate_multiplier, rpm=body.rpm,
+        visibility=body.visibility, billing_type=body.billing_type,
+    )
+    db.add(g)
+    db.commit()
+    db.refresh(g)
+    return _group_dict(g)
+
+
+@router.post("/groups/{gid}")
+def update_group(gid: int, body: GroupIn, admin: User = Depends(get_current_admin), db: Session = Depends(get_db)):
+    g = db.query(Group).filter(Group.id == gid).first()
+    if not g:
+        raise HTTPException(status_code=404, detail="分组不存在")
+    g.name = body.name.strip()
+    g.description = body.description
+    g.platform = body.platform
+    g.rate_multiplier = body.rate_multiplier
+    g.rpm = body.rpm
+    g.visibility = body.visibility
+    g.billing_type = body.billing_type
+    db.commit()
+    db.refresh(g)
+    return _group_dict(g)
+
+
+@router.delete("/groups/{gid}")
+def delete_group(gid: int, admin: User = Depends(get_current_admin), db: Session = Depends(get_db)):
+    g = db.query(Group).filter(Group.id == gid).first()
+    if not g:
+        raise HTTPException(status_code=404, detail="分组不存在")
+    db.delete(g)
+    db.commit()
+    return {"deleted": True}
