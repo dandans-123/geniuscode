@@ -520,7 +520,7 @@ footer.site-footer{background:var(--bg-soft);color:var(--g600);padding:56px 0 28
 
 <span class="v">client</span> = <span class="f">OpenAI</span>(
   <span class="v">api_key</span>=<span class="s">"sk-geniuscode-..."</span>,
-  <span class="v">base_url</span>=<span class="s">"https://api.geniuscode.online/v1"</span>,
+  <span class="v">base_url</span>=<span class="s">"https://app.geniuscode.online/v1"</span>,
 )
 
 <span class="v">resp</span> = <span class="v">client</span>.<span class="v">chat</span>.<span class="v">completions</span>.<span class="f">create</span>(
@@ -535,7 +535,7 @@ footer.site-footer{background:var(--bg-soft);color:var(--g600);padding:56px 0 28
 
 <span class="k">const</span> <span class="v">client</span> = <span class="k">new</span> <span class="f">OpenAI</span>({
   <span class="v">apiKey</span>: <span class="s">"sk-geniuscode-..."</span>,
-  <span class="v">baseURL</span>: <span class="s">"https://api.geniuscode.online/v1"</span>,
+  <span class="v">baseURL</span>: <span class="s">"https://app.geniuscode.online/v1"</span>,
 });
 
 <span class="k">const</span> <span class="v">resp</span> = <span class="k">await</span> <span class="v">client</span>.<span class="v">chat</span>.<span class="v">completions</span>.<span class="f">create</span>({
@@ -544,7 +544,7 @@ footer.site-footer{background:var(--bg-soft);color:var(--g600);padding:56px 0 28
 });
 
 <span class="f">console</span>.<span class="f">log</span>(<span class="v">resp</span>.<span class="v">choices</span>[<span class="n">0</span>].<span class="v">message</span>.<span class="v">content</span>);</pre></div>
-          <div class="code-pane" id="cp-2"><pre><span class="f">curl</span> https://api.geniuscode.online/v1/chat/completions \
+          <div class="code-pane" id="cp-2"><pre><span class="f">curl</span> https://app.geniuscode.online/v1/chat/completions \
   -H <span class="s">"Authorization: Bearer sk-geniuscode-..."</span> \
   -H <span class="s">"Content-Type: application/json"</span> \
   -d <span class="s">'{"model":"deepseek-v3.2",
@@ -657,7 +657,7 @@ footer.site-footer{background:var(--bg-soft);color:var(--g600);padding:56px 0 28
         <div class="num">2</div>
         <h4>换 base_url</h4>
         <p>OpenAI SDK 不动, 改两行: api_key 换我们的, base_url 指向 GeniusCode。</p>
-        <code>https://api.geniuscode.online/v1</code>
+        <code>https://app.geniuscode.online/v1</code>
       </div>
       <div class="how-step">
         <div class="num">3</div>
@@ -722,7 +722,7 @@ footer.site-footer{background:var(--bg-soft);color:var(--g600);padding:56px 0 28
     <div class="faq-wrap">
       <details class="faq-item">
         <summary>接入要改多少代码?<span class="q-ico">+</span></summary>
-        <div class="faq-a">两行。把 <code>api_key</code> 换成 GeniusCode 的，<code>base_url</code> 指向 <code>https://api.geniuscode.online/v1</code>。OpenAI SDK、流式、工具调用全部不用动，业务代码零改写。</div>
+        <div class="faq-a">两行。把 <code>api_key</code> 换成 GeniusCode 的，<code>base_url</code> 指向 <code>https://app.geniuscode.online/v1</code>。OpenAI SDK、流式、工具调用全部不用动，业务代码零改写。</div>
       </details>
       <details class="faq-item">
         <summary>路由是怎么决定用哪个模型的?<span class="q-ico">+</span></summary>
@@ -907,7 +907,7 @@ footer.site-footer{background:var(--bg-soft);color:var(--g600);padding:56px 0 28
     <div class="rec-header"><h2>5 分钟接入</h2><p>OpenAI 兼容接口，改两行就能把现有代码切到 GeniusCode。</p></div>
     <div class="how-row" style="margin-bottom:36px">
       <div class="how-step"><div class="num">1</div><h4>注册拿 key</h4><p>邮箱注册，控制台一键生成 API key，无需审核。</p><code>sk-geniuscode-xxxx</code></div>
-      <div class="how-step"><div class="num">2</div><h4>换 base_url</h4><p>OpenAI SDK 不动，api_key 换我们的，base_url 指过来。</p><code>https://api.geniuscode.online/v1</code></div>
+      <div class="how-step"><div class="num">2</div><h4>换 base_url</h4><p>OpenAI SDK 不动，api_key 换我们的，base_url 指过来。</p><code>https://app.geniuscode.online/v1</code></div>
       <div class="how-step"><div class="num">3</div><h4>开通即用</h4><p>额度全模型通用，响应头返回所选模型与成本。</p><code>x-gc-picked / x-gc-cost</code></div>
     </div>
     <div class="docs-code">
@@ -916,7 +916,7 @@ footer.site-footer{background:var(--bg-soft);color:var(--g600);padding:56px 0 28
 
 client = OpenAI(
     api_key="sk-geniuscode-...",
-    base_url="https://api.geniuscode.online/v1",
+    base_url="https://app.geniuscode.online/v1",
 )
 
 resp = client.chat.completions.create(
@@ -927,7 +927,7 @@ print(resp.choices[0].message.content)</pre>
     </div>
     <div class="docs-code">
       <div class="docs-code-head">curl</div>
-      <pre>curl https://api.geniuscode.online/v1/chat/completions \
+      <pre>curl https://app.geniuscode.online/v1/chat/completions \
   -H "Authorization: Bearer sk-geniuscode-..." \
   -H "Content-Type: application/json" \
   -d '{"model":"deepseek-v3.2",
@@ -938,20 +938,20 @@ print(resp.choices[0].message.content)</pre>
     <p style="font-size:.9rem;color:var(--g600);margin-bottom:16px;line-height:1.6">Claude Code 走 Anthropic 兼容、其余工具走 OpenAI 兼容——都能接：把 base_url 指向 GeniusCode、填你的 key、模型名填清单里的 id（如 <code style="font-family:var(--mono);font-size:.82rem;background:var(--bg-soft);border:1px solid var(--border);padding:1px 6px;border-radius:4px;color:var(--blue-d)">deepseek-v3.2</code>）即可。</p>
     <div class="docs-code">
       <div class="docs-code-head">Claude Code（Anthropic 兼容,设环境变量）</div>
-      <pre>export ANTHROPIC_BASE_URL=https://api.geniuscode.online
+      <pre>export ANTHROPIC_BASE_URL=https://app.geniuscode.online
 export ANTHROPIC_API_KEY=sk-geniuscode-...
 # 然后正常使用 claude code,请求走 GeniusCode 统一计费</pre>
     </div>
     <div class="docs-code">
       <div class="docs-code-head">Cursor（设置 → Models）</div>
       <pre>OpenAI API Key:      sk-geniuscode-...
-Override Base URL:   https://api.geniuscode.online/v1
+Override Base URL:   https://app.geniuscode.online/v1
 Model（自定义添加）:  deepseek-v3.2 / deepseek-v4-pro / glm-4.7 ...</pre>
     </div>
     <div class="docs-code">
       <div class="docs-code-head">Cline / Roo Code（VS Code 插件）</div>
       <pre>API Provider:  OpenAI Compatible
-Base URL:      https://api.geniuscode.online/v1
+Base URL:      https://app.geniuscode.online/v1
 API Key:       sk-geniuscode-...
 Model ID:      deepseek-v4-pro</pre>
     </div>
@@ -961,7 +961,7 @@ Model ID:      deepseek-v4-pro</pre>
   "models": [{
     "title": "GeniusCode",
     "provider": "openai",
-    "apiBase": "https://api.geniuscode.online/v1",
+    "apiBase": "https://app.geniuscode.online/v1",
     "apiKey": "sk-geniuscode-...",
     "model": "deepseek-v4-pro"
   }]
@@ -972,7 +972,7 @@ Model ID:      deepseek-v4-pro</pre>
       <pre>from langchain_openai import ChatOpenAI
 
 llm = ChatOpenAI(
-    base_url="https://api.geniuscode.online/v1",
+    base_url="https://app.geniuscode.online/v1",
     api_key="sk-geniuscode-...",
     model="deepseek-v3.2",
 )</pre>
@@ -1036,7 +1036,7 @@ llm = ChatOpenAI(
           <button class="btn btn-ghost" onclick="copyAccKey()">复制 Key</button>
           <button class="btn btn-ghost" onclick="refreshAccount()">刷新</button>
         </div>
-        <div class="acc-hint">base_url：<code>https://api.geniuscode.online/v1</code> · OpenAI 兼容，改两行接入</div>
+        <div class="acc-hint">base_url：<code>https://app.geniuscode.online/v1</code> · OpenAI 兼容，改两行接入</div>
       </div>
     </div>
     <div class="acc-card" style="margin-bottom:20px">
@@ -1119,7 +1119,7 @@ llm = ChatOpenAI(
         <div class="c-panel">
           <div class="acc-key" id="c-key">—</div>
           <div class="acc-actions"><button class="btn btn-ghost" onclick="copyAccKey()">复制 Key</button><button class="btn btn-ghost" onclick="refreshConsole()">刷新</button></div>
-          <div class="acc-hint">OpenAI 兼容 base_url:<code>https://api.geniuscode.online/v1</code><br>Claude Code:<code>ANTHROPIC_BASE_URL=https://api.geniuscode.online</code> · 更多见 <a onclick="showPage('docs')">接入文档</a></div>
+          <div class="acc-hint">OpenAI 兼容 base_url:<code>https://app.geniuscode.online/v1</code><br>Claude Code:<code>ANTHROPIC_BASE_URL=https://app.geniuscode.online</code> · 更多见 <a onclick="showPage('docs')">接入文档</a></div>
         </div>
       </section>
 
@@ -1283,8 +1283,11 @@ function toggleNav(){document.getElementById('nav').classList.toggle('open');}
 function closeNav(){document.getElementById('nav').classList.remove('open');}
 
 // ═══ PAGE ═══
+const CONSOLE_URL='https://app.geniuscode.online';
+function goConsole(){location.href=CONSOLE_URL;}
 function showPage(n){
-  if((n==='account'||n==='console')&&!gcToken()){n='login';}
+  // 登录/注册/控制台/账户/会员开通 统一交给 Sub2API 控制台
+  if(n==='login'||n==='console'||n==='account'){goConsole();return;}
   closeNav();
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   const pg=document.getElementById('page-'+n);if(pg)pg.classList.add('active');
@@ -1367,8 +1370,8 @@ function copyCode(){
 }
 
 // ═══ AUTH (接后端 /auth/*) ═══
-// API 地址:本地开发→同机 8000;线上(Pages/正式域名)→ api.geniuscode.online
-const API_BASE=(function(){const h=location.hostname;if(h==='localhost'||h==='127.0.0.1')return 'http://127.0.0.1:8000';if(h.endsWith('github.io'))return 'https://api.geniuscode.online';return '';})();
+// API 地址:本地开发→同机 8000;线上(Pages/正式域名)→ app.geniuscode.online
+const API_BASE=(function(){const h=location.hostname;if(h==='localhost'||h==='127.0.0.1')return 'http://127.0.0.1:8000';if(h.endsWith('github.io'))return 'https://app.geniuscode.online';return '';})();
 const TIER_CN={free:'体验',starter:'Starter',pro:'Pro',ultimate:'Ultimate'};
 let authMode='login';
 
@@ -1463,11 +1466,7 @@ async function refreshAccount(){
   catch(e){if(/40\d|登录/.test(e.message)){gcClear();renderNavAuth();showPage('login');}}
 }
 
-async function buyMembership(tier){
-  if(!gcToken()){showToast('请先登录');showPage('login');return;}
-  try{const acc=await gcApi('/auth/membership/purchase',{method:'POST',auth:true,body:{tier}});localStorage.setItem('gc_account',JSON.stringify(acc));afterAccountChange();showToast('开通成功：'+(TIER_CN[tier]||tier));showPage('console');}
-  catch(e){showToast(e.message);}
-}
+function buyMembership(tier){goConsole();}
 
 function copyAccKey(){
   const k=(gcAccount()||{}).api_key;if(!k){showToast('暂无 Key');return;}
@@ -1491,14 +1490,7 @@ async function renderUsage(){
     }else{wrap.style.display='none';empty.style.display='block';}
   }catch(e){}
 }
-async function doTopup(){
-  if(!gcToken()){showPage('login');return;}
-  const el=document.getElementById('c-topup')||document.getElementById('topup-amount');
-  const v=parseFloat(el&&el.value);
-  if(!v||v<50){showToast('单次续充不低于 ¥50');return;}
-  try{const acc=await gcApi('/auth/topup',{method:'POST',auth:true,body:{amount_cny:v}});localStorage.setItem('gc_account',JSON.stringify(acc));afterAccountChange();showToast('续充成功 ¥'+v.toFixed(0));}
-  catch(e){showToast(e.message);}
-}
+function doTopup(){goConsole();}
 
 // ═══ CONSOLE(控制台)═══
 const PLAT_CN={aicodewith:'aicodewith',anthropic:'Anthropic',openai:'OpenAI',google:'Google'};
