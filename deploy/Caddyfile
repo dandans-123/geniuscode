@@ -12,3 +12,9 @@ geniuscode.online, www.geniuscode.online {
 	encode zstd gzip
 	reverse_proxy app:8000
 }
+
+# 控制台:Sub2API(开源中转控制台),跑在宿主机 8080(systemd,非容器)。
+app.geniuscode.online {
+	encode zstd gzip
+	reverse_proxy host.docker.internal:8080
+}
