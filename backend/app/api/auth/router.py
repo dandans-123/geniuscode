@@ -4,6 +4,8 @@ from fastapi import APIRouter, Depends
 from sqlalchemy import func
 from sqlalchemy.orm import Session
 
+import json
+
 from fastapi import HTTPException
 
 from app.dependencies import get_db, get_current_user, get_current_admin, is_admin_email
@@ -12,7 +14,7 @@ from app.models.group import Group
 from app.models.model import Model
 from app.models.usage_record import UsageRecord
 from app.models.user import User
-from app.schemas.auth import AccountOut, AuthOut, GroupIn, LoginIn, PurchaseIn, RegisterIn, SendCodeIn, TopupIn
+from app.schemas.auth import AccountOut, AuthOut, GroupIn, LoginIn, MyGroupIn, PurchaseIn, RegisterIn, SendCodeIn, TopupIn
 from app.services.email_service import issue_code, verify_code
 from app.services.membership import TIERS, purchase_membership, topup_credit
 from app.services.security import create_token
@@ -34,11 +36,15 @@ def _account(db: Session, user: User) -> AccountOut:
 
 
 def _group_dict(g: Group) -> dict:
+    try:
+        models = json.loads(g.models or "[]")
+    except Exception:
+        models = []
     return {
-        "id": g.id, "name": g.name, "description": g.description, "platform": g.platform,
-        "rate_multiplier": g.rate_multiplier, "rpm": g.rpm, "visibility": g.visibility,
-        "billing_type": g.billing_type, "is_active": g.is_active,
-        "created_at": g.created_at.isoformat() if g.created_at else None,
+        "id": g.id, "user_id": g.user_id, "name": g.name, "description": g.description,
+        "platform": g.platform, "rate_multiplier": g.rate_multiplier, "rpm": g.rpm,
+        "models": models, "visibility": g.visibility, "billing_type": g.billing_type,
+        "is_active": g.is_active, "created_at": g.created_at.isoformat() if g.created_at else None,
     }
 
 
@@ -156,10 +162,57 @@ def usage(user: User = Depends(get_current_user), db: Session = Depends(get_db))
     }
 
 
-# ── 分组管理(仅管理员)──
+# ── 用户自有分组(任意登录用户,管自己的;无费率,费率由平台统一)──
+@router.get("/my-groups")
+def my_groups(user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    rows = db.query(Group).filter(Group.user_id == user.id).order_by(Group.id.asc()).all()
+    return {"groups": [_group_dict(g) for g in rows]}
+
+
+@router.post("/my-groups")
+def create_my_group(body: MyGroupIn, user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    if not (body.name or "").strip():
+        raise HTTPException(status_code=400, detail="分组名称必填")
+    g = Group(
+        user_id=user.id, name=body.name.strip(), description=body.description,
+        rpm=max(0, body.rpm or 0), models=json.dumps(body.models or []),
+        rate_multiplier=1.0, visibility="private", platform="aicodewith", billing_type="standard",
+    )
+    db.add(g)
+    db.commit()
+    db.refresh(g)
+    return _group_dict(g)
+
+
+@router.post("/my-groups/{gid}")
+def update_my_group(gid: int, body: MyGroupIn, user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    g = db.query(Group).filter(Group.id == gid, Group.user_id == user.id).first()
+    if not g:
+        raise HTTPException(status_code=404, detail="分组不存在")
+    g.name = body.name.strip()
+    g.description = body.description
+    g.rpm = max(0, body.rpm or 0)
+    g.models = json.dumps(body.models or [])
+    db.commit()
+    db.refresh(g)
+    return _group_dict(g)
+
+
+@router.delete("/my-groups/{gid}")
+def delete_my_group(gid: int, user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    g = db.query(Group).filter(Group.id == gid, Group.user_id == user.id).first()
+    if not g:
+        raise HTTPException(status_code=404, detail="分组不存在")
+    db.delete(g)
+    db.commit()
+    return {"deleted": True}
+
+
+# ── 平台分组管理(仅管理员,带费率)──
 @router.get("/groups")
 def list_groups(admin: User = Depends(get_current_admin), db: Session = Depends(get_db)):
-    return {"groups": [_group_dict(g) for g in db.query(Group).order_by(Group.id.asc()).all()]}
+    rows = db.query(Group).filter(Group.user_id.is_(None)).order_by(Group.id.asc()).all()
+    return {"groups": [_group_dict(g) for g in rows]}
 
 
 @router.post("/groups")

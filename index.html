@@ -383,6 +383,25 @@ footer.site-footer{background:var(--bg-soft);color:var(--g600);padding:56px 0 28
 .c-mgroup{font-size:.8rem;font-weight:700;color:var(--blue);margin:16px 0 8px}
 .c-mgroup:first-child{margin-top:0}
 @media(max-width:860px){.console-wrap{flex-direction:column}.console-side{width:auto}.console-nav{flex-direction:row;flex-wrap:wrap;flex:none}.console-foot{display:none}.c-cards{grid-template-columns:repeat(2,1fr)}.console-main{padding:20px 16px}.c-bymodel .bm-n{width:130px}}
+/* console polish */
+.console-nav a{display:flex;align-items:center;gap:10px}
+.console-nav a svg{width:18px;height:18px;flex-shrink:0}
+.console-top{align-items:center;gap:12px}
+.c-pill{background:rgba(109,40,217,.08);color:var(--blue-d);font-weight:700;font-size:.85rem;padding:6px 14px;border-radius:999px}
+.c-userchip{display:inline-flex;align-items:center;gap:8px;font-size:.85rem;color:var(--g600)}
+.c-avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--cyan));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.8rem}
+.c-card{display:flex;align-items:center;gap:14px}
+.cc-ico{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.cc-ico svg{width:22px;height:22px}
+.cc-v1{background:rgba(109,40,217,.1);color:var(--blue)}
+.cc-v2{background:rgba(6,182,212,.12);color:var(--cyan-d)}
+.cc-v3{background:rgba(5,150,105,.1);color:var(--green)}
+.cc-v4{background:rgba(212,168,67,.16);color:#b8860b}
+.c-form-row{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.c-form-row label{width:92px;font-size:.85rem;color:var(--g600);font-weight:600;flex-shrink:0}
+.c-form-row input{flex:1;padding:9px 12px;border:1.5px solid var(--g200);border-radius:var(--r);font-size:.88rem;font-family:inherit;outline:none}
+.c-form-row input:focus{border-color:var(--blue)}
+@media(max-width:560px){.c-form-row{flex-direction:column;align-items:stretch;gap:5px}.c-form-row label{width:auto}}
 
 /* responsive */
 @media(max-width:1024px){.feat-grid,.supply-row,.prob-grid{grid-template-columns:repeat(2,1fr)}.topup-grid{grid-template-columns:repeat(2,1fr)}.hero .container{gap:32px}.hero h1{font-size:2.6rem}}
@@ -1057,28 +1076,30 @@ llm = ChatOpenAI(
     <aside class="console-side">
       <div class="console-brand" onclick="showPage('landing')"><svg class="logo-mark" viewBox="0 0 48 48" fill="none" aria-hidden="true"><path d="M40 18 A17 17 0 1 1 40 30" stroke="currentColor" stroke-width="7" stroke-linecap="round"/><path d="M40 24 H24" stroke="currentColor" stroke-width="7" stroke-linecap="round"/></svg>GeniusCode</div>
       <nav class="console-nav">
-        <a data-cv="dash" class="active" onclick="setCV('dash')">仪表盘</a>
-        <a data-cv="models" onclick="setCV('models')">模型 &amp; 价格</a>
-        <a data-cv="key" onclick="setCV('key')">API 密钥</a>
-        <a data-cv="usage" onclick="setCV('usage')">用量记录</a>
-        <a data-cv="billing" onclick="setCV('billing')">充值会员</a>
-        <a data-cv="groups" id="cv-nav-groups" style="display:none" onclick="setCV('groups')">分组管理</a>
+        <a data-cv="dash" class="active" onclick="setCV('dash')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z"/></svg>仪表盘</a>
+        <a data-cv="models" onclick="setCV('models')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 00-1-1.7l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.7l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><path d="M3.3 7L12 12l8.7-5M12 22V12"/></svg>模型 &amp; 价格</a>
+        <a data-cv="key" onclick="setCV('key')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2l-2 2m-7.6 7.6a5 5 0 11-7 7 5 5 0 017-7zm0 0L15.5 7.5m0 0L19 11l3-3-3.5-3.5"/></svg>API 密钥</a>
+        <a data-cv="usage" onclick="setCV('usage')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18M7 14l4-4 4 4 5-5"/></svg>用量记录</a>
+        <a data-cv="billing" onclick="setCV('billing')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>充值会员</a>
+        <a data-cv="groups" id="cv-nav-groups" onclick="setCV('groups')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>我的分组</a>
       </nav>
       <div class="console-foot">
-        <div>余额 <b id="c-balance">¥0.00</b></div>
-        <a onclick="gcLogout()">退出登录</a> · <a onclick="showPage('landing')">返回首页</a>
+        <a onclick="showPage('landing')">返回首页</a> · <a onclick="gcLogout()">退出登录</a>
       </div>
     </aside>
     <main class="console-main">
-      <div class="console-top"><span id="c-user">—</span></div>
+      <div class="console-top">
+        <span class="c-pill" id="c-balance">¥0.00</span>
+        <span class="c-userchip"><span class="c-avatar" id="c-avatar">U</span><span id="c-user">—</span></span>
+      </div>
 
       <section class="cv active" data-view="dash">
         <h3 class="cv-title">仪表盘</h3>
         <div class="c-cards">
-          <div class="c-card"><div class="cc-l">余额</div><div class="cc-v" id="c-d-balance">—</div></div>
-          <div class="c-card"><div class="cc-l">会员等级</div><div class="cc-v" id="c-d-tier">—</div></div>
-          <div class="c-card"><div class="cc-l">累计调用</div><div class="cc-v" id="c-d-calls">—</div></div>
-          <div class="c-card"><div class="cc-l">累计消费</div><div class="cc-v" id="c-d-cost">—</div></div>
+          <div class="c-card"><span class="cc-ico cc-v1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></span><div><div class="cc-l">余额</div><div class="cc-v" id="c-d-balance">—</div></div></div>
+          <div class="c-card"><span class="cc-ico cc-v2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l2.4 7.4H22l-6 4.3 2.3 7.3L12 16.8 5.7 21l2.3-7.3-6-4.3h7.6z"/></svg></span><div><div class="cc-l">会员等级</div><div class="cc-v" id="c-d-tier">—</div></div></div>
+          <div class="c-card"><span class="cc-ico cc-v3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18M7 14l4-4 4 4 5-5"/></svg></span><div><div class="cc-l">累计调用</div><div class="cc-v" id="c-d-calls">—</div></div></div>
+          <div class="c-card"><span class="cc-ico cc-v4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></span><div><div class="cc-l">累计消费</div><div class="cc-v" id="c-d-cost">—</div></div></div>
         </div>
         <div class="c-panel"><h4>模型用量分布</h4><div id="c-d-bymodel" class="c-bymodel"><div class="acc-hint">还没有调用数据</div></div></div>
       </section>
@@ -1122,9 +1143,21 @@ llm = ChatOpenAI(
       </section>
 
       <section class="cv" data-view="groups">
-        <h3 class="cv-title">分组管理 <button class="btn btn-primary cv-title-btn" onclick="newGroup()">+ 创建分组</button></h3>
-        <div class="acc-hint" style="margin-top:0;margin-bottom:14px">服务套餐 / 费率分组(VIP、免费试用等)。本期为管理配置,计费强制生效为二期。</div>
+        <h3 class="cv-title">我的分组 <button class="btn btn-primary cv-title-btn" onclick="toggleGrpForm(true)">+ 新建分组</button></h3>
+        <div class="acc-hint" style="margin-top:0;margin-bottom:14px">把你的 API key 按项目 / 用途分组,自管限速(RPM)与模型范围。费率由平台统一,不在此设置。</div>
+        <div id="c-grp-form" class="c-panel" style="display:none">
+          <div class="c-form-row"><label>名称</label><input id="cg-name" placeholder="如 项目A / 测试"></div>
+          <div class="c-form-row"><label>描述</label><input id="cg-desc" placeholder="可选"></div>
+          <div class="c-form-row"><label>RPM 限速</label><input id="cg-rpm" type="number" min="0" value="0" placeholder="0 = 不限"></div>
+          <div class="c-form-row"><label>模型白名单</label><input id="cg-models" placeholder="逗号分隔模型 id,留空 = 全部模型"></div>
+          <div class="acc-actions"><button class="btn btn-primary" onclick="submitGroup()">创建</button><button class="btn btn-ghost" onclick="toggleGrpForm(false)">取消</button></div>
+        </div>
         <div id="c-groups"></div>
+        <div id="c-admin-groups-wrap" style="display:none;margin-top:26px">
+          <h4 style="font-size:1rem;font-weight:700;color:var(--ink);margin-bottom:10px">平台分组（管理员）<button class="btn btn-ghost cv-title-btn" onclick="newPlatformGroup()">+ 平台分组</button></h4>
+          <div class="acc-hint" style="margin-top:0;margin-bottom:10px">带费率倍数的运营套餐(VIP / 免费试用等)。计费强制生效为二期。</div>
+          <div id="c-admin-groups"></div>
+        </div>
       </section>
     </main>
   </div>
@@ -1483,15 +1516,15 @@ function setCV(name){
 function renderConsole(){
   const acc=gcAccount();if(!acc)return;
   document.getElementById('c-user').textContent=acc.email;
+  document.getElementById('c-avatar').textContent=(acc.email||'U').slice(0,1).toUpperCase();
   const bal='¥'+Number(acc.credit_balance_cny||0).toFixed(2);
   document.getElementById('c-balance').textContent=bal;
   document.getElementById('c-d-balance').textContent=bal;
   document.getElementById('c-d-tier').textContent=TIER_CN[acc.membership_tier]||acc.membership_tier||'—';
   document.getElementById('c-key').textContent=acc.api_key||'—';
-  document.getElementById('cv-nav-groups').style.display=acc.is_admin?'block':'none';
   renderConsoleModels();
   renderConsoleUsage();
-  if(acc.is_admin)loadGroups();
+  loadGroups();
 }
 async function refreshConsole(){
   if(!gcToken())return;
@@ -1524,24 +1557,51 @@ function renderConsoleModels(){
   document.getElementById('c-models').innerHTML=html||'<div class="acc-hint">没有匹配的模型</div>';
 }
 function copyModelId(id){if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(id).then(()=>showToast('已复制模型 id:'+id));}else{showToast(id);}}
-async function loadGroups(){
-  try{const r=await gcApi('/auth/groups',{auth:true});renderGroups(r.groups||[]);}
-  catch(e){document.getElementById('c-groups').innerHTML='<div class="acc-hint">'+esc(e.message)+'</div>';}
+function toggleGrpForm(show){
+  const f=document.getElementById('c-grp-form');f.style.display=show?'block':'none';
+  if(show){document.getElementById('cg-name').value='';document.getElementById('cg-desc').value='';document.getElementById('cg-rpm').value='0';document.getElementById('cg-models').value='';document.getElementById('cg-name').focus();}
 }
-function renderGroups(groups){
-  const box=document.getElementById('c-groups');
-  if(!groups.length){box.innerHTML='<div class="acc-hint">还没有分组,点右上「创建分组」。</div>';return;}
-  box.innerHTML='<table class="c-mtable"><thead><tr><th>名称</th><th>平台</th><th>费率倍数</th><th>RPM</th><th>可见</th><th>计费</th><th>操作</th></tr></thead><tbody>'+
-    groups.map(g=>`<tr><td><span class="mn">${esc(g.name)}</span>${g.description?'<br><span class="mid">'+esc(g.description)+'</span>':''}</td><td>${esc(PLAT_CN[g.platform]||g.platform)}</td><td>${g.rate_multiplier}x</td><td>${g.rpm||'不限'}</td><td>${g.visibility==='private'?'专属':'公开'}</td><td>${g.billing_type==='subscription'?'订阅':'余额'}</td><td><a onclick="deleteGroup(${g.id})" style="color:var(--red);cursor:pointer">删除</a></td></tr>`).join('')+'</tbody></table>';
-}
-async function newGroup(){
-  const name=prompt('分组名称(如 VIP专线 / 免费试用)');if(!name)return;
-  const rate=parseFloat(prompt('费率倍数(1.0=原价,1.5/2.0=加价,0.8=补贴)','1.0')||'1');
-  try{await gcApi('/auth/groups',{method:'POST',auth:true,body:{name:name.trim(),rate_multiplier:isNaN(rate)?1:rate,platform:'aicodewith',rpm:0,visibility:'public',billing_type:'standard'}});showToast('已创建分组');loadGroups();}
+async function submitGroup(){
+  const name=(document.getElementById('cg-name').value||'').trim();
+  if(!name){showToast('请填写分组名称');return;}
+  const rpm=parseInt(document.getElementById('cg-rpm').value||'0',10)||0;
+  const models=(document.getElementById('cg-models').value||'').split(',').map(s=>s.trim()).filter(Boolean);
+  try{await gcApi('/auth/my-groups',{method:'POST',auth:true,body:{name,description:document.getElementById('cg-desc').value||'',rpm,models}});showToast('分组已创建');toggleGrpForm(false);loadGroups();}
   catch(e){showToast(e.message);}
 }
-async function deleteGroup(id){
+async function loadGroups(){
+  try{const r=await gcApi('/auth/my-groups',{auth:true});renderMyGroups(r.groups||[]);}
+  catch(e){document.getElementById('c-groups').innerHTML='<div class="acc-hint">'+esc(e.message)+'</div>';}
+  const acc=gcAccount();
+  const wrap=document.getElementById('c-admin-groups-wrap');
+  if(acc&&acc.is_admin){wrap.style.display='block';try{const r=await gcApi('/auth/groups',{auth:true});renderPlatformGroups(r.groups||[]);}catch(e){}}
+  else{wrap.style.display='none';}
+}
+function renderMyGroups(groups){
+  const box=document.getElementById('c-groups');
+  if(!groups.length){box.innerHTML='<div class="acc-hint">还没有分组。点右上「新建分组」创建一个。</div>';return;}
+  box.innerHTML='<table class="c-mtable"><thead><tr><th>名称</th><th>RPM 限速</th><th>模型范围</th><th>操作</th></tr></thead><tbody>'+
+    groups.map(g=>`<tr><td><span class="mn">${esc(g.name)}</span>${g.description?'<br><span class="mid">'+esc(g.description)+'</span>':''}</td><td>${g.rpm?g.rpm+' /分钟':'不限'}</td><td>${(g.models&&g.models.length)?esc(g.models.join(', ')):'全部模型'}</td><td><a onclick="deleteMyGroup(${g.id})" style="color:var(--red);cursor:pointer">删除</a></td></tr>`).join('')+'</tbody></table>';
+}
+async function deleteMyGroup(id){
   if(!confirm('确认删除该分组?'))return;
+  try{await gcApi('/auth/my-groups/'+id,{method:'DELETE',auth:true});showToast('已删除');loadGroups();}
+  catch(e){showToast(e.message);}
+}
+function renderPlatformGroups(groups){
+  const box=document.getElementById('c-admin-groups');
+  if(!groups.length){box.innerHTML='<div class="acc-hint">暂无平台分组。</div>';return;}
+  box.innerHTML='<table class="c-mtable"><thead><tr><th>名称</th><th>平台</th><th>费率倍数</th><th>RPM</th><th>可见</th><th>计费</th><th>操作</th></tr></thead><tbody>'+
+    groups.map(g=>`<tr><td><span class="mn">${esc(g.name)}</span>${g.description?'<br><span class="mid">'+esc(g.description)+'</span>':''}</td><td>${esc(PLAT_CN[g.platform]||g.platform)}</td><td>${g.rate_multiplier}x</td><td>${g.rpm||'不限'}</td><td>${g.visibility==='private'?'专属':'公开'}</td><td>${g.billing_type==='subscription'?'订阅':'余额'}</td><td><a onclick="deletePlatformGroup(${g.id})" style="color:var(--red);cursor:pointer">删除</a></td></tr>`).join('')+'</tbody></table>';
+}
+async function newPlatformGroup(){
+  const name=prompt('平台分组名称(如 VIP专线 / 免费试用)');if(!name)return;
+  const rate=parseFloat(prompt('费率倍数(1.0=原价,1.5/2.0=加价,0.8=补贴)','1.0')||'1');
+  try{await gcApi('/auth/groups',{method:'POST',auth:true,body:{name:name.trim(),rate_multiplier:isNaN(rate)?1:rate,platform:'aicodewith',rpm:0,visibility:'public',billing_type:'standard'}});showToast('平台分组已创建');loadGroups();}
+  catch(e){showToast(e.message);}
+}
+async function deletePlatformGroup(id){
+  if(!confirm('确认删除该平台分组?'))return;
   try{await gcApi('/auth/groups/'+id,{method:'DELETE',auth:true});showToast('已删除');loadGroups();}
   catch(e){showToast(e.message);}
 }

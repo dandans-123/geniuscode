@@ -47,6 +47,14 @@ class GroupIn(BaseModel):
     billing_type: str = "standard"
 
 
+class MyGroupIn(BaseModel):
+    """用户自建分组(无费率,费率由平台统一)。"""
+    name: str
+    description: str = ""
+    rpm: int = 0
+    models: list[str] = []
+
+
 class AuthOut(BaseModel):
     access_token: str
     token_type: str = "bearer"
